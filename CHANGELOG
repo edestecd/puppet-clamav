@@ -1,2 +1,5 @@
+2014-06-02 (0.0.2)  Chris Edester
+        * Add clamd and freshclam classes
+
 2014-05-30 (0.0.1)  Chris Edester
         * Initial Commit of default files etc.

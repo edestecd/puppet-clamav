@@ -1,5 +1,5 @@
 name    'edestecd-clamav'
-version '0.0.1'
+version '0.0.2'
 source 'https://github.com/edestecd/puppet-clamav.git'
 author 'Chris Edester'
 license 'GPLv3+'
@@ -8,4 +8,4 @@ description 'Puppet Module to install/configure clamd and freshclam on Debian an
 project_page 'https://github.com/edestecd/puppet-clamav'
 
 ## Add dependencies, if any:
-#dependency 'puppetlabs/stdlib', '>= 4.1.0'
+dependency 'puppetlabs/stdlib', '>= 4.1.0'
