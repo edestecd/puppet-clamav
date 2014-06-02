@@ -7,20 +7,48 @@
 #
 
 class clamav (
-  $clamd             = $clamav::params::clamd,
-  $freshclam         = $clamav::params::freshclam,
+  $manage_user       = $clamav::params::manage_user,
+  $manage_clamd      = $clamav::params::manage_clamd,
+  $manage_freshclam  = $clamav::params::manage_freshclam,
   $clamav_package    = $clamav::params::clamav_package,
 
+  $user              = $clamav::params::user,
+  $comment           = $clamav::params::comment,
+  $uid               = $clamav::params::uid,
+  $gid               = $clamav::params::gid,
+  $home              = $clamav::params::home,
+  $shell             = $clamav::params::shell,
+  $group             = $clamav::params::group,
+
   $clamd_package     = $clamav::params::clamd_package,
+  $clamd_config      = $clamav::params::clamd_config,
   $clamd_service     = $clamav::params::clamd_service,
 
   $freshclam_package = $clamav::params::freshclam_package,
+  $freshclam_config  = $clamav::params::freshclam_config,
   $freshclam_service = $clamav::params::freshclam_service,
 ) inherits clamav::params {
 
-  validate_bool($clamd)
-  validate_bool($freshclam)
+  validate_bool($manage_user)
+  validate_bool($manage_clamd)
+  validate_bool($manage_freshclam)
   validate_string($clamav_package)
+
+  if ($::osfamily == 'RedHat') { require epel }
+
+  if $manage_user {
+    class { 'clamav::user':
+      user    => $user,
+      comment => $comment,
+      uid     => $uid,
+      gid     => $gid,
+      home    => $home,
+      shell   => $shell,
+      group   => $group,
+      before  => Package['clamav'],
+      require => Anchor['clamav::begin'],
+    }
+  }
 
   package { 'clamav':
     name    => $clamav_package,
@@ -28,18 +56,20 @@ class clamav (
     require => Anchor['clamav::begin'],
   }
 
-  if $clamd {
+  if $manage_clamd {
     class { 'clamav::clamd':
       clamd_package => $clamd_package,
+      clamd_config  => $clamd_config,
       clamd_service => $clamd_service,
       require       => Package['clamav'],
       before        => Anchor['clamav::end'],
     }
   }
 
-  if $freshclam {
+  if $manage_freshclam {
     class { 'clamav::freshclam':
       freshclam_package => $freshclam_package,
+      freshclam_config  => $freshclam_config,
       freshclam_service => $freshclam_service,
       require           => Package['clamav'],
       before            => Anchor['clamav::end'],

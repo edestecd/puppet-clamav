@@ -1,3 +1,6 @@
+2014-06-02 (0.0.3)  Chris Edester
+        * Add user class and base templates
+
 2014-06-02 (0.0.2)  Chris Edester
         * Add clamd and freshclam classes
 

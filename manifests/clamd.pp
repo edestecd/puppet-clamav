@@ -4,24 +4,26 @@
 
 class clamav::clamd (
   $clamd_package = $clamav::params::clamd_package,
+  $clamd_config  = $clamav::params::clamd_config,
   $clamd_service = $clamav::params::clamd_service,
 ) inherits clamav::params {
 
+  validate_string($clamd_package)
+  validate_absolute_path($clamd_config)
   validate_string($clamd_service)
 
-  if $clamd_package {
-    package { 'clamd':
-      name   => $clamd_package,
-      ensure => installed,
-      before => File['/etc/clamav/clamd.conf'],
-    }
+  package { 'clamd':
+    name   => $clamd_package,
+    ensure => installed,
+    before => File['clamd.conf'],
   }
 
-  file { '/etc/clamav/clamd.conf':
+  file { 'clamd.conf':
+    path    => $clamd_config,
     ensure  => file,
     mode    => 0644,
     owner   => 'root',
-    group   => 'clamav',
+    group   => 'root',
     content => template("${module_name}/clamd.conf.erb"),
   }
 
@@ -31,7 +33,7 @@ class clamav::clamd (
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    subscribe  => File['/etc/clamav/clamd.conf'],
+    subscribe  => File['clamd.conf'],
   }
 
 }

@@ -1,5 +1,5 @@
 name    'edestecd-clamav'
-version '0.0.2'
+version '0.0.3'
 source 'https://github.com/edestecd/puppet-clamav.git'
 author 'Chris Edester'
 license 'GPLv3+'
@@ -9,3 +9,4 @@ project_page 'https://github.com/edestecd/puppet-clamav'
 
 ## Add dependencies, if any:
 dependency 'puppetlabs/stdlib', '>= 4.1.0'
+dependency 'stahnma/epel',      '>= 0.0.6'
