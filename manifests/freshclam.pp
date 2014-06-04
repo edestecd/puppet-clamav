@@ -30,7 +30,7 @@ class clamav::freshclam (
     mode    => 0644,
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/freshclam.conf.erb"),
+    content => template("${module_name}/freshclam.conf.${::osfamily}.erb"),
   }
 
   # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service

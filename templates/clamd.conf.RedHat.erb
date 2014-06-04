@@ -15,7 +15,7 @@
 # LogFile must be writable for the user running daemon.
 # A full path is required.
 # Default: disabled
-LogFile /var/log/clamav/clamd.log
+LogFile <%= @config_options.delete('LogFile') || '/var/log/clamav/clamd.log' %>
 
 # By default the log file is locked for writing - the lock protects against
 # running clamd multiple times (if want to run another clamd, please
@@ -24,6 +24,7 @@ LogFile /var/log/clamav/clamd.log
 # This option disables log file locking.
 # Default: no
 #LogFileUnlock yes
+<%= %Q(LogFileUnlock #{@config_options.delete('LogFileUnlock')}\n) if @config_options.key?('LogFileUnlock') -%>
 
 # Maximum size of the log file.
 # Value of 0 disables the limit.
@@ -32,77 +33,86 @@ LogFile /var/log/clamav/clamd.log
 # in bytes just don't use modifiers. If LogFileMaxSize is enabled, log
 # rotation (the LogRotate option) will always be enabled.
 # Default: 1M
-LogFileMaxSize 0
+LogFileMaxSize <%= @config_options.delete('LogFileMaxSize') || '0' %>
 
 # Log time with each message.
 # Default: no
-LogTime yes
+LogTime <%= @config_options.delete('LogTime') || 'yes' %>
 
 # Also log clean files. Useful in debugging but drastically increases the
 # log size.
 # Default: no
 #LogClean yes
+<%= %Q(LogClean #{@config_options.delete('LogClean')}\n) if @config_options.key?('LogClean') -%>
 
 # Use system logger (can work together with LogFile).
 # Default: no
-LogSyslog yes
+LogSyslog <%= @config_options.delete('LogSyslog') || 'yes' %>
 
 # Specify the type of syslog messages - please refer to 'man syslog'
 # for facility names.
 # Default: LOG_LOCAL6
 #LogFacility LOG_MAIL
+<%= %Q(LogFacility #{@config_options.delete('LogFacility')}\n) if @config_options.key?('LogFacility') -%>
 
 # Enable verbose logging.
 # Default: no
 #LogVerbose yes
+<%= %Q(LogVerbose #{@config_options.delete('LogVerbose')}\n) if @config_options.key?('LogVerbose') -%>
 
 # Enable log rotation. Always enabled when LogFileMaxSize is enabled.
 # Default: no
 #LogRotate yes
+<%= %Q(LogRotate #{@config_options.delete('LogRotate')}\n) if @config_options.key?('LogRotate') -%>
 
 # Log additional information about the infected file, such as its
 # size and hash, together with the virus name.
 #ExtendedDetectionInfo yes
+<%= %Q(ExtendedDetectionInfo #{@config_options.delete('ExtendedDetectionInfo')}\n) if @config_options.key?('ExtendedDetectionInfo') -%>
 
 # This option allows you to save a process identifier of the listening
 # daemon (main thread).
 # Default: disabled
-PidFile /var/run/clamav/clamd.pid
+PidFile <%= @config_options.delete('PidFile') || '/var/run/clamav/clamd.pid' %>
 
 # Optional path to the global temporary directory.
 # Default: system specific (usually /tmp or /var/tmp).
-TemporaryDirectory /var/tmp
+TemporaryDirectory <%= @config_options.delete('TemporaryDirectory') || '/var/tmp' %>
 
 # Path to the database directory.
 # Default: hardcoded (depends on installation options)
-DatabaseDirectory /var/lib/clamav
+DatabaseDirectory <%= @config_options.delete('DatabaseDirectory') || '/var/lib/clamav' %>
 
 # Only load the official signatures published by the ClamAV project.
 # Default: no
 #OfficialDatabaseOnly no
+<%= %Q(OfficialDatabaseOnly #{@config_options.delete('OfficialDatabaseOnly')}\n) if @config_options.key?('OfficialDatabaseOnly') -%>
 
 # The daemon can work in local mode, network mode or both. 
 # Due to security reasons we recommend the local mode.
 
 # Path to a local socket file the daemon will listen on.
 # Default: disabled (must be specified by a user)
-LocalSocket /var/run/clamav/clamd.sock
+LocalSocket <%= @config_options.delete('LocalSocket') || '/var/run/clamav/clamd.sock' %>
 
 # Sets the group ownership on the unix socket.
 # Default: disabled (the primary group of the user running clamd)
 #LocalSocketGroup virusgroup
+<%= %Q(LocalSocketGroup #{@config_options.delete('LocalSocketGroup')}\n) if @config_options.key?('LocalSocketGroup') -%>
 
 # Sets the permissions on the unix socket to the specified mode.
 # Default: disabled (socket is world accessible)
 #LocalSocketMode 660
+<%= %Q(LocalSocketMode #{@config_options.delete('LocalSocketMode')}\n) if @config_options.key?('LocalSocketMode') -%>
 
 # Remove stale socket after unclean shutdown.
 # Default: yes
-FixStaleSocket yes
+FixStaleSocket <%= @config_options.delete('FixStaleSocket') || 'yes' %>
 
 # TCP port address.
 # Default: no
 #TCPSocket 3310
+<%= %Q(TCPSocket #{@config_options.delete('TCPSocket')}\n) if @config_options.key?('TCPSocket') -%>
 
 # TCP address.
 # By default we bind to INADDR_ANY, probably not wise.
@@ -110,11 +120,11 @@ FixStaleSocket yes
 # from the outside world. This option can be specified multiple
 # times if you want to listen on multiple IPs. IPv6 is now supported.
 # Default: no
-TCPAddr 127.0.0.1
+#TCPAddr 127.0.0.1
 
 # Maximum length the queue of pending connections may grow to.
 # Default: 200
-MaxConnectionQueueLength 30
+MaxConnectionQueueLength <%= @config_options.delete('MaxConnectionQueueLength') || '30' %>
 
 # Clamd uses FTP-like protocol to receive data from remote clients.
 # If you are using clamav-milter to balance load between remote clamd daemons
@@ -124,31 +134,36 @@ MaxConnectionQueueLength 30
 # The value should match your MTA's limit for a maximum attachment size.
 # Default: 25M
 #StreamMaxLength 10M
+<%= %Q(StreamMaxLength #{@config_options.delete('StreamMaxLength')}\n) if @config_options.key?('StreamMaxLength') -%>
 
 # Limit port range.
 # Default: 1024
 #StreamMinPort 30000
 # Default: 2048
 #StreamMaxPort 32000
+<%= %Q(StreamMinPort #{@config_options.delete('StreamMinPort')}\n) if @config_options.key?('StreamMinPort') -%>
+<%= %Q(StreamMaxPort #{@config_options.delete('StreamMaxPort')}\n) if @config_options.key?('StreamMaxPort') -%>
 
 # Maximum number of threads running at the same time.
 # Default: 10
-MaxThreads 50
+MaxThreads <%= @config_options.delete('MaxThreads') || '50' %>
 
 # Waiting for data from a client socket will timeout after this time (seconds).
 # Default: 120
-ReadTimeout 300
+ReadTimeout <%= @config_options.delete('ReadTimeout') || '300' %>
 
 # This option specifies the time (in seconds) after which clamd should
 # timeout if a client doesn't provide any initial command after connecting.
 # Default: 5
 #CommandReadTimeout 5
+<%= %Q(CommandReadTimeout #{@config_options.delete('CommandReadTimeout')}\n) if @config_options.key?('CommandReadTimeout') -%>
 
 # This option specifies how long to wait (in miliseconds) if the send buffer is full.
 # Keep this value low to prevent clamd hanging
 #
 # Default: 500
 #SendBufTimeout 200
+<%= %Q(SendBufTimeout #{@config_options.delete('SendBufTimeout')}\n) if @config_options.key?('SendBufTimeout') -%>
 
 # Maximum number of queued items (including those being processed by MaxThreads threads)
 # It is recommended to have this value at least twice MaxThreads if possible.
@@ -158,10 +173,12 @@ ReadTimeout 300
 #
 # Default: 100
 #MaxQueue 200
+<%= %Q(MaxQueue #{@config_options.delete('MaxQueue')}\n) if @config_options.key?('MaxQueue') -%>
 
 # Waiting for a new job will timeout after this time (seconds).
 # Default: 30
 #IdleTimeout 60
+<%= %Q(IdleTimeout #{@config_options.delete('IdleTimeout')}\n) if @config_options.key?('IdleTimeout') -%>
 
 # Don't scan files and directories matching regex
 # This directive can be used multiple times
@@ -172,59 +189,71 @@ ReadTimeout 300
 # Maximum depth directories are scanned at.
 # Default: 15
 #MaxDirectoryRecursion 20
+<%= %Q(MaxDirectoryRecursion #{@config_options.delete('MaxDirectoryRecursion')}\n) if @config_options.key?('MaxDirectoryRecursion') -%>
 
 # Follow directory symlinks.
 # Default: no
 #FollowDirectorySymlinks yes
+<%= %Q(FollowDirectorySymlinks #{@config_options.delete('FollowDirectorySymlinks')}\n) if @config_options.key?('FollowDirectorySymlinks') -%>
 
 # Follow regular file symlinks.
 # Default: no
 #FollowFileSymlinks yes
+<%= %Q(FollowFileSymlinks #{@config_options.delete('FollowFileSymlinks')}\n) if @config_options.key?('FollowFileSymlinks') -%>
 
 # Scan files and directories on other filesystems.
 # Default: yes
 #CrossFilesystems yes
+<%= %Q(CrossFilesystems #{@config_options.delete('CrossFilesystems')}\n) if @config_options.key?('CrossFilesystems') -%>
 
 # Perform a database check.
 # Default: 600 (10 min)
 #SelfCheck 600
+<%= %Q(SelfCheck #{@config_options.delete('SelfCheck')}\n) if @config_options.key?('SelfCheck') -%>
 
 # Execute a command when virus is found. In the command string %v will
 # be replaced with the virus name.
 # Default: no
 #VirusEvent /usr/local/bin/send_sms 123456789 "VIRUS ALERT: %v"
+<%= %Q(VirusEvent #{@config_options.delete('VirusEvent')}\n) if @config_options.key?('VirusEvent') -%>
 
 # Run as another user (clamd must be started by root for this option to work)
 # Default: don't drop privileges
-User clam
+User <%= @config_options.delete('User') || 'clam' %>
 
 # Initialize supplementary group access (clamd must be started by root).
 # Default: no
-AllowSupplementaryGroups yes
+AllowSupplementaryGroups <%= @config_options.delete('AllowSupplementaryGroups') || 'yes' %>
 
 # Stop daemon when libclamav reports out of memory condition.
 #ExitOnOOM yes
+<%= %Q(ExitOnOOM #{@config_options.delete('ExitOnOOM')}\n) if @config_options.key?('ExitOnOOM') -%>
 
 # Don't fork into background.
 # Default: no
 #Foreground yes
+<%= %Q(Foreground #{@config_options.delete('Foreground')}\n) if @config_options.key?('Foreground') -%>
 
 # Enable debug messages in libclamav.
 # Default: no
 #Debug yes
+<%= %Q(Debug #{@config_options.delete('Debug')}\n) if @config_options.key?('Debug') -%>
 
 # Do not remove temporary files (for debug purposes).
 # Default: no
 #LeaveTemporaryFiles yes
+<%= %Q(LeaveTemporaryFiles #{@config_options.delete('LeaveTemporaryFiles')}\n) if @config_options.key?('LeaveTemporaryFiles') -%>
 
 # Permit use of the ALLMATCHSCAN command. If set to no, clamd will reject
 # any ALLMATCHSCAN command as invalid.
 # Default: yes
 #AllowAllMatchScan no
+<%= %Q(AllowAllMatchScan #{@config_options.delete('AllowAllMatchScan')}\n) if @config_options.key?('AllowAllMatchScan') -%>
 
 # Detect Possibly Unwanted Applications.
 # Default: no
 #DetectPUA yes
+<%= %Q(DetectPUA #{@config_options.delete('DetectPUA')}\n) if @config_options.key?('DetectPUA') -%>
 
 # Exclude a specific PUA category. This directive can be used multiple times.
 # See https://github.com/vrtadmin/clamav-faq/blob/master/faq/faq-pua.md for 
@@ -245,11 +274,13 @@ AllowSupplementaryGroups yes
 # controls the algorithmic detection.
 # Default: yes
 #AlgorithmicDetection yes
+<%= %Q(AlgorithmicDetection #{@config_options.delete('AlgorithmicDetection')}\n) if @config_options.key?('AlgorithmicDetection') -%>
 
 # This option causes memory or nested map scans to dump the content to disk.
 # If you turn on this option, more data is written to disk and is available
 # when the LeaveTemporaryFiles option is enabled.
 #ForceToDisk yes
+<%= %Q(ForceToDisk #{@config_options.delete('ForceToDisk')}\n) if @config_options.key?('ForceToDisk') -%>
 
 # This option allows you to disable the caching feature of the engine. By
 # default, the engine will store an MD5 in a cache of any files that are
@@ -257,6 +288,7 @@ AllowSupplementaryGroups yes
 # have a negative performance impact on large scans.
 # Default: no
 #DisableCache yes
+<%= %Q(DisableCache #{@config_options.delete('DisableCache')}\n) if @config_options.key?('DisableCache') -%>
 
 ##
 ## Executable files
@@ -269,7 +301,7 @@ AllowSupplementaryGroups yes
 # and Petite. If you turn off this option, the original files will still be
 # scanned, but without additional processing.
 # Default: yes
-ScanPE yes
+ScanPE <%= @config_options.delete('ScanPE') || 'yes' %>
 
 # Certain PE files contain an authenticode signature. By default, we check
 # the signature chain in the PE file against a database of trusted and
@@ -280,18 +312,19 @@ ScanPE yes
 # The following setting completely turns off authenticode verification.
 # Default: no
 #DisableCertCheck yes
+<%= %Q(DisableCertCheck #{@config_options.delete('DisableCertCheck')}\n) if @config_options.key?('DisableCertCheck') -%>
 
 # Executable and Linking Format is a standard format for UN*X executables.
 # This option allows you to control the scanning of ELF files.
 # If you turn off this option, the original files will still be scanned, but
 # without additional processing.
 # Default: yes
-ScanELF yes
+ScanELF <%= @config_options.delete('ScanELF') || 'yes' %>
 
 # With this option clamav will try to detect broken executables (both PE and
 # ELF) and mark them as Broken.Executable.
 # Default: no
-DetectBrokenExecutables yes
+DetectBrokenExecutables <%= @config_options.delete('DetectBrokenExecutables') || 'yes' %>
 
 
 ##
@@ -303,24 +336,27 @@ DetectBrokenExecutables yes
 # If you turn off this option, the original files will still be scanned, but
 # without additional processing.
 # Default: yes
-ScanOLE2 yes
+ScanOLE2 <%= @config_options.delete('ScanOLE2') || 'yes' %>
 
 # With this option enabled OLE2 files with VBA macros, which were not
 # detected by signatures will be marked as "Heuristics.OLE2.ContainsMacros".
 # Default: no
 #OLE2BlockMacros no
+<%= %Q(OLE2BlockMacros #{@config_options.delete('OLE2BlockMacros')}\n) if @config_options.key?('OLE2BlockMacros') -%>
 
 # This option enables scanning within PDF files.
 # If you turn off this option, the original files will still be scanned, but
 # without decoding and additional processing.
 # Default: yes
 #ScanPDF yes
+<%= %Q(ScanPDF #{@config_options.delete('ScanPDF')}\n) if @config_options.key?('ScanPDF') -%>
 
 # This option enables scanning within SWF files.
 # If you turn off this option, the original files will still be scanned, but
 # without decoding and additional processing.
 # Default: yes
 #ScanSWF yes
+<%= %Q(ScanSWF #{@config_options.delete('ScanSWF')}\n) if @config_options.key?('ScanSWF') -%>
 
 
 ##
@@ -331,7 +367,7 @@ ScanOLE2 yes
 # If you turn off this option, the original files will still be scanned, but
 # without parsing individual messages/attachments.
 # Default: yes
-ScanMail yes
+ScanMail <%= @config_options.delete('ScanMail') || 'yes' %>
 
 # Scan RFC1341 messages split over many emails.
 # You will need to periodically clean up $TemporaryDirectory/clamav-partial directory.
@@ -339,31 +375,37 @@ ScanMail yes
 #	   Never use it on loaded servers.
 # Default: no
 #ScanPartialMessages yes
+<%= %Q(ScanPartialMessages #{@config_options.delete('ScanPartialMessages')}\n) if @config_options.key?('ScanPartialMessages') -%>
 
 # With this option enabled ClamAV will try to detect phishing attempts by using
 # signatures.
 # Default: yes
 #PhishingSignatures yes
+<%= %Q(PhishingSignatures #{@config_options.delete('PhishingSignatures')}\n) if @config_options.key?('PhishingSignatures') -%>
 
 # Scan URLs found in mails for phishing attempts using heuristics.
 # Default: yes
 #PhishingScanURLs yes
+<%= %Q(PhishingScanURLs #{@config_options.delete('PhishingScanURLs')}\n) if @config_options.key?('PhishingScanURLs') -%>
 
 # Always block SSL mismatches in URLs, even if the URL isn't in the database.
 # This can lead to false positives.
 #
 # Default: no
 #PhishingAlwaysBlockSSLMismatch no
+<%= %Q(PhishingAlwaysBlockSSLMismatch #{@config_options.delete('PhishingAlwaysBlockSSLMismatch')}\n) if @config_options.key?('PhishingAlwaysBlockSSLMismatch') -%>
 
 # Always block cloaked URLs, even if URL isn't in database.
 # This can lead to false positives.
 #
 # Default: no
 #PhishingAlwaysBlockCloak no
+<%= %Q(PhishingAlwaysBlockCloak #{@config_options.delete('PhishingAlwaysBlockCloak')}\n) if @config_options.key?('PhishingAlwaysBlockCloak') -%>
 
 # Detect partition intersections in raw disk images using heuristics.
 # Default: no
 #PartitionIntersection no
+<%= %Q(PartitionIntersection #{@config_options.delete('PartitionIntersection')}\n) if @config_options.key?('PartitionIntersection') -%>
 
 # Allow heuristic match to take precedence.
 # When enabled, if a heuristic scan (such as phishingScan) detects
@@ -380,6 +422,7 @@ ScanMail yes
 #
 # Default: no
 #HeuristicScanPrecedence yes
+<%= %Q(HeuristicScanPrecedence #{@config_options.delete('HeuristicScanPrecedence')}\n) if @config_options.key?('HeuristicScanPrecedence') -%>
 
 
 ##
@@ -389,26 +432,31 @@ ScanMail yes
 # Enable the DLP module
 # Default: No
 #StructuredDataDetection yes
+<%= %Q(StructuredDataDetection #{@config_options.delete('StructuredDataDetection')}\n) if @config_options.key?('StructuredDataDetection') -%>
 
 # This option sets the lowest number of Credit Card numbers found in a file
 # to generate a detect.
 # Default: 3
 #StructuredMinCreditCardCount 5
+<%= %Q(StructuredMinCreditCardCount #{@config_options.delete('StructuredMinCreditCardCount')}\n) if @config_options.key?('StructuredMinCreditCardCount') -%>
 
 # This option sets the lowest number of Social Security Numbers found
 # in a file to generate a detect.
 # Default: 3
 #StructuredMinSSNCount 5
+<%= %Q(StructuredMinSSNCount #{@config_options.delete('StructuredMinSSNCount')}\n) if @config_options.key?('StructuredMinSSNCount') -%>
 
 # With this option enabled the DLP module will search for valid
 # SSNs formatted as xxx-yy-zzzz
 # Default: yes
 #StructuredSSNFormatNormal yes
+<%= %Q(StructuredSSNFormatNormal #{@config_options.delete('StructuredSSNFormatNormal')}\n) if @config_options.key?('StructuredSSNFormatNormal') -%>
 
 # With this option enabled the DLP module will search for valid
 # SSNs formatted as xxxyyzzzz
 # Default: no
 #StructuredSSNFormatStripped yes
+<%= %Q(StructuredSSNFormatStripped #{@config_options.delete('StructuredSSNFormatStripped')}\n) if @config_options.key?('StructuredSSNFormatStripped') -%>
 
 
 ##
@@ -420,6 +468,7 @@ ScanMail yes
 # If you turn off this option, the original files will still be scanned, but
 # without additional processing.
 #ScanHTML yes
+<%= %Q(ScanHTML #{@config_options.delete('ScanHTML')}\n) if @config_options.key?('ScanHTML') -%>
 
 
 ##
@@ -430,11 +479,11 @@ ScanMail yes
 # If you turn off this option, the original files will still be scanned, but
 # without unpacking and additional processing.
 # Default: yes
-ScanArchive yes
+ScanArchive <%= @config_options.delete('ScanArchive') || 'yes' %>
 
 # Mark encrypted archives as viruses (Encrypted.Zip, Encrypted.RAR).
 # Default: no
-ArchiveBlockEncrypted no
+ArchiveBlockEncrypted <%= @config_options.delete('ArchiveBlockEncrypted') || 'no' %>
 
 
 ##
@@ -452,6 +501,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 100M
 #MaxScanSize 150M
+<%= %Q(MaxScanSize #{@config_options.delete('MaxScanSize')}\n) if @config_options.key?('MaxScanSize') -%>
 
 # Files larger than this limit won't be scanned. Affects the input file itself
 # as well as files contained inside it (when the input file is an archive, a
@@ -461,6 +511,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 25M
 #MaxFileSize 30M
+<%= %Q(MaxFileSize #{@config_options.delete('MaxFileSize')}\n) if @config_options.key?('MaxFileSize') -%>
 
 # Nested archives are scanned recursively, e.g. if a Zip archive contains a RAR
 # file, all files within it will also be scanned. This options specifies how
@@ -468,6 +519,7 @@ ArchiveBlockEncrypted no
 # Note: setting this limit too high may result in severe damage to the system.
 # Default: 16
 #MaxRecursion 10
+<%= %Q(MaxRecursion #{@config_options.delete('MaxRecursion')}\n) if @config_options.key?('MaxRecursion') -%>
 
 # Number of files to be scanned within an archive, a document, or any other
 # container file.
@@ -476,6 +528,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 10000
 #MaxFiles 15000
+<%= %Q(MaxFiles #{@config_options.delete('MaxFiles')}\n) if @config_options.key?('MaxFiles') -%>
 
 # Maximum size of a file to check for embedded PE. Files larger than this value
 # will skip the additional analysis step.
@@ -483,6 +536,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 10M
 #MaxEmbeddedPE 10M
+<%= %Q(MaxEmbeddedPE #{@config_options.delete('MaxEmbeddedPE')}\n) if @config_options.key?('MaxEmbeddedPE') -%>
 
 # Maximum size of a HTML file to normalize. HTML files larger than this value
 # will not be normalized or scanned.
@@ -490,6 +544,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 10M
 #MaxHTMLNormalize 10M
+<%= %Q(MaxHTMLNormalize #{@config_options.delete('MaxHTMLNormalize')}\n) if @config_options.key?('MaxHTMLNormalize') -%>
 
 # Maximum size of a normalized HTML file to scan. HTML files larger than this
 # value after normalization will not be scanned.
@@ -497,6 +552,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 2M
 #MaxHTMLNoTags 2M
+<%= %Q(MaxHTMLNoTags #{@config_options.delete('MaxHTMLNoTags')}\n) if @config_options.key?('MaxHTMLNoTags') -%>
 
 # Maximum size of a script file to normalize. Script content larger than this
 # value will not be normalized or scanned.
@@ -504,6 +560,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 5M
 #MaxScriptNormalize 5M
+<%= %Q(MaxScriptNormalize #{@config_options.delete('MaxScriptNormalize')}\n) if @config_options.key?('MaxScriptNormalize') -%>
 
 # Maximum size of a ZIP file to reanalyze type recognition. ZIP files larger
 # than this value will skip the step to potentially reanalyze as PE.
@@ -511,6 +568,7 @@ ArchiveBlockEncrypted no
 # to the system.
 # Default: 1M
 #MaxZipTypeRcg 1M
+<%= %Q(MaxZipTypeRcg #{@config_options.delete('MaxZipTypeRcg')}\n) if @config_options.key?('MaxZipTypeRcg') -%>
 
 # This option sets the maximum number of partitions of a raw disk image to be scanned.
 # Raw disk images with more partitions than this value will have up to the value number
@@ -518,6 +576,7 @@ ArchiveBlockEncrypted no
 # Note: setting this limit too high may result in severe damage or impact performance.
 # Default: 50
 #MaxPartitions 128
+<%= %Q(MaxPartitions #{@config_options.delete('MaxPartitions')}\n) if @config_options.key?('MaxPartitions') -%>
 
 # This option sets the maximum number of icons within a PE to be scanned.
 # PE files with more icons than this value will have up to the value number icons scanned.
@@ -525,6 +584,7 @@ ArchiveBlockEncrypted no
 # WARNING: setting this limit too high may result in severe damage or impact performance.
 # Default: 100
 #MaxIconsPE 200
+<%= %Q(MaxIconsPE #{@config_options.delete('MaxIconsPE')}\n) if @config_options.key?('MaxIconsPE') -%>
 
 ##
 ## On-access Scan Settings
@@ -534,11 +594,13 @@ ArchiveBlockEncrypted no
 # Clamuko/Dazuko support has been deprecated.
 # Default: no
 #ScanOnAccess yes
+<%= %Q(ScanOnAccess #{@config_options.delete('ScanOnAccess')}\n) if @config_options.key?('ScanOnAccess') -%>
 
 # Don't scan files larger than OnAccessMaxFileSize
 # Value of 0 disables the limit.
 # Default: 5M
 #OnAccessMaxFileSize 10M
+<%= %Q(OnAccessMaxFileSize #{@config_options.delete('OnAccessMaxFileSize')}\n) if @config_options.key?('OnAccessMaxFileSize') -%>
 
 # Set the include paths (all files inside them will be scanned). You can have
 # multiple OnAccessIncludePath directives but each directory must be added
@@ -567,6 +629,7 @@ ArchiveBlockEncrypted no
 # It is highly recommended you keep this option on, otherwise you'll miss detections for many new viruses.
 # Default: yes
 #Bytecode yes
+<%= %Q(Bytecode #{@config_options.delete('Bytecode')}\n) if @config_options.key?('Bytecode') -%>
 
 # Set bytecode security level.
 # Possible values:
@@ -581,11 +644,13 @@ ArchiveBlockEncrypted no
 #
 # Default: TrustSigned
 #BytecodeSecurity TrustSigned
+<%= %Q(BytecodeSecurity #{@config_options.delete('BytecodeSecurity')}\n) if @config_options.key?('BytecodeSecurity') -%>
 
 # Set bytecode timeout in miliseconds.
 # 
 # Default: 5000
 # BytecodeTimeout 1000
+<%= %Q(BytecodeTimeout #{@config_options.delete('BytecodeTimeout')}\n) if @config_options.key?('BytecodeTimeout') -%>
 
 ##
 ## Statistics gathering and submitting
@@ -594,15 +659,25 @@ ArchiveBlockEncrypted no
 # Enable statistical reporting.
 # Default: no
 #StatsEnabled yes
+<%= %Q(StatsEnabled #{@config_options.delete('StatsEnabled')}\n) if @config_options.key?('StatsEnabled') -%>
 
 # Disable submission of individual PE sections for files flagged as malware.
 # Default: no
 #StatsPEDisabled yes
+<%= %Q(StatsPEDisabled #{@config_options.delete('StatsPEDisabled')}\n) if @config_options.key?('StatsPEDisabled') -%>
 
 # HostID in the form of an UUID to use when submitting statistical information.
 # Default: auto
 #StatsHostID auto
+<%= %Q(StatsHostID #{@config_options.delete('StatsHostID')}\n) if @config_options.key?('StatsHostID') -%>
 
 # Time in seconds to wait for the stats server to come back with a response
 # Default: 10
 #StatsTimeout 10
+<%= %Q(StatsTimeout #{@config_options.delete('StatsTimeout')}\n) if @config_options.key?('StatsTimeout') -%>
+
+<% @config_options.each do |k,v| -%>
+<% Array(v).each do |av| -%>
+<%= %Q(#{k} #{av}) %>
+<% end -%>
+<% end -%>

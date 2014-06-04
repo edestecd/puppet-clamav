@@ -14,11 +14,11 @@
 # Path to the database directory.
 # WARNING: It must match clamd.conf's directive!
 # Default: hardcoded (depends on installation options)
-DatabaseDirectory /var/lib/clamav
+DatabaseDirectory <%= @config_options.delete('DatabaseDirectory') || '/var/lib/clamav' %>
 
 # Path to the log file (make sure it has proper permissions)
 # Default: disabled
-UpdateLogFile /var/log/clamav/freshclam.log
+UpdateLogFile <%= @config_options.delete('UpdateLogFile') || '/var/log/clamav/freshclam.log' %>
 
 # Maximum size of the log file.
 # Value of 0 disables the limit.
@@ -28,40 +28,47 @@ UpdateLogFile /var/log/clamav/freshclam.log
 # log rotation (the LogRotate option) will always be enabled.
 # Default: 1M
 #LogFileMaxSize 2M
+<%= %Q(LogFileMaxSize #{@config_options.delete('LogFileMaxSize')}\n) if @config_options.key?('LogFileMaxSize') -%>
 
 # Log time with each message.
 # Default: no
 #LogTime yes
+<%= %Q(LogTime #{@config_options.delete('LogTime')}\n) if @config_options.key?('LogTime') -%>
 
 # Enable verbose logging.
 # Default: no
 #LogVerbose yes
+<%= %Q(LogVerbose #{@config_options.delete('LogVerbose')}\n) if @config_options.key?('LogVerbose') -%>
 
 # Use system logger (can work together with UpdateLogFile).
 # Default: no
-LogSyslog yes
+LogSyslog <%= @config_options.delete('LogSyslog') || 'yes' %>
 
 # Specify the type of syslog messages - please refer to 'man syslog'
 # for facility names.
 # Default: LOG_LOCAL6
 #LogFacility LOG_MAIL
+<%= %Q(LogFacility #{@config_options.delete('LogFacility')}\n) if @config_options.key?('LogFacility') -%>
 
 # Enable log rotation. Always enabled when LogFileMaxSize is enabled.
 # Default: no
 #LogRotate yes
+<%= %Q(LogRotate #{@config_options.delete('LogRotate')}\n) if @config_options.key?('LogRotate') -%>
 
 # This option allows you to save the process identifier of the daemon
 # Default: disabled
 #PidFile /var/run/freshclam.pid
+<%= %Q(PidFile #{@config_options.delete('PidFile')}\n) if @config_options.key?('PidFile') -%>
 
 # By default when started freshclam drops privileges and switches to the
 # "clamav" user. This directive allows you to change the database owner.
 # Default: clamav (may depend on installation options)
-DatabaseOwner clam
+DatabaseOwner <%= @config_options.delete('DatabaseOwner') || 'clam' %>
 
 # Initialize supplementary group access (freshclam must be started by root).
 # Default: no
 #AllowSupplementaryGroups yes
+<%= %Q(AllowSupplementaryGroups #{@config_options.delete('AllowSupplementaryGroups')}\n) if @config_options.key?('AllowSupplementaryGroups') -%>
 
 # Use DNS to verify virus database version. Freshclam uses DNS TXT records
 # to verify database and software versions. With this directive you can change
@@ -70,6 +77,7 @@ DatabaseOwner clam
 # own database verification domain.
 # Default: current.cvd.clamav.net
 #DNSDatabaseInfo current.cvd.clamav.net
+<%= %Q(DNSDatabaseInfo #{@config_options.delete('DNSDatabaseInfo')}\n) if @config_options.key?('DNSDatabaseInfo') -%>
 
 # Uncomment the following line and replace XY with your country
 # code. See http://www.iana.org/cctld/cctld-whois.htm for the full list.
@@ -80,23 +88,27 @@ DatabaseOwner clam
 # reliable mirrors. It's used as a fall back in case db.XY.clamav.net is 
 # not working. DO NOT TOUCH the following line unless you know what you
 # are doing.
-DatabaseMirror db.us.clamav.net
-DatabaseMirror db.local.clamav.net
+<% Array(@config_options.delete('DatabaseMirror') || ['db.us.clamav.net', 'db.local.clamav.net']).each do |av| -%>
+<%= %Q(DatabaseMirror #{av}) %>
+<% end -%>
 
 # How many attempts to make before giving up.
 # Default: 3 (per mirror)
 #MaxAttempts 5
+<%= %Q(MaxAttempts #{@config_options.delete('MaxAttempts')}\n) if @config_options.key?('MaxAttempts') -%>
 
 # With this option you can control scripted updates. It's highly recommended
 # to keep it enabled.
 # Default: yes
 #ScriptedUpdates yes
+<%= %Q(ScriptedUpdates #{@config_options.delete('ScriptedUpdates')}\n) if @config_options.key?('ScriptedUpdates') -%>
 
 # By default freshclam will keep the local databases (.cld) uncompressed to
 # make their handling faster. With this option you can enable the compression;
 # the change will take effect with the next database update.
 # Default: no
 #CompressLocalDatabase no
+<%= %Q(CompressLocalDatabase #{@config_options.delete('CompressLocalDatabase')}\n) if @config_options.key?('CompressLocalDatabase') -%>
 
 # With this option you can provide custom sources (http:// or file://) for
 # database files. This option can be used multiple times.
@@ -120,6 +132,7 @@ DatabaseMirror db.local.clamav.net
 # Number of database checks per day.
 # Default: 12 (every two hours)
 #Checks 24
+<%= %Q(Checks #{@config_options.delete('Checks')}\n) if @config_options.key?('Checks') -%>
 
 # Proxy settings
 # Default: disabled
@@ -127,56 +140,71 @@ DatabaseMirror db.local.clamav.net
 #HTTPProxyPort 1234
 #HTTPProxyUsername myusername
 #HTTPProxyPassword mypass
+<%= %Q(HTTPProxyServer #{@config_options.delete('HTTPProxyServer')}\n) if @config_options.key?('HTTPProxyServer') -%>
+<%= %Q(HTTPProxyPort #{@config_options.delete('HTTPProxyPort')}\n) if @config_options.key?('HTTPProxyPort') -%>
+<%= %Q(HTTPProxyUsername #{@config_options.delete('HTTPProxyUsername')}\n) if @config_options.key?('HTTPProxyUsername') -%>
+<%= %Q(HTTPProxyPassword #{@config_options.delete('HTTPProxyPassword')}\n) if @config_options.key?('HTTPProxyPassword') -%>
 
 # If your servers are behind a firewall/proxy which applies User-Agent
 # filtering you can use this option to force the use of a different
 # User-Agent header.
 # Default: clamav/version_number
 #HTTPUserAgent SomeUserAgentIdString
+<%= %Q(HTTPUserAgent #{@config_options.delete('HTTPUserAgent')}\n) if @config_options.key?('HTTPUserAgent') -%>
 
 # Use aaa.bbb.ccc.ddd as client address for downloading databases. Useful for
 # multi-homed systems.
 # Default: Use OS'es default outgoing IP address.
 #LocalIPAddress aaa.bbb.ccc.ddd
+<%= %Q(LocalIPAddress #{@config_options.delete('LocalIPAddress')}\n) if @config_options.key?('LocalIPAddress') -%>
 
 # Send the RELOAD command to clamd.
 # Default: no
 #NotifyClamd /path/to/clamd.conf
+<%= %Q(NotifyClamd #{@config_options.delete('NotifyClamd')}\n) if @config_options.key?('NotifyClamd') -%>
 
 # Run command after successful database update.
 # Default: disabled
 #OnUpdateExecute command
+<%= %Q(OnUpdateExecute #{@config_options.delete('OnUpdateExecute')}\n) if @config_options.key?('OnUpdateExecute') -%>
 
 # Run command when database update process fails.
 # Default: disabled
 #OnErrorExecute command
+<%= %Q(OnErrorExecute #{@config_options.delete('OnErrorExecute')}\n) if @config_options.key?('OnErrorExecute') -%>
 
 # Run command when freshclam reports outdated version.
 # In the command string %v will be replaced by the new version number.
 # Default: disabled
 #OnOutdatedExecute command
+<%= %Q(OnOutdatedExecute #{@config_options.delete('OnOutdatedExecute')}\n) if @config_options.key?('OnOutdatedExecute') -%>
 
 # Don't fork into background.
 # Default: no
 #Foreground yes
+<%= %Q(Foreground #{@config_options.delete('Foreground')}\n) if @config_options.key?('Foreground') -%>
 
 # Enable debug messages in libclamav.
 # Default: no
 #Debug yes
+<%= %Q(Debug #{@config_options.delete('Debug')}\n) if @config_options.key?('Debug') -%>
 
 # Timeout in seconds when connecting to database server.
 # Default: 30
 #ConnectTimeout 60
+<%= %Q(ConnectTimeout #{@config_options.delete('ConnectTimeout')}\n) if @config_options.key?('ConnectTimeout') -%>
 
 # Timeout in seconds when reading from database server.
 # Default: 30
 #ReceiveTimeout 60
+<%= %Q(ReceiveTimeout #{@config_options.delete('ReceiveTimeout')}\n) if @config_options.key?('ReceiveTimeout') -%>
 
 # With this option enabled, freshclam will attempt to load new
 # databases into memory to make sure they are properly handled
 # by libclamav before replacing the old ones.
 # Default: yes
 #TestDatabases yes
+<%= %Q(TestDatabases #{@config_options.delete('TestDatabases')}\n) if @config_options.key?('TestDatabases') -%>
 
 # When enabled freshclam will submit statistics to the ClamAV Project about
 # the latest virus detections in your environment. The ClamAV maintainers
@@ -185,6 +213,7 @@ DatabaseMirror db.local.clamav.net
 # Freshclam will connect to clamd in order to get recent statistics.
 # Default: no
 #SubmitDetectionStats /path/to/clamd.conf
+<%= %Q(SubmitDetectionStats #{@config_options.delete('SubmitDetectionStats')}\n) if @config_options.key?('SubmitDetectionStats') -%>
 
 # Country of origin of malware/detection statistics (for statistical
 # purposes only). The statistics collector at ClamAV.net will look up
@@ -195,6 +224,7 @@ DatabaseMirror db.local.clamav.net
 # of the country of origin.
 # Default: disabled
 #DetectionStatsCountry country-code
+<%= %Q(DetectionStatsCountry #{@config_options.delete('DetectionStatsCountry')}\n) if @config_options.key?('DetectionStatsCountry') -%>
 
 # This option enables support for our "Personal Statistics" service. 
 # When this option is enabled, the information on malware detected by
@@ -210,6 +240,7 @@ DatabaseMirror db.local.clamav.net
 # This feature requires SubmitDetectionStats to be enabled.
 # Default: disabled
 #DetectionStatsHostID unique-id
+<%= %Q(DetectionStatsHostID #{@config_options.delete('DetectionStatsHostID')}\n) if @config_options.key?('DetectionStatsHostID') -%>
 
 # This option enables support for Google Safe Browsing. When activated for
 # the first time, freshclam will download a new database file (safebrowsing.cvd)
@@ -224,11 +255,13 @@ DatabaseMirror db.local.clamav.net
 # and http://safebrowsing.clamav.net for more information.
 # Default: disabled
 #SafeBrowsing yes
+<%= %Q(SafeBrowsing #{@config_options.delete('SafeBrowsing')}\n) if @config_options.key?('SafeBrowsing') -%>
 
 # This option enables downloading of bytecode.cvd, which includes additional
 # detection mechanisms and improvements to the ClamAV engine.
 # Default: enabled
 #Bytecode yes
+<%= %Q(Bytecode #{@config_options.delete('Bytecode')}\n) if @config_options.key?('Bytecode') -%>
 
 # Download an additional 3rd party signature database distributed through
 # the ClamAV mirrors. Here you can find a list of available databases:
@@ -236,3 +269,9 @@ DatabaseMirror db.local.clamav.net
 # This option can be used multiple times.
 #ExtraDatabase dbname1
 #ExtraDatabase dbname2
+
+<% @config_options.each do |k,v| -%>
+<% Array(v).each do |av| -%>
+<%= %Q(#{k} #{av}) %>
+<% end -%>
+<% end -%>

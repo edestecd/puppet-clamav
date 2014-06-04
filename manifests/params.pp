@@ -31,7 +31,6 @@ class clamav::params {
     $clamd_service     = 'clamd'
     $clamd_options     = {}
     $clamd_default_options = {
-      LogFile => '/var/log/clamav/clamd.log',
     }
 
     #### freshclam vars ####

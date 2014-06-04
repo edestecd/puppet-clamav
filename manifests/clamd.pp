@@ -28,7 +28,7 @@ class clamav::clamd (
     mode    => 0644,
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamd.conf.erb"),
+    content => template("${module_name}/clamd.conf.${::osfamily}.erb"),
   }
 
   service { 'clamd':
