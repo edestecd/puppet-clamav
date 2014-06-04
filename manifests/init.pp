@@ -23,10 +23,12 @@ class clamav (
   $clamd_package     = $clamav::params::clamd_package,
   $clamd_config      = $clamav::params::clamd_config,
   $clamd_service     = $clamav::params::clamd_service,
+  $clamd_options     = $clamav::params::clamd_options,
 
   $freshclam_package = $clamav::params::freshclam_package,
   $freshclam_config  = $clamav::params::freshclam_config,
   $freshclam_service = $clamav::params::freshclam_service,
+  $freshclam_options = $clamav::params::freshclam_options,
 ) inherits clamav::params {
 
   validate_bool($manage_user)
@@ -61,6 +63,7 @@ class clamav (
       clamd_package => $clamd_package,
       clamd_config  => $clamd_config,
       clamd_service => $clamd_service,
+      clamd_options => $clamd_options,
       require       => Package['clamav'],
       before        => Anchor['clamav::end'],
     }
@@ -71,6 +74,7 @@ class clamav (
       freshclam_package => $freshclam_package,
       freshclam_config  => $freshclam_config,
       freshclam_service => $freshclam_service,
+      freshclam_options => $freshclam_options,
       require           => Package['clamav'],
       before            => Anchor['clamav::end'],
     }

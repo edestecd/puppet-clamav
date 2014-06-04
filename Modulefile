@@ -1,5 +1,5 @@
 name    'edestecd-clamav'
-version '0.0.3'
+version '0.0.4'
 source 'https://github.com/edestecd/puppet-clamav.git'
 author 'Chris Edester'
 license 'GPLv3+'
