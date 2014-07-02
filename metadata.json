@@ -1,0 +1,57 @@
+{
+  "name": "edestecd-clamav",
+  "version": "0.1.0",
+  "author": "Chris Edester",
+  "summary": "Puppet Module for managing ClamAV",
+  "license": "GPLv3+",
+  "source": "https://github.com/edestecd/puppet-clamav.git",
+  "project_page": "https://github.com/edestecd/puppet-clamav",
+  "issues_url": "https://github.com/edestecd/puppet-clamav/issues",
+  "description": "Puppet Module to install/configure clamd and freshclam on Debian and RedHat",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.1.0"},
+    {"name":"stahnma/epel","version_requirement":">= 0.0.6"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.2.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.2.x"
+    }
+  ]
+}
