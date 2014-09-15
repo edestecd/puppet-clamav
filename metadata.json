@@ -1,6 +1,6 @@
 {
   "name": "edestecd-clamav",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Chris Edester",
   "summary": "Puppet Module for managing ClamAV",
   "license": "GPLv3+",

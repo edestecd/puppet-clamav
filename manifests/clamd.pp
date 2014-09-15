@@ -25,7 +25,7 @@ class clamav::clamd (
   file { 'clamd.conf':
     path    => $clamd_config,
     ensure  => file,
-    mode    => 0644,
+    mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template("${module_name}/clamd.conf.${::osfamily}.erb"),

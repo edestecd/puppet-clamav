@@ -27,7 +27,7 @@ class clamav::freshclam (
   file { 'freshclam.conf':
     path    => $freshclam_config,
     ensure  => file,
-    mode    => 0644,
+    mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template("${module_name}/freshclam.conf.${::osfamily}.erb"),
