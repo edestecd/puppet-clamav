@@ -12,7 +12,7 @@ class clamav::params {
   $manage_freshclam = false
 
 
-  if ($::osfamily == 'RedHat') and ($::operatingsystemrelease >= 6.0) {
+  if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
     $clamav_package    = 'clamav'
 
@@ -38,7 +38,7 @@ class clamav::params {
     $freshclam_options = {}
     $freshclam_default_options = {
     }
-  } elsif ($::osfamily == 'Debian') and ($::operatingsystemrelease >= 12.0) {
+  } elsif ($::osfamily == 'Debian') and (versioncmp($::operatingsystemrelease, '12.0') >= 0) {
     #### init vars ####
     $clamav_package    = 'clamav'
 
@@ -56,6 +56,8 @@ class clamav::params {
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
+    # These are actual config file strings
+    # lint:ignore:quoted_booleans
     $clamd_default_options = {
       'User'                           => 'clamav',
       'AllowSupplementaryGroups'       => 'true',
@@ -121,12 +123,15 @@ class clamav::params {
       'OfficialDatabaseOnly'           => 'false',
       'CrossFilesystems'               => 'true',
     }
+    # lint:endignore
 
     #### freshclam vars ####
     $freshclam_package = 'clamav-freshclam'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
     $freshclam_options = {}
+    # These are actual config file strings
+    # lint:ignore:quoted_booleans
     $freshclam_default_options = {
       'DatabaseOwner'            => 'clamav',
       'UpdateLogFile'            => '/var/log/clamav/freshclam.log',
@@ -153,6 +158,7 @@ class clamav::params {
       'Checks'                   => '24',
       'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
     }
+    # lint:endignore
   } else {
     fail("The ${module_name} module is not supported on a ${::osfamily} based system with version ${::operatingsystemrelease}.")
   }

@@ -53,8 +53,8 @@ class clamav (
   }
 
   package { 'clamav':
-    name    => $clamav_package,
     ensure  => installed,
+    name    => $clamav_package,
     require => Anchor['clamav::begin'],
   }
 

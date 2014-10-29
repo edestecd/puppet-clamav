@@ -18,15 +18,15 @@ class clamav::freshclam (
   # NOTE: In Debian this is a dependency of the base clamav_package
   if $freshclam_package {
     package { 'freshclam':
-      name   => $freshclam_package,
       ensure => installed,
+      name   => $freshclam_package,
       before => File['freshclam.conf'],
     }
   }
 
   file { 'freshclam.conf':
-    path    => $freshclam_config,
     ensure  => file,
+    path    => $freshclam_config,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
@@ -36,8 +36,8 @@ class clamav::freshclam (
   # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service
   if $freshclam_service {
     service { 'freshclam':
-      name       => $freshclam_service,
       ensure     => running,
+      name       => $freshclam_service,
       enable     => true,
       hasrestart => true,
       hasstatus  => true,

@@ -17,14 +17,14 @@ class clamav::clamd (
   $config_options = merge($clamav::params::clamd_default_options, $clamd_options)
 
   package { 'clamd':
-    name   => $clamd_package,
     ensure => installed,
+    name   => $clamd_package,
     before => File['clamd.conf'],
   }
 
   file { 'clamd.conf':
-    path    => $clamd_config,
     ensure  => file,
+    path    => $clamd_config,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
@@ -32,8 +32,8 @@ class clamav::clamd (
   }
 
   service { 'clamd':
-    name       => $clamd_service,
     ensure     => running,
+    name       => $clamd_service,
     enable     => true,
     hasrestart => true,
     hasstatus  => true,

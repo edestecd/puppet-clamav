@@ -18,8 +18,8 @@ class clamav::user (
 
   if $group {
     group { 'clamav':
-      name   => $group,
       ensure => present,
+      name   => $group,
       gid    => $gid,
       system => true,
     }
@@ -27,8 +27,8 @@ class clamav::user (
 
   if $user {
     user { 'clamav':
-      name    => $user,
       ensure  => present,
+      name    => $user,
       comment => $comment,
       uid     => $uid,
       gid     => $gid,
