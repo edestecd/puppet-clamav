@@ -8,6 +8,7 @@
 
 class clamav (
   $manage_user       = $clamav::params::manage_user,
+  $manage_repo       = $clamav::params::manage_repo,
   $manage_clamd      = $clamav::params::manage_clamd,
   $manage_freshclam  = $clamav::params::manage_freshclam,
   $clamav_package    = $clamav::params::clamav_package,
@@ -32,11 +33,12 @@ class clamav (
 ) inherits clamav::params {
 
   validate_bool($manage_user)
+  validate_bool($manage_repo)
   validate_bool($manage_clamd)
   validate_bool($manage_freshclam)
   validate_string($clamav_package)
 
-  if ($::osfamily == 'RedHat') { require epel }
+  if $manage_repo { require epel }
 
   if $manage_user {
     class { 'clamav::user':

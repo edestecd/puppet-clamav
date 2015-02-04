@@ -14,6 +14,7 @@ class clamav::params {
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
+    $manage_repo       = true
     $clamav_package    = 'clamav'
 
     #### user vars ####
@@ -40,6 +41,7 @@ class clamav::params {
     }
   } elsif ($::osfamily == 'Debian') and (versioncmp($::operatingsystemrelease, '12.0') >= 0) {
     #### init vars ####
+    $manage_repo       = false
     $clamav_package    = 'clamav'
 
     #### user vars ####
