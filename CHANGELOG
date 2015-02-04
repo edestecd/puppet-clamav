@@ -1,3 +1,6 @@
+2015-02-04 (0.2.0)  Chris Edester
+        * try to fix lint errors
+
 2015-02-04 (0.1.4)  Chris Edester
         * fixes #2 Use Debian versioning on operatingsystem Debian
 
