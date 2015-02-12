@@ -25,6 +25,7 @@ class clamav::params {
     $home              = '/var/lib/clamav'
     $shell             = '/sbin/nologin'
     $group             = 'clam'
+    $groups            = undef
 
     #### clamd vars ####
     $clamd_package     = 'clamd'
