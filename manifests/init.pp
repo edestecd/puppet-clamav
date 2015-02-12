@@ -50,6 +50,7 @@ class clamav (
       home    => $home,
       shell   => $shell,
       group   => $group,
+      groups  => $groups,
       before  => Package['clamav'],
       require => Anchor['clamav::begin'],
     }
