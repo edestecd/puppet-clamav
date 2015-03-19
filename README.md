@@ -2,6 +2,7 @@ clamav
 =============
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav)
+[![Issue stats](http://issuestats.com/github/edestecd/puppet-clamav/badge/pr?style=flat)](http://issuestats.com/github/edestecd/puppet-clamav)
 
 ####Table of Contents
 
@@ -142,5 +143,5 @@ Pull Requests welcome
 
 ##Contributors
 
-Chris Edester (edestecd)
+Chris Edester (edestecd)  
 Patrick Schönfeld (aptituz)
