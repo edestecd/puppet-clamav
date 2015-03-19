@@ -56,6 +56,7 @@ class clamav::params {
     $home              = '/var/lib/clamav'
     $shell             = '/bin/false'
     $group             = 'clamav'
+    $groups            = undef
 
     #### clamd vars ####
     $clamd_package     = 'clamav-daemon'

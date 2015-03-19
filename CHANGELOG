@@ -1,3 +1,6 @@
+2015-03-19 (0.2.3)  Patrick Schönfeld
+        * Allow specification of groups for clamav user
+
 2015-03-19 (0.2.2)  Chris Edester
         * fix lint errors and add rubocop
 
