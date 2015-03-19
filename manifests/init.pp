@@ -20,6 +20,7 @@ class clamav (
   $home              = $clamav::params::home,
   $shell             = $clamav::params::shell,
   $group             = $clamav::params::group,
+  $groups            = $clamav::params::groups,
 
   $clamd_package     = $clamav::params::clamd_package,
   $clamd_config      = $clamav::params::clamd_config,
@@ -49,6 +50,7 @@ class clamav (
       home    => $home,
       shell   => $shell,
       group   => $group,
+      groups  => $groups,
       before  => Package['clamav'],
       require => Anchor['clamav::begin'],
     }

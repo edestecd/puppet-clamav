@@ -10,11 +10,13 @@ class clamav::user (
   $home    = $clamav::params::home,
   $shell   = $clamav::params::shell,
   $group   = $clamav::params::group,
+  $groups  = $clamav::params::groups,
 ) inherits clamav::params {
 
   validate_string($comment)
   validate_absolute_path($home)
   validate_absolute_path($shell)
+  validate_array($groups)
 
   if $group {
     group { 'clamav':
@@ -32,6 +34,7 @@ class clamav::user (
       comment => $comment,
       uid     => $uid,
       gid     => $gid,
+      groups  => $groups,
       home    => $home,
       shell   => $shell,
       system  => true,
