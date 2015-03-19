@@ -95,6 +95,26 @@ class { 'clamav':
 }
 ```
 
+###Configure with hiera yaml
+
+```puppet
+include clamav
+```
+```yaml
+---
+clamav::manage_clamd: true
+clamav::manage_freshclam: true
+
+clamav::clamd_options:
+  MaxScanSize: 500M
+  MaxFileSize: 150M
+clamav::freshclam_options:
+  LogTime: yes
+  HTTPProxyServer: myproxy.proxy.com
+  HTTPProxyPort: 80
+  NotifyClamd: /etc/clamd.conf
+```
+
 ##Reference
 
 ### Classes
@@ -121,4 +141,3 @@ Pull Requests welcome
 ##Contributors
 
 Chris Edester (edestecd)
-
