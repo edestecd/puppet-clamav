@@ -94,6 +94,10 @@ class { 'clamav':
     'HTTPProxyServer' => 'myproxy.proxy.com',
     'HTTPProxyPort'   => '80',
     'NotifyClamd'     => '/etc/clamd.conf',
+    'DatabaseMirror'  => [
+      'clam.host1.mydomain.com',
+      'clam.host2.mydomain.com',
+    ],
   },
 }
 ```
@@ -116,6 +120,9 @@ clamav::freshclam_options:
   HTTPProxyServer: myproxy.proxy.com
   HTTPProxyPort: 80
   NotifyClamd: /etc/clamd.conf
+  DatabaseMirror:
+  - clam.host1.mydomain.com
+  - clam.host2.mydomain.com
 ```
 
 ##Reference
