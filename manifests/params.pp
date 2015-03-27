@@ -32,14 +32,12 @@ class clamav::params {
     $clamd_config      = '/etc/clamd.conf'
     $clamd_service     = 'clamd'
     $clamd_options     = {}
-    $clamd_default_options = {
-    }
+    $clamd_default_options = {}
 
     #### freshclam vars ####
     $freshclam_config  = '/etc/freshclam.conf'
     $freshclam_options = {}
-    $freshclam_default_options = {
-    }
+    $freshclam_default_options = {}
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
     (($::operatingsystem == 'Ubuntu') and (versioncmp($::operatingsystemrelease, '12.0') >= 0))
@@ -64,6 +62,10 @@ class clamav::params {
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
     $clamd_default_options = {
+      'LocalSocket'                    => '/var/run/clamav/clamd.ctl',
+      'FixStaleSocket'                 => true,
+      'LocalSocketGroup'               => 'clamav',
+      'LocalSocketMode'                => '666',
       'User'                           => 'clamav',
       'AllowSupplementaryGroups'       => true,
       'ScanMail'                       => true,

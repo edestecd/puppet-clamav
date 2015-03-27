@@ -5,7 +5,7 @@
 # Automatically created by the clamav-freshclam postinst
 # Comments will get lost when you reconfigure the clamav-freshclam package
 
-<% @config_options.each do |k,v| -%>
+<% @config_options.sort.each do |k,v| -%>
 <%= %Q(# Check for new database #{v} times a day\n) if k.eql?('Checks') -%>
 <% Array(v).each do |av| -%>
 <%= %Q(#{k} #{av}) %>

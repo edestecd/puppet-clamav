@@ -84,8 +84,8 @@ DatabaseOwner <%= @config_options.delete('DatabaseOwner') || 'clam' %>
 # You can use db.XY.ipv6.clamav.net for IPv6 connections.
 #DatabaseMirror db.XY.clamav.net
 
-# database.clamav.net is a round-robin record which points to our most 
-# reliable mirrors. It's used as a fall back in case db.XY.clamav.net is 
+# database.clamav.net is a round-robin record which points to our most
+# reliable mirrors. It's used as a fall back in case db.XY.clamav.net is
 # not working. DO NOT TOUCH the following line unless you know what you
 # are doing.
 <% Array(@config_options.delete('DatabaseMirror') || ['db.us.clamav.net', 'db.local.clamav.net']).each do |av| -%>
@@ -226,7 +226,7 @@ DatabaseOwner <%= @config_options.delete('DatabaseOwner') || 'clam' %>
 #DetectionStatsCountry country-code
 <%= %Q(DetectionStatsCountry #{@config_options.delete('DetectionStatsCountry')}\n) if @config_options.key?('DetectionStatsCountry') -%>
 
-# This option enables support for our "Personal Statistics" service. 
+# This option enables support for our "Personal Statistics" service.
 # When this option is enabled, the information on malware detected by
 # your clamd installation is made available to you through our website.
 # To get your HostID, log on http://www.stats.clamav.net and add a new
@@ -270,7 +270,7 @@ DatabaseOwner <%= @config_options.delete('DatabaseOwner') || 'clam' %>
 #ExtraDatabase dbname1
 #ExtraDatabase dbname2
 
-<% @config_options.each do |k,v| -%>
+<% @config_options.sort.each do |k,v| -%>
 <% Array(v).each do |av| -%>
 <%= %Q(#{k} #{av}) %>
 <% end -%>
