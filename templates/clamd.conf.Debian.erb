@@ -11,6 +11,8 @@
 
 <% @config_options.sort.each do |k,v| -%>
 <% Array(v).each do |av| -%>
+<% if ![nil, '', :undef].include?(av) -%>
 <%= %Q(#{k} #{av}) %>
+<% end -%>
 <% end -%>
 <% end -%>
