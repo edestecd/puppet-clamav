@@ -1,3 +1,7 @@
+2015-03-27 (0.3.0)  Chris Edester
+        * fixes #5 Hash iteration order in ruby 1.8.7
+        * Allow to unset default config_options
+
 2015-03-19 (0.2.3)  Patrick Schönfeld
         * Allow specification of groups for clamav user
 

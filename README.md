@@ -151,4 +151,5 @@ Pull Requests welcome
 ##Contributors
 
 Chris Edester (edestecd)  
-Patrick Schönfeld (aptituz)
+Patrick Schönfeld (aptituz)  
+(bergkatten)
