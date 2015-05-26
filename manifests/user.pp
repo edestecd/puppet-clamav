@@ -16,7 +16,6 @@ class clamav::user (
   validate_string($comment)
   validate_absolute_path($home)
   validate_absolute_path($shell)
-  validate_array($groups)
 
   if $group {
     group { 'clamav':
