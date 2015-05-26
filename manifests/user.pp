@@ -17,10 +17,6 @@ class clamav::user (
   validate_absolute_path($home)
   validate_absolute_path($shell)
 
-  if $groups {
-    validate_array($groups)
-  }
-
   if $group {
     group { 'clamav':
       ensure => present,
