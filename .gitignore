@@ -13,6 +13,9 @@ Thumbs.db
 ###########
 .bundle
 Gemfile.lock
+
+# puppet module build #
+#######################
 /pkg
 
 # Librarian Puppet #
