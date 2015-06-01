@@ -152,4 +152,5 @@ Pull Requests welcome
 
 Chris Edester (edestecd)  
 Patrick Schönfeld (aptituz)  
-(bergkatten)
+(bergkatten)  
+Daniel Rosenbloom (flyinbutrs)
