@@ -41,7 +41,7 @@ class clamav::params {
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
     (($::operatingsystem == 'Ubuntu') and (versioncmp($::operatingsystemrelease, '12.0') >= 0))
-    ) {
+  ) {
     #### init vars ####
     $manage_repo       = false
     $clamav_package    = 'clamav'
