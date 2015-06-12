@@ -3,19 +3,15 @@
 #
 
 class clamav::user (
-  $user    = $clamav::params::user,
-  $comment = $clamav::params::comment,
-  $uid     = $clamav::params::uid,
-  $gid     = $clamav::params::gid,
-  $home    = $clamav::params::home,
-  $shell   = $clamav::params::shell,
-  $group   = $clamav::params::group,
-  $groups  = $clamav::params::groups,
-) inherits clamav::params {
-
-  validate_string($comment)
-  validate_absolute_path($home)
-  validate_absolute_path($shell)
+  $user    = $clamav::user,
+  $comment = $clamav::comment,
+  $uid     = $clamav::uid,
+  $gid     = $clamav::gid,
+  $home    = $clamav::home,
+  $shell   = $clamav::shell,
+  $group   = $clamav::group,
+  $groups  = $clamav::groups,
+) {
 
   if $group {
     group { 'clamav':
