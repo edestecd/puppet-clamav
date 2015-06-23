@@ -39,48 +39,48 @@ class clamav (
   validate_bool($manage_freshclam)
   validate_string($clamav_package)
 
+  # user
+  validate_string($comment)
+  validate_absolute_path($home)
+  validate_absolute_path($shell)
+
+  # clamd
+  validate_string($clamd_package)
+  validate_absolute_path($clamd_config)
+  validate_string($clamd_service)
+  validate_hash($clamd_options)
+  $_clamd_options = merge($clamav::params::clamd_default_options, $clamd_options)
+
+  # freshclam
+  validate_absolute_path($freshclam_config)
+  validate_hash($freshclam_options)
+  $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
+
+
   if $manage_repo { require epel }
 
   if $manage_user {
-    class { 'clamav::user':
-      user    => $user,
-      comment => $comment,
-      uid     => $uid,
-      gid     => $gid,
-      home    => $home,
-      shell   => $shell,
-      group   => $group,
-      groups  => $groups,
-      before  => Package['clamav'],
+    class { '::clamav::user':
+      before  => Class['clamav::install'],
       require => Anchor['clamav::begin'],
     }
   }
 
-  package { 'clamav':
-    ensure  => installed,
-    name    => $clamav_package,
-    require => Anchor['clamav::begin'],
+  class { '::clamav::install':
+    before => Anchor['clamav::end'],
   }
 
   if $manage_clamd {
-    class { 'clamav::clamd':
-      clamd_package => $clamd_package,
-      clamd_config  => $clamd_config,
-      clamd_service => $clamd_service,
-      clamd_options => $clamd_options,
-      require       => Package['clamav'],
-      before        => Anchor['clamav::end'],
+    class { '::clamav::clamd':
+      require => Class['clamav::install'],
+      before  => Anchor['clamav::end'],
     }
   }
 
   if $manage_freshclam {
-    class { 'clamav::freshclam':
-      freshclam_package => $freshclam_package,
-      freshclam_config  => $freshclam_config,
-      freshclam_service => $freshclam_service,
-      freshclam_options => $freshclam_options,
-      require           => Package['clamav'],
-      before            => Anchor['clamav::end'],
+    class { '::clamav::freshclam':
+      require => Class['clamav::install'],
+      before  => Anchor['clamav::end'],
     }
   }
 
