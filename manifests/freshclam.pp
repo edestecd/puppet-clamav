@@ -36,7 +36,7 @@ class clamav::freshclam (
       enable     => true,
       hasrestart => true,
       hasstatus  => true,
-      subscribe  => [Package['freshclam', File['freshclam.conf']],
+      subscribe  => [Package['freshclam'], File['freshclam.conf']],
     }
   }
 
