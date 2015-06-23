@@ -7,8 +7,8 @@ class clamav::install (
 ){
 
   package { 'clamav':
-    ensure  => installed,
-    name    => $clamav_package,
+    ensure => installed,
+    name   => $clamav_package,
   }
 
 }
