@@ -161,6 +161,7 @@ class clamav::params {
       # Check for new database 24 times a day
       'Checks'                   => '24',
       'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
+      'PrivateMirror'            => ['mirror1.mynetwork.com', 'mirror2.mynetwork.com'],
     }
   } else {
     fail("The ${module_name} module is not supported on a ${::osfamily} based system with version ${::operatingsystemrelease}.")
