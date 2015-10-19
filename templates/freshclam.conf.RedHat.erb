@@ -128,6 +128,7 @@ DatabaseOwner <%= @freshclam_options.delete('DatabaseOwner') || 'clam' %>
 # Default: disabled
 #PrivateMirror mirror1.mynetwork.com
 #PrivateMirror mirror2.mynetwork.com
+<%= %Q(PrivateMirror #{@freshclam_options.delete('PrivateMirror')}\n) if @freshclam_options.key?('PrivateMirror') -%>
 
 # Number of database checks per day.
 # Default: 12 (every two hours)
