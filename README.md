@@ -61,8 +61,10 @@ include clamav
 
 ```puppet
 class { 'clamav':
-  manage_clamd     => true,
-  manage_freshclam => true,
+  manage_clamd             => true,
+  manage_freshclam         => true,
+  clamd_service_ensure     => 'running',
+  freshclam_service_ensure => 'stopped',
 }
 ```
 
