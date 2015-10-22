@@ -31,7 +31,7 @@ class clamav::freshclam (
   # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service
   if $freshclam_service {
     service { 'freshclam':
-      ensure     => running,
+      ensure     => $clamd::freshclam_service_ensure,
       name       => $freshclam_service,
       enable     => true,
       hasrestart => true,
