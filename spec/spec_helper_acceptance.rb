@@ -2,11 +2,11 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 
 unless ENV['BEAKER_provision'] == 'no'
-  hosts.each do |host|
+  hosts.each do |_host|
     install_puppet
   end
 
-  hosts.each do |host|
+  hosts.each do |_host|
   end
 end
 
@@ -22,10 +22,10 @@ RSpec.configure do |c|
     hosts.each do |host|
       # Install module and dependencies
       copy_module_to(host, :source => proj_root, :module_name => 'clamav')
-      on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-stdlib'), :acceptable_exit_codes => [0, 1]
 
       if fact('osfamily') == 'RedHat'
-        on host, puppet('module','install','stahnma/epel'), { :acceptable_exit_codes => [0,1] }
+        on host, puppet('module', 'install', 'stahnma/epel'), :acceptable_exit_codes => [0, 1]
       end
     end
   end

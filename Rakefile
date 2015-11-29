@@ -1,38 +1,62 @@
+ENV['FUTURE_PARSER'] ||= 'yes'
+
 require 'rubygems' if RUBY_VERSION < '1.9.0'
+# require 'rubocop/rake_task'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
 
-begin
-  require 'puppet_blacksmith/rake_tasks'
-rescue LoadError
-end
+# RuboCop::RakeTask.new
 
 exclude_paths = [
-  "pkg/**/*",
-  "vendor/**/*",
-  "spec/**/*",
+  'modules/**/*',
+  'pkg/**/*',
+  'spec/**/*',
+  'vendor/**/*'
 ]
 
+PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.relative = true
-PuppetLint.configuration.fail_on_warnings
-PuppetLint.configuration.ignore_paths = exclude_paths
-PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-PuppetLint.configuration.send('relative')
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.ignore_paths = exclude_paths
 PuppetSyntax.exclude_paths = exclude_paths
 
-desc "Run acceptance tests"
+Rake::Task[:default].prerequisites.clear
+task :default => :all
+
+desc 'Run acceptance tests'
 RSpec::Core::RakeTask.new(:acceptance) do |t|
   t.pattern = 'spec/acceptance'
 end
 
-desc "Run syntax, lint, and spec tests."
+desc 'Run RuboCop'
+task :rubocop do
+  sh 'rubocop'
+end
+
+desc 'Clean up modules / pkg'
+task :clean do
+  sh 'rm -rf modules pkg spec/fixtures'
+end
+
+task :success do
+  puts "\n\e[32mAll tests passing...\e[0m"
+end
+
+desc 'Run all'
+task :all => [
+  :clean,
+  :test,
+  :success
+]
+
+desc 'Run rubocop, syntax, lint, and spec tests'
 task :test => [
+  :rubocop,
   :syntax,
   :lint,
   :metadata_lint,
-  :spec,
+  :spec
 ]

@@ -12,18 +12,18 @@ describe 'clamav::freshclam', :type => :class do
     end
 
     context 'Ubuntu' do
-      let(:params) { {
-        :freshclam_package => 'clamav-freshclam',
-        :freshclam_config  => '/etc/clamav/freshclam.conf',
-        :freshclam_service => 'clamav-freshclam',
-        :freshclam_options => {},
-      } }
+      let(:params) do
+        {
+          :freshclam_package => 'clamav-freshclam',
+          :freshclam_config  => '/etc/clamav/freshclam.conf',
+          :freshclam_service => 'clamav-freshclam',
+          :freshclam_options => {}
+        }
+      end
 
       it { should contain_package('freshclam') }
       it { should contain_file('freshclam.conf') }
       it { should contain_service('freshclam') }
     end
-
   end
-
 end

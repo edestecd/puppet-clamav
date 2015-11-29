@@ -10,15 +10,28 @@ AllCops:
     - '**/*.gemspec'
     - '**/*.rake'
     - '**/Gemfile'
+    - '**/Puppetfile'
     - '**/Rakefile'
     - '**/Guardfile'
   Exclude:
+    - 'modules/**/*'
     - 'pkg/**/*'
+    - 'spec/fixtures/**/*'
+    - 'vendor/**/*'
   RunRailsCops: false
   DisplayCopNames: true
+
+Metrics/LineLength:
+  # Ruduce this... Max: 80
+  Max: 112
 
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
 # Support ruby 1.8.7
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
+
+# The shebang stuff at the top triggers this
+Style/LeadingCommentSpace:
+  Exclude:
+    - Puppetfile

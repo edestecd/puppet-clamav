@@ -10,53 +10,39 @@
   "tags": ["clam", "clamav", "clamscan", "clamdscan", "clamd", "freshclam", "virus", "antivirus"],
   "description": "Puppet Module to install/configure clamd and freshclam on Debian and RedHat",
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.1.0 <5.0.0"},
-    {"name":"stahnma/epel","version_requirement":">= 0.0.6 <2.0.0"}
+    {"name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0 < 5.0.0"},
+    {"name": "stahnma/epel", "version_requirement": ">= 0.0.6 < 2.0.0"}
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "6"
-      ]
+      "operatingsystemrelease": ["6"]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [
-        "6"
-      ]
+      "operatingsystemrelease": ["6"]
     },
     {
       "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [
-        "6"
-      ]
+      "operatingsystemrelease": ["6"]
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "7"
-      ]
+      "operatingsystemrelease": ["7"]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "12.04"
-      ]
+      "operatingsystemrelease": ["12.04"]
     }
   ],
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": "3.x"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     },
     {
       "name": "puppet",
-      "version_requirement": "3.x"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": "4.x"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     }
   ]
 }

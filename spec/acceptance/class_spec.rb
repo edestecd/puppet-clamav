@@ -1,7 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'clamav' do
-
   context 'install' do
     it 'should work idempotently with no errors' do
       pp = <<-EOS
@@ -51,7 +50,5 @@ describe 'clamav' do
     describe service(service_name) do
       it { should be_running }
     end
-
   end
-
 end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'clamav', :type => :class do
-  let(:pre_condition) { 'class epel {}'}
+  let(:pre_condition) { 'class epel {}' }
   let(:facts) { { :osfamily => 'RedHat', :operatingsystemrelease => '7.1' } }
 
   context 'default' do
@@ -36,4 +36,3 @@ describe 'clamav', :type => :class do
     it { should contain_class('clamav::freshclam') }
   end
 end
-
