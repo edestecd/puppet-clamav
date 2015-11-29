@@ -1,3 +1,7 @@
+2015-11-29 (0.4.0)  Chris Edester
+        * add tests
+        * parameters to set service ensure
+
 2015-06-01 (0.3.1)  Daniel Rosenbloom
         * fixes #7 no need to validate $groups if it is still undef
 
