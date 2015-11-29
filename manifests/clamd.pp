@@ -25,7 +25,7 @@ class clamav::clamd (
   }
 
   service { 'clamd':
-    ensure     => running,
+    ensure     => $clamd_service_ensure,
     name       => $clamd_service,
     enable     => true,
     hasrestart => true,
