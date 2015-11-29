@@ -1,8 +1,9 @@
 clamav
 =============
 
-[![Puppet Forge](http://img.shields.io/puppetforge/v/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav)
-[![Issue stats](http://issuestats.com/github/edestecd/puppet-clamav/badge/pr?style=flat)](http://issuestats.com/github/edestecd/puppet-clamav)
+[![Build Status](https://travis-ci.org/edestecd/puppet-clamav.svg)](https://travis-ci.org/edestecd/puppet-clamav)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav)
+[![Issue Stats](http://issuestats.com/github/edestecd/puppet-clamav/badge/pr?style=flat)](http://issuestats.com/github/edestecd/puppet-clamav)
 
 ####Table of Contents
 
@@ -16,6 +17,7 @@ clamav
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
+7. [Contributors](#contributors)
 
 ##Overview
 
