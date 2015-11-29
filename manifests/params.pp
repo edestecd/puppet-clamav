@@ -10,8 +10,8 @@ class clamav::params {
   $manage_user              = false
   $manage_clamd             = false
   $manage_freshclam         = false
-  $freshclam_service_ensure = 'running'
   $clamd_service_ensure     = 'running'
+  $freshclam_service_ensure = 'running'
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####

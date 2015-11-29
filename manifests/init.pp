@@ -36,7 +36,7 @@ class clamav (
 ) inherits clamav::params {
 
   # Input validation
-  $valid_service_statuses = [ 'stopped', 'false', 'running', 'true', ]
+  $valid_service_statuses = '^(stopped|false|running|true)$'
 
   validate_bool($manage_user)
   validate_bool($manage_repo)

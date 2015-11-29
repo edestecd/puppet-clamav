@@ -3,10 +3,11 @@
 #
 
 class clamav::clamd (
-  $clamd_package = $clamav::clamd_package,
-  $clamd_config  = $clamav::clamd_config,
-  $clamd_service = $clamav::clamd_service,
-  $clamd_options = $clamav::_clamd_options,
+  $clamd_package        = $clamav::clamd_package,
+  $clamd_config         = $clamav::clamd_config,
+  $clamd_service        = $clamav::clamd_service,
+  $clamd_service_ensure = $clamav::clamd_service_ensure,
+  $clamd_options        = $clamav::_clamd_options,
 ) {
 
   package { 'clamd':

@@ -3,10 +3,11 @@
 #
 
 class clamav::freshclam (
-  $freshclam_package = $clamav::freshclam_package,
-  $freshclam_config  = $clamav::freshclam_config,
-  $freshclam_service = $clamav::freshclam_service,
-  $freshclam_options = $clamav::_freshclam_options,
+  $freshclam_package        = $clamav::freshclam_package,
+  $freshclam_config         = $clamav::freshclam_config,
+  $freshclam_service        = $clamav::freshclam_service,
+  $freshclam_service_ensure = $clamav::freshclam_service_ensure,
+  $freshclam_options        = $clamav::_freshclam_options,
 ) {
 
   # NOTE: In RedHat this is part of the base clamav_package
