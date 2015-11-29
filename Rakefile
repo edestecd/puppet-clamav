@@ -1,5 +1,3 @@
-ENV['FUTURE_PARSER'] ||= 'yes'
-
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 # require 'rubocop/rake_task'
 require 'puppetlabs_spec_helper/rake_tasks'
