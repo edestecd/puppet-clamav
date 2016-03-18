@@ -40,10 +40,7 @@ class clamav (
   # Input validation
   $valid_service_statuses = '^(stopped|false|running|true)$'
 
-  validate_bool($manage_user)
-  validate_bool($manage_repo)
-  validate_bool($manage_clamd)
-  validate_bool($manage_freshclam)
+  validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclam)
   validate_string($clamav_package)
 
   # user
@@ -63,42 +60,32 @@ class clamav (
   # freshclam
   validate_absolute_path($freshclam_config)
   validate_re($freshclam_service_ensure, $valid_service_statuses)
-  validate_hash($freshclam_options)
   validate_bool($freshclam_service_enable)
+  validate_hash($freshclam_options)
   $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
 
 
-  if $manage_repo { require epel }
+  if $manage_repo { require '::epel' }
 
   if $manage_user {
-    class { '::clamav::user':
-      before  => Class['clamav::install'],
-      require => Anchor['clamav::begin'],
-    }
-  }
-
-  class { '::clamav::install':
-    before => Anchor['clamav::end'],
+    Anchor['clamav::begin'] ->
+    class { '::clamav::user': } ->
+    Class['clamav::install']
   }
 
   if $manage_clamd {
-    class { '::clamav::clamd':
-      require => Class['clamav::install'],
-      before  => Anchor['clamav::end'],
-    }
+    Class['clamav::install'] ->
+    class { '::clamav::clamd': } ->
+    Anchor['clamav::end']
   }
 
   if $manage_freshclam {
-    class { '::clamav::freshclam':
-      require => Class['clamav::install'],
-      before  => Anchor['clamav::end'],
-    }
+    Class['clamav::install'] ->
+    class { '::clamav::freshclam': } ->
+    Anchor['clamav::end']
   }
 
-  # Anchor this as per #8040 - this ensures that classes won't float off and
-  # mess everything up.  You can read about this at:
-  # http://docs.puppetlabs.com/puppet/2.7/reference/lang_containment.html#known-issues
-  anchor { 'clamav::begin': }
+  anchor { 'clamav::begin': } ->
+  class { '::clamav::install': } ->
   anchor { 'clamav::end': }
-
 }

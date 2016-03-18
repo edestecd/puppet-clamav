@@ -28,8 +28,8 @@ class clamav::clamd (
 
   service { 'clamd':
     ensure     => $clamd_service_ensure,
-    enable     => $clamd_service_enable,
     name       => $clamd_service,
+    enable     => $clamd_service_enable,
     hasrestart => true,
     hasstatus  => true,
     subscribe  => [Package['clamd'], File['clamd.conf']],
