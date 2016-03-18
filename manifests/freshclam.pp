@@ -7,6 +7,7 @@ class clamav::freshclam (
   $freshclam_config         = $clamav::freshclam_config,
   $freshclam_service        = $clamav::freshclam_service,
   $freshclam_service_ensure = $clamav::freshclam_service_ensure,
+  $freshclam_service_enable = $clamav::freshclam_service_enable,
   $freshclam_options        = $clamav::_freshclam_options,
 ) {
 
@@ -33,16 +34,12 @@ class clamav::freshclam (
   if $freshclam_service {
     service { 'freshclam':
       ensure     => $freshclam_service_ensure,
+      enable     => $freshclam_service_enable,
       name       => $freshclam_service,
-      enable     => true,
       hasrestart => true,
       hasstatus  => true,
-      subscribe  => File['freshclam.conf'],
+      subscribe  => [Package['freshclam'], File['freshclam.conf']],
     }
-  }
-
-  if $freshclam_package and $freshclam_service {
-    Package['freshclam'] ~> Service['freshclam']
   }
 
 }
