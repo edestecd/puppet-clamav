@@ -7,6 +7,7 @@ class clamav::clamd (
   $clamd_config         = $clamav::clamd_config,
   $clamd_service        = $clamav::clamd_service,
   $clamd_service_ensure = $clamav::clamd_service_ensure,
+  $clamd_service_enable = $clamav::clamd_service_enable,
   $clamd_options        = $clamav::_clamd_options,
 ) {
 
@@ -28,7 +29,7 @@ class clamav::clamd (
   service { 'clamd':
     ensure     => $clamd_service_ensure,
     name       => $clamd_service,
-    enable     => true,
+    enable     => $clamd_service_enable,
     hasrestart => true,
     hasstatus  => true,
     subscribe  => [Package['clamd'], File['clamd.conf']],

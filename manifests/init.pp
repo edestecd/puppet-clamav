@@ -26,12 +26,14 @@ class clamav (
   $clamd_config             = $clamav::params::clamd_config,
   $clamd_service            = $clamav::params::clamd_service,
   $clamd_service_ensure     = $clamav::params::clamd_service_ensure,
+  $clamd_service_enable     = $clamav::params::clamd_service_enable,
   $clamd_options            = $clamav::params::clamd_options,
 
   $freshclam_package        = $clamav::params::freshclam_package,
   $freshclam_config         = $clamav::params::freshclam_config,
   $freshclam_service        = $clamav::params::freshclam_service,
   $freshclam_service_ensure = $clamav::params::freshclam_service_ensure,
+  $freshclam_service_enable = $clamav::params::freshclam_service_enable,
   $freshclam_options        = $clamav::params::freshclam_options,
 ) inherits clamav::params {
 
@@ -51,12 +53,14 @@ class clamav (
   validate_absolute_path($clamd_config)
   validate_string($clamd_service)
   validate_re($clamd_service_ensure, $valid_service_statuses)
+  validate_bool($clamd_service_enable)
   validate_hash($clamd_options)
   $_clamd_options = merge($clamav::params::clamd_default_options, $clamd_options)
 
   # freshclam
   validate_absolute_path($freshclam_config)
   validate_re($freshclam_service_ensure, $valid_service_statuses)
+  validate_bool($freshclam_service_enable)
   validate_hash($freshclam_options)
   $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
 
