@@ -4,6 +4,7 @@
 
 class clamav::freshclam (
   $freshclam_package        = $clamav::freshclam_package,
+  $freshclam_version        = $clamav::freshclam_version,
   $freshclam_config         = $clamav::freshclam_config,
   $freshclam_service        = $clamav::freshclam_service,
   $freshclam_service_ensure = $clamav::freshclam_service_ensure,
@@ -15,7 +16,7 @@ class clamav::freshclam (
   # NOTE: In Debian this is a dependency of the base clamav_package
   if $freshclam_package {
     package { 'freshclam':
-      ensure => installed,
+      ensure => $freshclam_version,
       name   => $freshclam_package,
       before => File['freshclam.conf'],
     }

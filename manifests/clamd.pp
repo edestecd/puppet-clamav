@@ -4,6 +4,7 @@
 
 class clamav::clamd (
   $clamd_package        = $clamav::clamd_package,
+  $clamd_version        = $clamav::clamd_version,
   $clamd_config         = $clamav::clamd_config,
   $clamd_service        = $clamav::clamd_service,
   $clamd_service_ensure = $clamav::clamd_service_ensure,
@@ -12,7 +13,7 @@ class clamav::clamd (
 ) {
 
   package { 'clamd':
-    ensure => installed,
+    ensure => $clamd_version,
     name   => $clamd_package,
     before => File['clamd.conf'],
   }
