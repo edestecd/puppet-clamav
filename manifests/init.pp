@@ -12,6 +12,7 @@ class clamav (
   $manage_clamd             = $clamav::params::manage_clamd,
   $manage_freshclam         = $clamav::params::manage_freshclam,
   $clamav_package           = $clamav::params::clamav_package,
+  $clamav_version           = $clamav::params::clamav_version,
 
   $user                     = $clamav::params::user,
   $comment                  = $clamav::params::comment,
@@ -23,6 +24,7 @@ class clamav (
   $groups                   = $clamav::params::groups,
 
   $clamd_package            = $clamav::params::clamd_package,
+  $clamd_version            = $clamav::params::clamd_version,
   $clamd_config             = $clamav::params::clamd_config,
   $clamd_service            = $clamav::params::clamd_service,
   $clamd_service_ensure     = $clamav::params::clamd_service_ensure,
@@ -30,6 +32,7 @@ class clamav (
   $clamd_options            = $clamav::params::clamd_options,
 
   $freshclam_package        = $clamav::params::freshclam_package,
+  $freshclam_version        = $clamav::params::freshclam_version,
   $freshclam_config         = $clamav::params::freshclam_config,
   $freshclam_service        = $clamav::params::freshclam_service,
   $freshclam_service_ensure = $clamav::params::freshclam_service_ensure,
@@ -42,6 +45,7 @@ class clamav (
 
   validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclam)
   validate_string($clamav_package)
+  validate_string($clamav_version)
 
   # user
   validate_string($comment)
@@ -50,6 +54,7 @@ class clamav (
 
   # clamd
   validate_string($clamd_package)
+  validate_string($clamd_version)
   validate_absolute_path($clamd_config)
   validate_string($clamd_service)
   validate_re($clamd_service_ensure, $valid_service_statuses)

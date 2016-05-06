@@ -19,6 +19,7 @@ class clamav::params {
     #### init vars ####
     $manage_repo       = true
     $clamav_package    = 'clamav'
+    $clamav_version    = 'installed'
 
     #### user vars ####
     $user              = 'clam'
@@ -32,6 +33,7 @@ class clamav::params {
 
     #### clamd vars ####
     $clamd_package     = 'clamd'
+    $clamd_version     = 'installed'
     $clamd_config      = '/etc/clamd.conf'
     $clamd_service     = 'clamd'
     $clamd_options     = {}
@@ -48,6 +50,7 @@ class clamav::params {
     #### init vars ####
     $manage_repo       = false
     $clamav_package    = 'clamav'
+    $clamav_version    = 'installed'
 
     #### user vars ####
     $user              = 'clamav'
@@ -61,6 +64,7 @@ class clamav::params {
 
     #### clamd vars ####
     $clamd_package     = 'clamav-daemon'
+    $clamd_version     = 'installed'
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
@@ -136,6 +140,7 @@ class clamav::params {
 
     #### freshclam vars ####
     $freshclam_package = 'clamav-freshclam'
+    $freshclam_version = 'installed'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
     $freshclam_options = {}
