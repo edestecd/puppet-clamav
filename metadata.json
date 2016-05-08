@@ -8,7 +8,7 @@
   "project_page": "https://github.com/edestecd/puppet-clamav",
   "issues_url": "https://github.com/edestecd/puppet-clamav/issues",
   "tags": ["clam", "clamav", "clamscan", "clamdscan", "clamd", "freshclam", "virus", "antivirus"],
-  "description": "Puppet Module to install/configure clamd and freshclam on Debian and RedHat",
+  "description": "Puppet Module to install/configure clamd and freshclam",
   "dependencies": [
     {"name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0 < 5.0.0"},
     {"name": "stahnma/epel", "version_requirement": ">= 0.0.6 < 2.0.0"}

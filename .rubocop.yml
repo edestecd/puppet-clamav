@@ -18,7 +18,6 @@ AllCops:
     - 'pkg/**/*'
     - 'spec/fixtures/**/*'
     - 'vendor/**/*'
-  RunRailsCops: false
   DisplayCopNames: true
 
 Metrics/LineLength:
