@@ -1,6 +1,6 @@
 fixtures:
-  forge_modules:
-    stdlib: "puppetlabs/stdlib"
-    epel: "stahnma/epel"
+  repositories:
+    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    epel: "https://github.com/stahnma/puppet-module-epel.git"
   symlinks:
     clamav: "#{source_dir}"

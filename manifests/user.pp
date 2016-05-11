@@ -2,38 +2,28 @@
 # Manage clam user/group.
 #
 
-class clamav::user (
-  $user    = $clamav::user,
-  $comment = $clamav::comment,
-  $uid     = $clamav::uid,
-  $gid     = $clamav::gid,
-  $home    = $clamav::home,
-  $shell   = $clamav::shell,
-  $group   = $clamav::group,
-  $groups  = $clamav::groups,
-) {
+class clamav::user {
 
-  if $group {
+  if $clamav::group {
     group { 'clamav':
       ensure => present,
-      name   => $group,
-      gid    => $gid,
+      name   => $clamav::group,
+      gid    => $clamav::gid,
       system => true,
     }
   }
 
-  if $user {
+  if $clamav::user {
     user { 'clamav':
       ensure  => present,
-      name    => $user,
-      comment => $comment,
-      uid     => $uid,
-      gid     => $gid,
-      groups  => $groups,
-      home    => $home,
-      shell   => $shell,
+      name    => $clamav::user,
+      comment => $clamav::comment,
+      uid     => $clamav::uid,
+      gid     => $clamav::gid,
+      groups  => $clamav::groups,
+      home    => $clamav::home,
+      shell   => $clamav::shell,
       system  => true,
     }
   }
-
 }

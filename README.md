@@ -153,11 +153,3 @@ No plans to support other versions (unless you add it :)..
 ##Development
 
 Pull Requests welcome
-
-##Contributors
-
-Chris Edester (edestecd)  
-Patrick Schönfeld (aptituz)  
-(bergkatten)  
-Daniel Rosenbloom (flyinbutrs)  
-Brian Schonecker (bschonec)
