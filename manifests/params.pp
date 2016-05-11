@@ -21,55 +21,89 @@ class clamav::params {
     $clamav_package    = 'clamav'
     $clamav_version    = 'installed'
 
-    #### user vars ####
-    $user              = 'clam'
-    $comment           = 'Clam Anti Virus Checker'
-    $uid               = 496
-    $gid               = 496
-    $home              = '/var/lib/clamav'
-    $shell             = '/sbin/nologin'
-    $group             = 'clam'
-    $groups            = undef
+    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
+      #### user vars ####
+      $user              = 'clamscan'
+      $comment           = 'Clamav scanner user'
+      $uid               = 496
+      $gid               = 496
+      $home              = '/'
+      $shell             = '/sbin/nologin'
+      $group             = 'clamscan'
+      $groups            = undef
 
-    #### clamd vars ####
-    $clamd_package     = 'clamd'
-    $clamd_version     = 'installed'
-    $clamd_config      = '/etc/clamd.conf'
-    $clamd_service     = 'clamd'
-    $clamd_options     = {}
-    $clamd_default_options = {
-      'LogFile'                  => '/var/log/clamav/clamd.log',
-      'LogFileMaxSize'           => '0',
-      'LogTime'                  => 'yes',
-      'LogSyslog'                => 'yes',
-      'PidFile'                  => '/var/run/clamav/clamd.pid',
-      'TemporaryDirectory'       => '/var/tmp',
-      'DatabaseDirectory'        => '/var/lib/clamav',
-      'LocalSocket'              => '/var/run/clamav/clamd.sock',
-      'FixStaleSocket'           => 'yes',
-      'MaxConnectionQueueLength' => '30',
-      'MaxThreads'               => '50',
-      'ReadTimeout'              => '300',
-      'User'                     => 'clam',
-      'AllowSupplementaryGroups' => 'yes',
-      'ScanPE'                   => 'yes',
-      'ScanELF'                  => 'yes',
-      'DetectBrokenExecutables'  => 'yes',
-      'ScanOLE2'                 => 'yes',
-      'ScanMail'                 => 'yes',
-      'ScanArchive'              => 'yes',
-      'ArchiveBlockEncrypted'    => 'no',
-    }
+      #### clamd vars ####
+      $clamd_package     = 'clamav-scanner-systemd'
+      $clamd_version     = 'installed'
+      $clamd_config      = '/etc/clamd.d/scan.conf'
+      $clamd_service     = 'clamd@scan'
+      $clamd_options     = {}
+      $clamd_default_options = {
+        'LogSyslog'                => 'yes',
+        'User'                     => 'clamscan',
+        'AllowSupplementaryGroups' => 'yes',
+      }
 
-    #### freshclam vars ####
-    $freshclam_config  = '/etc/freshclam.conf'
-    $freshclam_options = {}
-    $freshclam_default_options = {
-      'DatabaseDirectory' => '/var/lib/clamav',
-      'UpdateLogFile'     => '/var/log/clamav/freshclam.log',
-      'LogSyslog'         => 'yes',
-      'DatabaseOwner'     => 'clam',
-      'DatabaseMirror'    => ['db.us.clamav.net', 'db.local.clamav.net'],
+      #### freshclam vars ####
+      $freshclam_package = 'clamav-update'
+      $freshclam_version = 'installed'
+      $freshclam_config  = '/etc/freshclam.conf'
+      $freshclam_options = {}
+      $freshclam_default_options = {
+        'LogSyslog'      => 'yes',
+        'DatabaseMirror' => 'database.clamav.net',
+      }
+    } else {
+      #### user vars ####
+      $user              = 'clam'
+      $comment           = 'Clam Anti Virus Checker'
+      $uid               = 496
+      $gid               = 496
+      $home              = '/var/lib/clamav'
+      $shell             = '/sbin/nologin'
+      $group             = 'clam'
+      $groups            = undef
+
+      #### clamd vars ####
+      $clamd_package     = 'clamd'
+      $clamd_version     = 'installed'
+      $clamd_config      = '/etc/clamd.conf'
+      $clamd_service     = 'clamd'
+      $clamd_options     = {}
+      $clamd_default_options = {
+        'LogFile'                  => '/var/log/clamav/clamd.log',
+        'LogFileMaxSize'           => '0',
+        'LogTime'                  => 'yes',
+        'LogSyslog'                => 'yes',
+        'PidFile'                  => '/var/run/clamav/clamd.pid',
+        'TemporaryDirectory'       => '/var/tmp',
+        'DatabaseDirectory'        => '/var/lib/clamav',
+        'LocalSocket'              => '/var/run/clamav/clamd.sock',
+        'FixStaleSocket'           => 'yes',
+        'MaxConnectionQueueLength' => '30',
+        'MaxThreads'               => '50',
+        'ReadTimeout'              => '300',
+        'User'                     => 'clam',
+        'AllowSupplementaryGroups' => 'yes',
+        'ScanPE'                   => 'yes',
+        'ScanELF'                  => 'yes',
+        'DetectBrokenExecutables'  => 'yes',
+        'ScanOLE2'                 => 'yes',
+        'ScanMail'                 => 'yes',
+        'ScanArchive'              => 'yes',
+        'ArchiveBlockEncrypted'    => 'no',
+      }
+
+      #### freshclam vars ####
+      $freshclam_config  = '/etc/freshclam.conf'
+      $freshclam_options = {}
+      $freshclam_default_options = {
+        'DatabaseDirectory' => '/var/lib/clamav',
+        'UpdateLogFile'     => '/var/log/clamav/freshclam.log',
+        'LogSyslog'         => 'yes',
+        'DatabaseOwner'     => 'clam',
+        'DatabaseMirror'    => ['db.us.clamav.net', 'db.local.clamav.net'],
+      }
     }
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or

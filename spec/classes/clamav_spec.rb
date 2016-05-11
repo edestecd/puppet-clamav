@@ -68,7 +68,11 @@ describe 'clamav', :type => :class do
         let(:params) { { :manage_freshclam => true } }
         context 'with defaults' do
           if facts[:osfamily] == 'RedHat'
-            it { is_expected.not_to contain_package('freshclam') }
+            if facts[:operatingsystemmajrelease].to_i == 6
+              it { is_expected.not_to contain_package('freshclam') }
+            elsif facts[:operatingsystemmajrelease].to_i == 7
+              it { is_expected.to contain_package('freshclam') }
+            end
             it { is_expected.to contain_file('freshclam.conf') }
             it { is_expected.not_to contain_service('freshclam') }
           elsif facts[:osfamily] == 'Debian'
