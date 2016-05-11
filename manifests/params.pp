@@ -37,12 +37,40 @@ class clamav::params {
     $clamd_config      = '/etc/clamd.conf'
     $clamd_service     = 'clamd'
     $clamd_options     = {}
-    $clamd_default_options = {}
+    $clamd_default_options = {
+      'LogFile'                  => '/var/log/clamav/clamd.log',
+      'LogFileMaxSize'           => '0',
+      'LogTime'                  => 'yes',
+      'LogSyslog'                => 'yes',
+      'PidFile'                  => '/var/run/clamav/clamd.pid',
+      'TemporaryDirectory'       => '/var/tmp',
+      'DatabaseDirectory'        => '/var/lib/clamav',
+      'LocalSocket'              => '/var/run/clamav/clamd.sock',
+      'FixStaleSocket'           => 'yes',
+      'MaxConnectionQueueLength' => '30',
+      'MaxThreads'               => '50',
+      'ReadTimeout'              => '300',
+      'User'                     => 'clam',
+      'AllowSupplementaryGroups' => 'yes',
+      'ScanPE'                   => 'yes',
+      'ScanELF'                  => 'yes',
+      'DetectBrokenExecutables'  => 'yes',
+      'ScanOLE2'                 => 'yes',
+      'ScanMail'                 => 'yes',
+      'ScanArchive'              => 'yes',
+      'ArchiveBlockEncrypted'    => 'no',
+    }
 
     #### freshclam vars ####
     $freshclam_config  = '/etc/freshclam.conf'
     $freshclam_options = {}
-    $freshclam_default_options = {}
+    $freshclam_default_options = {
+      'DatabaseDirectory' => '/var/lib/clamav',
+      'UpdateLogFile'     => '/var/log/clamav/freshclam.log',
+      'LogSyslog'         => 'yes',
+      'DatabaseOwner'     => 'clam',
+      'DatabaseMirror'    => ['db.us.clamav.net', 'db.local.clamav.net'],
+    }
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
     (($::operatingsystem == 'Ubuntu') and (versioncmp($::operatingsystemrelease, '12.0') >= 0))
@@ -166,7 +194,6 @@ class clamav::params {
       'ScriptedUpdates'          => 'yes',
       'CompressLocalDatabase'    => 'no',
       'Bytecode'                 => true,
-      # Check for new database 24 times a day
       'Checks'                   => '24',
       'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
     }

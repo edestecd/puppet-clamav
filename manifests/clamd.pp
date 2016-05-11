@@ -4,7 +4,7 @@
 
 class clamav::clamd {
 
-  $clamd_options = $clamav::_clamd_options
+  $config_options = $clamav::_clamd_options
 
   package { 'clamd':
     ensure => $clamav::clamd_version,
@@ -18,7 +18,7 @@ class clamav::clamd {
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamd.conf.${::osfamily}.erb"),
+    content => template("${module_name}/clamav.conf.erb"),
   }
 
   service { 'clamd':

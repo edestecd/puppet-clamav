@@ -1,0 +1,9 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+
+<% @config_options.sort.each do |k,v| -%>
+<% Array(v).each do |av| -%>
+<% if ![nil, '', :undef].include?(av) -%>
+<%= %Q(#{k} #{av}) %>
+<% end -%>
+<% end -%>
+<% end -%>

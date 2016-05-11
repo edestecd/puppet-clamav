@@ -4,7 +4,7 @@
 
 class clamav::freshclam {
 
-  $freshclam_options = $clamav::_freshclam_options
+  $config_options = $clamav::_freshclam_options
 
   # NOTE: In RedHat this is part of the base clamav_package
   # NOTE: In Debian this is a dependency of the base clamav_package
@@ -22,7 +22,7 @@ class clamav::freshclam {
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/freshclam.conf.${::osfamily}.erb"),
+    content => template("${module_name}/clamav.conf.erb"),
   }
 
   # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service
