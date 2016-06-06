@@ -70,7 +70,13 @@ class clamav (
   $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
 
 
-  if $manage_repo { require '::epel' }
+  if $manage_repo {
+    if !defined(Class['epel']) {
+      require '::epel'
+    }
+
+    Class['epel'] -> Package[$clamav_package]
+  }
 
   if $manage_user {
     Anchor['clamav::begin'] ->
