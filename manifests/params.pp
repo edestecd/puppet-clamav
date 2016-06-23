@@ -38,21 +38,12 @@ class clamav::params {
       $clamd_config      = '/etc/clamd.d/scan.conf'
       $clamd_service     = 'clamd@scan'
       $clamd_options     = {}
-      $clamd_default_options = {
-        'LogSyslog'                => 'yes',
-        'User'                     => 'clamscan',
-        'AllowSupplementaryGroups' => 'yes',
-      }
 
       #### freshclam vars ####
       $freshclam_package = 'clamav-update'
       $freshclam_version = 'installed'
       $freshclam_config  = '/etc/freshclam.conf'
       $freshclam_options = {}
-      $freshclam_default_options = {
-        'LogSyslog'      => 'yes',
-        'DatabaseMirror' => 'database.clamav.net',
-      }
     } else {
       #### user vars ####
       $user              = 'clam'
@@ -70,41 +61,23 @@ class clamav::params {
       $clamd_config      = '/etc/clamd.conf'
       $clamd_service     = 'clamd'
       $clamd_options     = {}
-      $clamd_default_options = {
-        'LogFile'                  => '/var/log/clamav/clamd.log',
-        'LogFileMaxSize'           => '0',
-        'LogTime'                  => 'yes',
-        'LogSyslog'                => 'yes',
-        'PidFile'                  => '/var/run/clamav/clamd.pid',
-        'TemporaryDirectory'       => '/var/tmp',
-        'DatabaseDirectory'        => '/var/lib/clamav',
-        'LocalSocket'              => '/var/run/clamav/clamd.sock',
-        'FixStaleSocket'           => 'yes',
-        'MaxConnectionQueueLength' => '30',
-        'MaxThreads'               => '50',
-        'ReadTimeout'              => '300',
-        'User'                     => 'clam',
-        'AllowSupplementaryGroups' => 'yes',
-        'ScanPE'                   => 'yes',
-        'ScanELF'                  => 'yes',
-        'DetectBrokenExecutables'  => 'yes',
-        'ScanOLE2'                 => 'yes',
-        'ScanMail'                 => 'yes',
-        'ScanArchive'              => 'yes',
-        'ArchiveBlockEncrypted'    => 'no',
-      }
 
       #### freshclam vars ####
       $freshclam_config  = '/etc/freshclam.conf'
       $freshclam_options = {}
-      $freshclam_default_options = {
-        'DatabaseDirectory' => '/var/lib/clamav',
-        'UpdateLogFile'     => '/var/log/clamav/freshclam.log',
-        'LogSyslog'         => 'yes',
-        'DatabaseOwner'     => 'clam',
-        'DatabaseMirror'    => ['db.us.clamav.net', 'db.local.clamav.net'],
-      }
     }
+
+    #### Default values OS specific ####
+    $clamd_default_logfile               = '/var/log/clamav/clamd.log'
+    $clamd_default_pidfile               = '/var/run/clamav/clamd.pid'
+    $clamd_default_temporarydirectory    = '/var/tmp'
+    $clamd_default_databasedirectory     = '/var/lib/clamav'
+    $clamd_default_localsocket           = '/var/run/clamav/clamd.sock'
+
+    $freshclam_default_databasedirectory = '/var/lib/clamav'
+    $freshclam_default_updatelogfile     = '/var/log/clamav/freshclam.log'
+    $freshclam_default_pidfile           = '/var/run/clamav/freshclam.pid'
+
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
     (($::operatingsystem == 'Ubuntu') and (versioncmp($::operatingsystemrelease, '12.0') >= 0))
@@ -130,75 +103,6 @@ class clamav::params {
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
-    $clamd_default_options = {
-      'LocalSocket'                    => '/var/run/clamav/clamd.ctl',
-      'FixStaleSocket'                 => true,
-      'LocalSocketGroup'               => 'clamav',
-      'LocalSocketMode'                => '666',
-      'User'                           => 'clamav',
-      'AllowSupplementaryGroups'       => true,
-      'ScanMail'                       => true,
-      'ScanArchive'                    => true,
-      'ArchiveBlockEncrypted'          => false,
-      'MaxDirectoryRecursion'          => '15',
-      'FollowDirectorySymlinks'        => false,
-      'FollowFileSymlinks'             => false,
-      'ReadTimeout'                    => '180',
-      'MaxThreads'                     => '12',
-      'MaxConnectionQueueLength'       => '15',
-      'LogSyslog'                      => false,
-      'LogRotate'                      => true,
-      'LogFacility'                    => 'LOG_LOCAL6',
-      'LogClean'                       => false,
-      'LogVerbose'                     => false,
-      'PidFile'                        => '/var/run/clamav/clamd.pid',
-      'DatabaseDirectory'              => '/var/lib/clamav',
-      'SelfCheck'                      => '3600',
-      'Foreground'                     => false,
-      'Debug'                          => false,
-      'ScanPE'                         => true,
-      'MaxEmbeddedPE'                  => '10M',
-      'ScanOLE2'                       => true,
-      'ScanHTML'                       => true,
-      'MaxHTMLNormalize'               => '10M',
-      'MaxHTMLNoTags'                  => '2M',
-      'MaxScriptNormalize'             => '5M',
-      'MaxZipTypeRcg'                  => '1M',
-      'ScanSWF'                        => true,
-      'DetectBrokenExecutables'        => false,
-      'ExitOnOOM'                      => false,
-      'LeaveTemporaryFiles'            => false,
-      'AlgorithmicDetection'           => true,
-      'ScanELF'                        => true,
-      'IdleTimeout'                    => '30',
-      'PhishingSignatures'             => true,
-      'PhishingScanURLs'               => true,
-      'PhishingAlwaysBlockSSLMismatch' => false,
-      'PhishingAlwaysBlockCloak'       => false,
-      'DetectPUA'                      => false,
-      'ScanPartialMessages'            => false,
-      'HeuristicScanPrecedence'        => false,
-      'StructuredDataDetection'        => false,
-      'CommandReadTimeout'             => '5',
-      'SendBufTimeout'                 => '200',
-      'MaxQueue'                       => '100',
-      'ExtendedDetectionInfo'          => true,
-      'OLE2BlockMacros'                => false,
-      'ScanOnAccess'                   => false,
-      'AllowAllMatchScan'              => true,
-      'ForceToDisk'                    => false,
-      'DisableCertCheck'               => false,
-      'StreamMaxLength'                => '25M',
-      'LogFile'                        => '/var/log/clamav/clamav.log',
-      'LogTime'                        => true,
-      'LogFileUnlock'                  => false,
-      'LogFileMaxSize'                 => '0',
-      'Bytecode'                       => true,
-      'BytecodeSecurity'               => 'TrustSigned',
-      'BytecodeTimeout'                => '60000',
-      'OfficialDatabaseOnly'           => false,
-      'CrossFilesystems'               => true,
-    }
 
     #### freshclam vars ####
     $freshclam_package = 'clamav-freshclam'
@@ -206,33 +110,117 @@ class clamav::params {
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
     $freshclam_options = {}
-    $freshclam_default_options = {
-      'DatabaseOwner'            => 'clamav',
-      'UpdateLogFile'            => '/var/log/clamav/freshclam.log',
-      'LogVerbose'               => false,
-      'LogSyslog'                => false,
-      'LogFacility'              => 'LOG_LOCAL6',
-      'LogFileMaxSize'           => '0',
-      'LogRotate'                => true,
-      'LogTime'                  => true,
-      'Foreground'               => false,
-      'Debug'                    => false,
-      'MaxAttempts'              => '5',
-      'DatabaseDirectory'        => '/var/lib/clamav',
-      'DNSDatabaseInfo'          => 'current.cvd.clamav.net',
-      'AllowSupplementaryGroups' => false,
-      'PidFile'                  => '/var/run/clamav/freshclam.pid',
-      'ConnectTimeout'           => '30',
-      'ReceiveTimeout'           => '30',
-      'TestDatabases'            => 'yes',
-      'ScriptedUpdates'          => 'yes',
-      'CompressLocalDatabase'    => 'no',
-      'Bytecode'                 => true,
-      'Checks'                   => '24',
-      'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
-    }
+
+    #### Default values OS specific ####
+    $clamd_default_logfile               = '/var/log/clamav/clamav.log'
+    $clamd_default_pidfile               = '/var/run/clamav/clamd.pid'
+    $clamd_default_temporarydirectory    = '/tmp'
+    $clamd_default_databasedirectory     = '/var/lib/clamav'
+    $clamd_default_localsocket           = '/var/run/clamav/clamd.ctl'
+
+    $freshclam_default_databasedirectory = '/var/lib/clamav'
+    $freshclam_default_updatelogfile     = '/var/log/clamav/freshclam.log'
+    $freshclam_default_pidfile           = '/var/run/clamav/freshclam.pid'
+
   } else {
     fail("The ${module_name} module is not supported on a ${::osfamily} based system with version ${::operatingsystemrelease}.")
+  }
+
+  $clamd_default_options = {
+    'AlgorithmicDetection'           => true,
+    'AllowAllMatchScan'              => true,
+    'AllowSupplementaryGroups'       => true,
+    'ArchiveBlockEncrypted'          => false,
+    'Bytecode'                       => true,
+    'BytecodeSecurity'               => 'TrustSigned',
+    'BytecodeTimeout'                => '60000',
+    'CommandReadTimeout'             => '5',
+    'CrossFilesystems'               => true,
+    'DatabaseDirectory'              => $clamd_default_databasedirectory,
+    'Debug'                          => false,
+    'DetectBrokenExecutables'        => false,
+    'DetectPUA'                      => false,
+    'DisableCertCheck'               => false,
+    'ExitOnOOM'                      => false,
+    'ExtendedDetectionInfo'          => true,
+    'FixStaleSocket'                 => true,
+    'FollowDirectorySymlinks'        => false,
+    'FollowFileSymlinks'             => false,
+    'ForceToDisk'                    => false,
+    'Foreground'                     => false,
+    'HeuristicScanPrecedence'        => false,
+    'IdleTimeout'                    => '30',
+    'LeaveTemporaryFiles'            => false,
+    'LocalSocket'                    => $clamd_default_localsocket,
+    'LocalSocketGroup'               => $group,
+    'LocalSocketMode'                => '666',
+    'LogClean'                       => false,
+    'LogFacility'                    => 'LOG_LOCAL6',
+    'LogFile'                        => $clamd_default_logfile,
+    'LogFileMaxSize'                 => '0',
+    'LogFileUnlock'                  => false,
+    'LogRotate'                      => true,
+    'LogSyslog'                      => false,
+    'LogTime'                        => true,
+    'LogVerbose'                     => false,
+    'MaxConnectionQueueLength'       => '15',
+    'MaxDirectoryRecursion'          => '15',
+    'MaxEmbeddedPE'                  => '10M',
+    'MaxHTMLNoTags'                  => '2M',
+    'MaxHTMLNormalize'               => '10M',
+    'MaxQueue'                       => '100',
+    'MaxScriptNormalize'             => '5M',
+    'MaxThreads'                     => '12',
+    'MaxZipTypeRcg'                  => '1M',
+    'OLE2BlockMacros'                => false,
+    'OfficialDatabaseOnly'           => false,
+    'PhishingAlwaysBlockCloak'       => false,
+    'PhishingAlwaysBlockSSLMismatch' => false,
+    'PhishingScanURLs'               => true,
+    'PhishingSignatures'             => true,
+    'PidFile'                        => $clamd_default_pidfile,
+    'ReadTimeout'                    => '180',
+    'ScanArchive'                    => true,
+    'ScanELF'                        => true,
+    'ScanHTML'                       => true,
+    'ScanMail'                       => true,
+    'ScanOLE2'                       => true,
+    'ScanOnAccess'                   => false,
+    'ScanPE'                         => true,
+    'ScanPartialMessages'            => false,
+    'ScanSWF'                        => true,
+    'SelfCheck'                      => '3600',
+    'SendBufTimeout'                 => '200',
+    'StreamMaxLength'                => '25M',
+    'StructuredDataDetection'        => false,
+    'TemporaryDirectory'             => $clamd_default_temporarydirectory,
+    'User'                           => $user,
+  }
+
+  $freshclam_default_options = {
+    'AllowSupplementaryGroups' => false,
+    'Bytecode'                 => true,
+    'Checks'                   => '24',
+    'CompressLocalDatabase'    => 'no',
+    'ConnectTimeout'           => '30',
+    'DNSDatabaseInfo'          => 'current.cvd.clamav.net',
+    'DatabaseDirectory'        => $freshclam_default_databasedirectory,
+    'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
+    'DatabaseOwner'            => $user,
+    'Debug'                    => false,
+    'Foreground'               => false,
+    'LogFacility'              => 'LOG_LOCAL6',
+    'LogFileMaxSize'           => '0',
+    'LogRotate'                => true,
+    'LogSyslog'                => false,
+    'LogTime'                  => true,
+    'LogVerbose'               => false,
+    'MaxAttempts'              => '5',
+    'PidFile'                  => $freshclam_default_pidfile,
+    'ReceiveTimeout'           => '30',
+    'ScriptedUpdates'          => 'yes',
+    'TestDatabases'            => 'yes',
+    'UpdateLogFile'            => $freshclam_default_updatelogfile,
   }
 
 }
