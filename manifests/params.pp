@@ -7,13 +7,16 @@
 class clamav::params {
 
   #### init vars ####
-  $manage_user              = false
-  $manage_clamd             = false
-  $manage_freshclam         = false
-  $clamd_service_ensure     = 'running'
-  $clamd_service_enable     = true
-  $freshclam_service_ensure = 'running'
-  $freshclam_service_enable = true
+  $manage_user                  = false
+  $manage_clamd                 = false
+  $manage_freshclam             = false
+  $manage_clamav_milter         = false
+  $clamd_service_ensure         = 'running'
+  $clamd_service_enable         = true
+  $freshclam_service_ensure     = 'running'
+  $freshclam_service_enable     = true
+  $clamav_milter_service_ensure = 'running'
+  $clamav_milter_service_enable = true
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
@@ -53,6 +56,21 @@ class clamav::params {
         'LogSyslog'      => 'yes',
         'DatabaseMirror' => 'database.clamav.net',
       }
+
+      #### clamav-milter vars ####
+      $clamav_milter_package     = 'clamav-milter-systemd'
+      $clamav_milter_version     = 'installed'
+      $clamav_milter_config      = '/etc/mail/clamav-milter.conf'
+      $clamav_milter_service     = 'clamav-milter'
+      $clamav_milter_options     = {}
+      $clamav_milter_default_options = {
+        'User'                     => 'clamilt',
+        'AllowSupplementaryGroups' => 'yes',
+        'MilterSocket'             => '/var/run/clamav-milter/clamav-milter.socket',
+        'ClamdSocket'              => 'unix:/var/run/clamd.scan/clamd.sock',
+        'LogSyslog'                => 'yes',
+      }
+
     } else {
       #### user vars ####
       $user              = 'clam'
