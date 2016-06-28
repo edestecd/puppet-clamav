@@ -38,6 +38,8 @@ class clamav (
   $freshclam_service_ensure = $clamav::params::freshclam_service_ensure,
   $freshclam_service_enable = $clamav::params::freshclam_service_enable,
   $freshclam_options        = $clamav::params::freshclam_options,
+  $freshclam_sysconfig      = $clamav::params::freshclam_sysconfig,
+  $freshclam_delay          = $clamav::params::freshclam_delay,
 ) inherits clamav::params {
 
   # Input validation
@@ -68,7 +70,12 @@ class clamav (
   validate_bool($freshclam_service_enable)
   validate_hash($freshclam_options)
   $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
-
+  if $freshclam_sysconfig {
+    validate_absolute_path($freshclam_sysconfig)
+  }
+  if $freshclam_delay {
+    validate_string($freshclam_delay)
+  }
 
   if $manage_repo { require '::epel' }
 

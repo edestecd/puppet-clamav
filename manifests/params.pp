@@ -17,9 +17,9 @@ class clamav::params {
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
-    $manage_repo       = true
-    $clamav_package    = 'clamav'
-    $clamav_version    = 'installed'
+    $manage_repo    = true
+    $clamav_package = 'clamav'
+    $clamav_version = 'installed'
 
     if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
       #### user vars ####
@@ -53,6 +53,8 @@ class clamav::params {
         'LogSyslog'      => 'yes',
         'DatabaseMirror' => 'database.clamav.net',
       }
+      $freshclam_sysconfig = '/etc/sysconfig/freshclam'
+      $freshclam_delay     = undef
     } else {
       #### user vars ####
       $user              = 'clam'
@@ -104,6 +106,8 @@ class clamav::params {
         'DatabaseOwner'     => 'clam',
         'DatabaseMirror'    => ['db.us.clamav.net', 'db.local.clamav.net'],
       }
+      $freshclam_sysconfig = undef
+      $freshclam_delay     = undef
     }
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
@@ -231,6 +235,8 @@ class clamav::params {
       'Checks'                   => '24',
       'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
     }
+    $freshclam_sysconfig = undef
+    $freshclam_delay     = undef
   } else {
     fail("The ${module_name} module is not supported on a ${::osfamily} based system with version ${::operatingsystemrelease}.")
   }
