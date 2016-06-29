@@ -12,13 +12,13 @@ class clamav::clamav_milter {
     before => File['clamd.conf'],
   }
 
-  file { 'clamav_milter.conf':
+  file { 'clamav-milter.conf':
     ensure  => file,
     path    => $clamav::clamav_milter_config,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamav_milter.conf.erb"),
+    content => template("${module_name}/clamav.conf.erb"),
   }
 
   service { 'clamav_milter':

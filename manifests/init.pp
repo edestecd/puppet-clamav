@@ -11,6 +11,7 @@ class clamav (
   $manage_repo                  = $clamav::params::manage_repo,
   $manage_clamd                 = $clamav::params::manage_clamd,
   $manage_freshclam             = $clamav::params::manage_freshclam,
+  $manage_clamav_milter         = $clamav::params::manage_clamav_milter,
   $clamav_package               = $clamav::params::clamav_package,
   $clamav_version               = $clamav::params::clamav_version,
 
@@ -39,13 +40,13 @@ class clamav (
   $freshclam_service_enable     = $clamav::params::freshclam_service_enable,
   $freshclam_options            = $clamav::params::freshclam_options,
 
-  $clamav_milter_package        = $clamav::params::freshclam_package,
-  $clamav_milter_version        = $clamav::params::freshclam_version,
-  $clamav_milter_config         = $clamav::params::freshclam_config,
-  $clamav_milter_service        = $clamav::params::freshclam_service,
-  $clamav_milter_service_ensure = $clamav::params::freshclam_service_ensure,
-  $clamav_milter_service_enable = $clamav::params::freshclam_service_enable,
-  $clamav_milter_options         = $clamav::params::freshclam_options,
+  $clamav_milter_package        = $clamav::params::clamav_milter_package,
+  $clamav_milter_version        = $clamav::params::clamav_milter_version,
+  $clamav_milter_config         = $clamav::params::clamav_milter_config,
+  $clamav_milter_service        = $clamav::params::clamav_milter_service,
+  $clamav_milter_service_ensure = $clamav::params::clamav_milter_service_ensure,
+  $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
+  $clamav_milter_options        = $clamav::params::clamav_milter_options,
 
 
 ) inherits clamav::params {
@@ -53,7 +54,7 @@ class clamav (
   # Input validation
   $valid_service_statuses = '^(stopped|false|running|true)$'
 
-  validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclami, $manage_clamav_milter)
+  validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclam, $manage_clamav_milter)
   validate_string($clamav_package)
   validate_string($clamav_version)
 
