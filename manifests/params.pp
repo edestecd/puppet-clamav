@@ -66,8 +66,8 @@ class clamav::params {
       $clamav_milter_default_options = {
         'User'                     => 'clamilt',
         'AllowSupplementaryGroups' => 'yes',
-        'MilterSocket'             => '/var/run/clamav-milter/clamav-milter.socket',
-        'ClamdSocket'              => 'unix:/var/run/clamd.scan/clamd.sock',
+        'MilterSocket'             => 'inet:8890@localhost',
+        'ClamdSocket'              => 'tcp:127.0.0.1',
         'LogSyslog'                => 'yes',
       }
 
