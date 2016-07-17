@@ -70,8 +70,10 @@ describe 'clamav', :type => :class do
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystemmajrelease].to_i == 6
               it { is_expected.not_to contain_package('freshclam') }
+              it { is_expected.not_to contain_file('freshclam_sysconfig') }
             elsif facts[:operatingsystemmajrelease].to_i == 7
               it { is_expected.to contain_package('freshclam') }
+              it { is_expected.to contain_file('freshclam_sysconfig') }
             end
             it { is_expected.to contain_file('freshclam.conf') }
             it { is_expected.not_to contain_service('freshclam') }
@@ -79,6 +81,7 @@ describe 'clamav', :type => :class do
             it { is_expected.to contain_package('freshclam') }
             it { is_expected.to contain_file('freshclam.conf') }
             it { is_expected.to contain_service('freshclam') }
+            it { is_expected.not_to contain_file('freshclam_sysconfig') }
           end
         end
       end
