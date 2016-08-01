@@ -20,6 +20,7 @@ class clamav::params {
     $manage_repo    = true
     $clamav_package = 'clamav'
     $clamav_version = 'installed'
+    $freshclam_service = undef
 
     if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
       #### user vars ####
@@ -97,6 +98,8 @@ class clamav::params {
       }
 
       #### freshclam vars ####
+      $freshclam_package = undef
+      $freshclam_version = undef
       $freshclam_config  = '/etc/freshclam.conf'
       $freshclam_options = {}
       $freshclam_default_options = {
