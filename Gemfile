@@ -1,7 +1,8 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :unit_tests do
-  gem 'rubocop',                                                   :require => false
+  gem 'rubocop', '~> 0.41.2',                                      :require => false if RUBY_VERSION =~ /^1\.9/
+  gem 'rubocop',                                                   :require => false if RUBY_VERSION =~ /^2\./
   gem 'puppetlabs_spec_helper',                                    :require => false
   gem 'rspec-puppet-facts',                                        :require => false
   gem 'metadata-json-lint',                                        :require => false
@@ -40,6 +41,10 @@ group :system_tests do
   gem 'beaker-rspec',    :require => false
   gem 'serverspec',      :require => false
 end
+
+# json_pure 2.0.2 added a requirement on ruby >= 2. We pin to json_pure 2.0.1
+# if using ruby 1.x
+gem 'json_pure', '<= 2.0.1', :require => false if RUBY_VERSION =~ /^1\./
 
 if (facterversion = ENV['FACTER_GEM_VERSION'])
   gem 'facter', facterversion, :require => false
