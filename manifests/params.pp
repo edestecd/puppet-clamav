@@ -40,6 +40,13 @@ class clamav::params {
       $clamd_service     = 'clamd@scan'
       $clamd_options     = {}
 
+      #### Default values OS specific ####
+      $clamd_default_localsocket = '/var/run/clamd.scan/clamd.sock'
+      $clamd_default_logfile     = undef # '/var/log/clamd.scan'
+      $clamd_default_pidfile     = '/var/run/clamd.scan/clamd.pid'
+      $freshclam_default_databaseowner = 'clamupdate'
+      $freshclam_default_updatelogfile = undef # '/var/log/freshclam.log'
+
       #### freshclam vars ####
       $freshclam_package = 'clamav-update'
       $freshclam_version = 'installed'
@@ -65,6 +72,13 @@ class clamav::params {
       $clamd_service     = 'clamd'
       $clamd_options     = {}
 
+      #### Default values OS specific ####
+      $clamd_default_localsocket = '/var/run/clamav/clamd.sock'
+      $clamd_default_logfile     = '/var/log/clamav/clamd.log'
+      $clamd_default_pidfile     = '/var/run/clamav/clamd.pid'
+      $freshclam_default_databaseowner = $user
+      $freshclam_default_updatelogfile = '/var/log/clamav/freshclam.log'
+
       #### freshclam vars ####
       $freshclam_package = undef
       $freshclam_version = undef
@@ -75,15 +89,11 @@ class clamav::params {
     }
 
     #### Default values OS specific ####
-    $clamd_default_logfile               = '/var/log/clamav/clamd.log'
-    $clamd_default_pidfile               = '/var/run/clamav/clamd.pid'
-    $clamd_default_temporarydirectory    = '/var/tmp'
-    $clamd_default_databasedirectory     = '/var/lib/clamav'
-    $clamd_default_localsocket           = '/var/run/clamav/clamd.sock'
-
-    $freshclam_default_databasedirectory = '/var/lib/clamav'
-    $freshclam_default_updatelogfile     = '/var/log/clamav/freshclam.log'
-    $freshclam_default_pidfile           = '/var/run/clamav/freshclam.pid'
+    $clamd_default_databasedirectory  = '/var/lib/clamav'
+    $clamd_default_logrotate          = undef
+    $clamd_default_logsyslog          = true
+    $clamd_default_temporarydirectory = '/var/tmp'
+    $freshclam_default_pidfile        = undef # cron is used
 
   } elsif ($::osfamily == 'Debian') and (
     (($::operatingsystem == 'Debian') and (versioncmp($::operatingsystemrelease, '7.0') >= 0)) or
@@ -121,15 +131,16 @@ class clamav::params {
     $freshclam_delay     = undef
 
     #### Default values OS specific ####
-    $clamd_default_logfile               = '/var/log/clamav/clamav.log'
-    $clamd_default_pidfile               = '/var/run/clamav/clamd.pid'
-    $clamd_default_temporarydirectory    = '/tmp'
-    $clamd_default_databasedirectory     = '/var/lib/clamav'
-    $clamd_default_localsocket           = '/var/run/clamav/clamd.ctl'
-
-    $freshclam_default_databasedirectory = '/var/lib/clamav'
-    $freshclam_default_updatelogfile     = '/var/log/clamav/freshclam.log'
-    $freshclam_default_pidfile           = '/var/run/clamav/freshclam.pid'
+    $clamd_default_databasedirectory  = '/var/lib/clamav'
+    $clamd_default_localsocket        = '/var/run/clamav/clamd.ctl'
+    $clamd_default_logfile            = '/var/log/clamav/clamav.log'
+    $clamd_default_logrotate          = true
+    $clamd_default_logsyslog          = false
+    $clamd_default_pidfile            = '/var/run/clamav/clamd.pid'
+    $clamd_default_temporarydirectory = '/tmp'
+    $freshclam_default_databaseowner  = $user
+    $freshclam_default_pidfile        = '/var/run/clamav/freshclam.pid'
+    $freshclam_default_updatelogfile  = '/var/log/clamav/freshclam.log'
 
   } else {
     fail("The ${module_name} module is not supported on a ${::osfamily} based system with version ${::operatingsystemrelease}.")
@@ -168,8 +179,8 @@ class clamav::params {
     'LogFile'                        => $clamd_default_logfile,
     'LogFileMaxSize'                 => '0',
     'LogFileUnlock'                  => false,
-    'LogRotate'                      => true,
-    'LogSyslog'                      => false,
+    'LogRotate'                      => $clamd_default_logrotate,
+    'LogSyslog'                      => $clamd_default_logsyslog,
     'LogTime'                        => true,
     'LogVerbose'                     => false,
     'MaxConnectionQueueLength'       => '15',
@@ -213,15 +224,15 @@ class clamav::params {
     'CompressLocalDatabase'    => 'no',
     'ConnectTimeout'           => '30',
     'DNSDatabaseInfo'          => 'current.cvd.clamav.net',
-    'DatabaseDirectory'        => $freshclam_default_databasedirectory,
+    'DatabaseDirectory'        => $clamd_default_databasedirectory,
     'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
-    'DatabaseOwner'            => $user,
+    'DatabaseOwner'            => $freshclam_default_databaseowner,
     'Debug'                    => false,
     'Foreground'               => false,
     'LogFacility'              => 'LOG_LOCAL6',
     'LogFileMaxSize'           => '0',
-    'LogRotate'                => true,
-    'LogSyslog'                => false,
+    'LogRotate'                => $clamd_default_logrotate,
+    'LogSyslog'                => $clamd_default_logsyslog,
     'LogTime'                  => true,
     'LogVerbose'               => false,
     'MaxAttempts'              => '5',
