@@ -1,3 +1,12 @@
+2016-08-10 (1.0.0)  Chris Edester
+        * WARNING: Major revision, will most likely change your configs, especially on RedHat (Please test first)
+        * Refactor private class params and specs
+        * RedHat uses the same template and hash as Debian, allowing you to unset options by passing undef
+        * RedHat 7.x support
+        * Default config options are the same across all supported OSes
+        * Manage /etc/sysconfig/freshclam on RedHat 7
+        * Comply with Puppet 4 strict variables
+
 2016-05-08 (0.5.0)  Chris Edester
         * Move the freshclam package ordering out of service definition
         * Add enable param to clamd and freshclam services
