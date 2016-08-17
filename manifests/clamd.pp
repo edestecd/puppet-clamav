@@ -21,6 +21,24 @@ class clamav::clamd {
     content => template("${module_name}/clamav.conf.erb"),
   }
 
+  # Fix a RedHat 7 systemd bug where "is-enabled" queries fail for templated services
+  if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
+    if $clamav::clamd_service_enable {
+      $svc_file_state = 'link'
+    } else {
+      $svc_file_state = 'absent'
+    }
+
+    file { "/etc/systemd/system/${clamav::clamd_service}.service":
+      ensure => $svc_file_state,
+      backup => false,
+      before => Service['clamd'],
+      owner  => 'root',
+      group  => 'root',
+      target => '/usr/lib/systemd/system/clamd@.service',
+    }
+  }
+
   service { 'clamd':
     ensure     => $clamav::clamd_service_ensure,
     name       => $clamav::clamd_service,
