@@ -2,10 +2,9 @@ clamav
 =============
 
 [![Build Status](https://travis-ci.org/edestecd/puppet-clamav.svg)](https://travis-ci.org/edestecd/puppet-clamav)
-[![Puppet Forge](https://img.shields.io/puppetforge/v/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav)
-[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav)
-[![Puppet Forge Score](https://img.shields.io/puppetforge/f/edestecd/clamav.svg)](https://forge.puppetlabs.com/edestecd/clamav/scores)
-[![Issue Stats](http://issuestats.com/github/edestecd/puppet-clamav/badge/pr?style=flat)](http://issuestats.com/github/edestecd/puppet-clamav)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/edestecd/clamav.svg)](https://forge.puppet.com/edestecd/clamav)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/edestecd/clamav.svg)](https://forge.puppet.com/edestecd/clamav)
+[![Puppet Forge Score](https://img.shields.io/puppetforge/f/edestecd/clamav.svg)](https://forge.puppet.com/edestecd/clamav/scores)
 
 ####Table of Contents
 
