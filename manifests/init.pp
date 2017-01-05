@@ -86,15 +86,15 @@ class clamav (
     validate_string($freshclam_delay)
   }
 
-   # clamav_milter
-   validate_string($clamav_milter_package)
-   validate_string($clamav_milter_version)
-   validate_absolute_path($clamav_milter_config)
-   validate_string($clamav_milter_service)
-   validate_re($clamav_milter_service_ensure, $valid_service_statuses)
-   validate_bool($clamav_milter_service_enable)
-   validate_hash($clamav_milter_options)
-   $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
+  # clamav_milter
+  validate_string($clamav_milter_package)
+  validate_string($clamav_milter_version)
+  validate_absolute_path($clamav_milter_config)
+  validate_string($clamav_milter_service)
+  validate_re($clamav_milter_service_ensure, $valid_service_statuses)
+  validate_bool($clamav_milter_service_enable)
+  validate_hash($clamav_milter_options)
+  $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
 
   if $manage_repo { require '::epel' }
 
