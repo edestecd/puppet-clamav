@@ -9,6 +9,7 @@ class clamav::params {
   #### init vars ####
   $manage_user              = false
   $manage_clamd             = false
+  $manage_clamav_milter     = false
   $manage_freshclam         = false
   $clamd_service_ensure     = 'running'
   $clamd_service_enable     = true
