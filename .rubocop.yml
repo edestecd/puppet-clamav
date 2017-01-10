@@ -20,9 +20,7 @@ AllCops:
     - 'vendor/**/*'
   DisplayCopNames: true
 
-Metrics/LineLength:
-  # Ruduce this... Max: 80
-  Max: 112
+#################### Style ##################################
 
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
@@ -34,3 +32,18 @@ Style/HashSyntax:
 Style/LeadingCommentSpace:
   Exclude:
     - Puppetfile
+
+#################### Metrics ################################
+
+Metrics/LineLength:
+  # Ruduce this... Max: 80
+  Max: 112
+
+Metrics/BlockLength:
+  # Ruduce this... Max: 25
+  Max: 27
+
+##################### Bundler #############################
+
+Bundler/DuplicatedGem:
+  Enabled: false
