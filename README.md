@@ -131,7 +131,6 @@ class { 'clamav':
   manage_clamav_milter     => true,
   clamd_service_ensure     => 'running',
   }
-}
 ```
 
 ###Configure with hiera yaml
