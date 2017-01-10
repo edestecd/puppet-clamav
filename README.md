@@ -111,8 +111,9 @@ class { 'clamav':
 
 ###Add clamav-milter support and customize its config (RHEL7 and derivatives only)
 ####Please note that as of RHEL 7.2 only the TCP socket has been tested successfully
-```
-  class { 'clamav':
+
+```puppet
+class { 'clamav':
   manage_repo              => false,
   clamd_options            => {
     'TCPSocket'   => '3310',
