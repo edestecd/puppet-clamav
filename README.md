@@ -36,6 +36,7 @@ This module has the following components that can be managed (or not):
 * clamav user
 * clam daemon
 * freshclam daemon/cron (dependent on OS)
+* clamav-milter (RHEL7 and derivatives only for now)
 
 ##Setup
 
@@ -44,6 +45,7 @@ This module has the following components that can be managed (or not):
 * clamav/clamd/freshclam package install
 * clamav/clamd/freshclam config files
 * clamd/freshclam services or daily cron on redhat
+* clamav-milter package install, config files, service (optional)
 * clam user/group (optional)
 
 ###Setup Requirements
@@ -104,6 +106,30 @@ class { 'clamav':
       'clam.host2.mydomain.com',
     ],
   },
+}
+```
+
+###Add clamav-milter support and customize its config (RHEL7 and derivatives only)
+####Please note that as of RHEL 7.2 only the TCP socket has been tested successfully
+```
+  class { 'clamav':
+  manage_repo              => false,
+  clamd_options            => {
+    'TCPSocket'   => '3310',
+    'TCPAddr'     => '127.0.0.1'
+  },
+
+  clamav_milter_options    => {
+    'AddHeader'            => 'add',
+    'OnInfected'           => 'Reject',
+    'RejectMsg'            => 'Message rejected: Infected by %v',
+  },
+
+  manage_clamd             => true,
+  manage_freshclam         => true,
+  manage_clamav_milter     => true,
+  clamd_service_ensure     => 'running',
+  }
 }
 ```
 
