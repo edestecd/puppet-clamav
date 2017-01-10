@@ -13,7 +13,7 @@ class clamav::clamav_milter {
   package { 'clamav_milter':
     ensure => $clamav::clamav_milter_version,
     name   => $clamav::clamav_milter_package,
-    before => File['clamd.conf'],
+    before => File['clamav-milter.conf'],
   }
 
   file { 'clamav-milter.conf':
