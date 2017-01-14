@@ -9,11 +9,14 @@ class clamav::params {
   #### init vars ####
   $manage_user              = false
   $manage_clamd             = false
+  $manage_clamav_milter     = false
   $manage_freshclam         = false
   $clamd_service_ensure     = 'running'
   $clamd_service_enable     = true
   $freshclam_service_ensure = 'running'
   $freshclam_service_enable = true
+  $clamav_milter_service_ensure = 'running'
+  $clamav_milter_service_enable = true
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
@@ -54,6 +57,21 @@ class clamav::params {
       $freshclam_options = {}
       $freshclam_sysconfig = '/etc/sysconfig/freshclam'
       $freshclam_delay     = undef
+
+      #### clamav_milter vars ####
+      $clamav_milter_package     = 'clamav-milter-systemd'
+      $clamav_milter_version     = 'installed'
+      $clamav_milter_config      = '/etc/mail/clamav-milter.conf'
+      $clamav_milter_service     = 'clamav-milter'
+      $clamav_milter_options     = {}
+      $clamav_milter_default_options = {
+        'User'                     => 'clamilt',
+        'AllowSupplementaryGroups' => 'yes',
+        'MilterSocket'             => 'inet:8890@localhost',
+        'ClamdSocket'              => 'tcp:127.0.0.1',
+        'LogSyslog'                => 'yes',
+      }
+
     } else {
       #### user vars ####
       $user              = 'clam'
