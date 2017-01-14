@@ -7,14 +7,14 @@
 class clamav::params {
 
   #### init vars ####
-  $manage_user              = false
-  $manage_clamd             = false
-  $manage_clamav_milter     = false
-  $manage_freshclam         = false
-  $clamd_service_ensure     = 'running'
-  $clamd_service_enable     = true
-  $freshclam_service_ensure = 'running'
-  $freshclam_service_enable = true
+  $manage_user                  = false
+  $manage_clamd                 = false
+  $manage_clamav_milter         = false
+  $manage_freshclam             = false
+  $clamd_service_ensure         = 'running'
+  $clamd_service_enable         = true
+  $freshclam_service_ensure     = 'running'
+  $freshclam_service_enable     = true
   $clamav_milter_service_ensure = 'running'
   $clamav_milter_service_enable = true
 
@@ -104,6 +104,14 @@ class clamav::params {
       $freshclam_options = {}
       $freshclam_sysconfig = undef
       $freshclam_delay     = undef
+
+      #### clamav_milter vars ####
+      $clamav_milter_package     = undef
+      $clamav_milter_version     = undef
+      $clamav_milter_config      = undef
+      $clamav_milter_service     = undef
+      $clamav_milter_options     = undef
+      $clamav_milter_default_options = undef
     }
 
     #### Default values OS specific ####
@@ -147,6 +155,14 @@ class clamav::params {
     $freshclam_options = {}
     $freshclam_sysconfig = undef
     $freshclam_delay     = undef
+
+    #### clamav_milter vars ####
+    $clamav_milter_package     = undef
+    $clamav_milter_version     = undef
+    $clamav_milter_config      = undef
+    $clamav_milter_service     = undef
+    $clamav_milter_options     = undef
+    $clamav_milter_default_options = undef
 
     #### Default values OS specific ####
     $clamd_default_databasedirectory  = '/var/lib/clamav'
