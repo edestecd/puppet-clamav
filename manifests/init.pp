@@ -41,6 +41,7 @@ class clamav (
   $freshclam_options            = $clamav::params::freshclam_options,
   $freshclam_sysconfig          = $clamav::params::freshclam_sysconfig,
   $freshclam_delay              = $clamav::params::freshclam_delay,
+
   $clamav_milter_package        = $clamav::params::clamav_milter_package,
   $clamav_milter_version        = $clamav::params::clamav_milter_version,
   $clamav_milter_config         = $clamav::params::clamav_milter_config,
@@ -48,7 +49,6 @@ class clamav (
   $clamav_milter_service_ensure = $clamav::params::clamav_milter_service_ensure,
   $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
   $clamav_milter_options        = $clamav::params::clamav_milter_options,
-
 ) inherits clamav::params {
 
   # Input validation

@@ -114,23 +114,23 @@ class { 'clamav':
 
 ```puppet
 class { 'clamav':
-  manage_repo              => false,
-  clamd_options            => {
-    'TCPSocket'   => '3310',
-    'TCPAddr'     => '127.0.0.1'
+  manage_repo           => false,
+  clamd_options         => {
+    'TCPSocket' => '3310',
+    'TCPAddr'   => '127.0.0.1',
   },
 
-  clamav_milter_options    => {
-    'AddHeader'            => 'add',
-    'OnInfected'           => 'Reject',
-    'RejectMsg'            => 'Message rejected: Infected by %v',
+  clamav_milter_options => {
+    'AddHeader'  => 'add',
+    'OnInfected' => 'Reject',
+    'RejectMsg'  => 'Message rejected: Infected by %v',
   },
 
-  manage_clamd             => true,
-  manage_freshclam         => true,
-  manage_clamav_milter     => true,
-  clamd_service_ensure     => 'running',
-  }
+  manage_clamd          => true,
+  manage_freshclam      => true,
+  manage_clamav_milter  => true,
+  clamd_service_ensure  => 'running',
+}
 ```
 
 ###Configure with hiera yaml
