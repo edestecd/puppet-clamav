@@ -98,7 +98,13 @@ class clamav (
     $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
   }
 
-  if $manage_repo { require '::epel' }
+  if $manage_repo {
+    if !defined(Class['epel']) {
+      require '::epel'
+    }
+
+    Class['epel'] -> Package[$clamav_package]
+  }
 
   if $manage_user {
     Anchor['clamav::begin'] ->
