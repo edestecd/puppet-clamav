@@ -4,7 +4,15 @@ describe 'clamav', :type => :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts.merge(:environment => 'test')
+        facts[:environment] = 'test'
+        facts[:service_provider] =
+          if facts[:osfamily] == 'RedHat' &&
+             facts[:operatingsystemmajrelease].to_i == 7
+            'systemd'
+          else
+            'service'
+          end
+        facts
       end
 
       context 'with defaults' do

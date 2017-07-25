@@ -232,7 +232,10 @@ class clamav::params {
     'PhishingAlwaysBlockSSLMismatch' => false,
     'PhishingScanURLs'               => true,
     'PhishingSignatures'             => true,
-    'PidFile'                        => $clamd_default_pidfile,
+    'PidFile'                        => $::facts['service_provider'] ? {
+      'systemd' => undef,
+      default   => $clamd_default_pidfile,
+    },
     'ReadTimeout'                    => '180',
     'ScanArchive'                    => true,
     'ScanELF'                        => true,
@@ -270,7 +273,10 @@ class clamav::params {
     'LogTime'                  => true,
     'LogVerbose'               => false,
     'MaxAttempts'              => '5',
-    'PidFile'                  => $freshclam_default_pidfile,
+    'PidFile'                  => $::facts['service_provider'] ? {
+      'systemd' => undef,
+      default   => $freshclam_default_pidfile,
+    },
     'ReceiveTimeout'           => '30',
     'ScriptedUpdates'          => 'yes',
     'TestDatabases'            => 'yes',
