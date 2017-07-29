@@ -169,7 +169,7 @@ class clamav::params {
     $clamav_milter_service     = 'clamav-milter'
     $clamav_milter_options     = {}
     $clamav_milter_default_options = {
-# Taken from the file provided by the Ubuntu 14.04 and 16.04 package
+    # Taken from the file provided by the Ubuntu 14.04 and 16.04 package
         'MilterSocket'              => '/var/run/clamav/clamav-milter.ctl',
         'FixStaleSocket'            => 'true',
         'User'                      => 'clamav',
