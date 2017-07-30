@@ -20,7 +20,14 @@ AllCops:
     - 'vendor/**/*'
   DisplayCopNames: true
 
-#################### Style ##################################
+#################### Layout ###############################
+
+# The shebang stuff at the top triggers this
+Layout/LeadingCommentSpace:
+  Exclude:
+    - Puppetfile
+
+#################### Style ###############################
 
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
@@ -28,22 +35,16 @@ AllCops:
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
-# The shebang stuff at the top triggers this
-Style/LeadingCommentSpace:
-  Exclude:
-    - Puppetfile
-
-#################### Metrics ################################
+#################### Metrics ###############################
 
 Metrics/LineLength:
   # Ruduce this... Max: 80
   Max: 112
 
 Metrics/BlockLength:
-  # Ruduce this... Max: 25
-  Max: 27
+  Enabled: false
 
-##################### Bundler #############################
+##################### Bundler ##############################
 
 Bundler/DuplicatedGem:
   Enabled: false
