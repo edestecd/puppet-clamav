@@ -106,12 +106,18 @@ class clamav::params {
       $freshclam_delay     = undef
 
       #### clamav_milter vars ####
-      $clamav_milter_package     = undef
-      $clamav_milter_version     = undef
-      $clamav_milter_config      = undef
-      $clamav_milter_service     = undef
-      $clamav_milter_options     = undef
-      $clamav_milter_default_options = undef
+      $clamav_milter_package     = 'clamav-milter'
+      $clamav_milter_version     = 'installed'
+      $clamav_milter_config      = '/etc/clamav-milter.conf'
+      $clamav_milter_service     = 'clamav-milter'
+      $clamav_milter_options     = {}
+      $clamav_milter_default_options = {
+        'User'                     => 'clam',
+        'AllowSupplementaryGroups' => 'yes',
+        'MilterSocket'             => '/var/run/clamav/clamav-milter.sock',
+        'ClamdSocket'              => 'tcp:127.0.0.1',
+        'LogSyslog'                => 'yes',
+      }
     }
 
     #### Default values OS specific ####
@@ -157,12 +163,41 @@ class clamav::params {
     $freshclam_delay     = undef
 
     #### clamav_milter vars ####
-    $clamav_milter_package     = undef
-    $clamav_milter_version     = undef
-    $clamav_milter_config      = undef
-    $clamav_milter_service     = undef
-    $clamav_milter_options     = undef
-    $clamav_milter_default_options = undef
+    $clamav_milter_package     = 'clamav-milter'
+    $clamav_milter_version     = 'installed'
+    $clamav_milter_config      = '/etc/clamav/clamav-milter.conf'
+    $clamav_milter_service     = 'clamav-milter'
+    $clamav_milter_options     = {}
+    $clamav_milter_default_options = {
+    # Taken from the file provided by the Ubuntu 14.04 and 16.04 package
+        'MilterSocket'              => '/var/run/clamav/clamav-milter.ctl',
+        'FixStaleSocket'            => 'true',
+        'User'                      => 'clamav',
+        'AllowSupplementaryGroups'  => 'yes',
+        'ReadTimeout'               => '120',
+        'Foreground'                => 'false',
+        'PidFile'                   => '/var/run/clamav/clamav-milter.pid',
+        'ClamdSocket'               => 'unix:/var/run/clamav/clamd.ctl',
+        'OnClean'                   => 'accept',
+        'OnInfected'                => 'Quarantine',
+        'OnFail'                    => 'Defer',
+        'AddHeader'                 => 'Replace',
+        'LogSyslog'                 => 'false',
+        'LogFacility'               => 'LOG_LOCAL6',
+        'LogVerbose'                => 'false',
+        'LogInfected'               => 'Off',
+        'LogClean'                  => 'Off',
+        'LogRotate'                 => 'true',
+        'MaxFileSize'               => '25M',
+        'SupportMultipleRecipients' => 'false',
+        'TemporaryDirectory'        => '/tmp',
+        'LogFile'                   => '/var/log/clamav/clamav-milter.log',
+        'LogTime'                   => 'true',
+        'LogFileUnlock'             => 'false',
+        'LogFileMaxSize'            => '0M',
+        'MilterSocketGroup'         => 'clamav',
+        'MilterSocketMode'          => '666',
+      }
 
     #### Default values OS specific ####
     $clamd_default_databasedirectory  = '/var/lib/clamav'
