@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'clamav', :type => :class do
+describe 'clamav-milter', :type => :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
@@ -16,7 +16,6 @@ describe 'clamav', :type => :class do
         let(:params) { { :manage_clamav_milter => true } }
         it { is_expected.to contain_class('clamav::clamav_milter') }
         context 'with defaults' do
-          it { is_expected.to contain_package('freshclam') }
           it { is_expected.to contain_file('clamav-milter.conf') }
           it { is_expected.to contain_service('clamav-milter') }
         end
