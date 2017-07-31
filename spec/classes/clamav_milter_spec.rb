@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'clamav-milter', :type => :class do
+describe 'clamav_milter', :type => :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
