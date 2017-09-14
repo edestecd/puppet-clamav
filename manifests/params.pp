@@ -17,6 +17,8 @@ class clamav::params {
   $freshclam_service_enable     = true
   $clamav_milter_service_ensure = 'running'
   $clamav_milter_service_enable = true
+  $uid                          = 496
+  $gid                          = 496
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
@@ -29,8 +31,6 @@ class clamav::params {
       #### user vars ####
       $user              = 'clamscan'
       $comment           = 'Clamav scanner user'
-      $uid               = 496
-      $gid               = 496
       $home              = '/'
       $shell             = '/sbin/nologin'
       $group             = 'clamscan'
@@ -76,8 +76,6 @@ class clamav::params {
       #### user vars ####
       $user              = 'clam'
       $comment           = 'Clam Anti Virus Checker'
-      $uid               = 496
-      $gid               = 496
       $home              = '/var/lib/clamav'
       $shell             = '/sbin/nologin'
       $group             = 'clam'
@@ -133,8 +131,6 @@ class clamav::params {
     #### user vars ####
     $user              = 'clamav'
     $comment           = undef
-    $uid               = 496
-    $gid               = 496
     $home              = '/var/lib/clamav'
     $shell             = '/bin/false'
     $group             = 'clamav'
