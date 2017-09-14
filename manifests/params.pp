@@ -27,7 +27,46 @@ class clamav::params {
     $clamav_version = 'installed'
     $freshclam_service = undef
 
-    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
+    if $::operatingsystem == 'Amazon' {
+      #### user vars ####
+      $user    = 'clamscan'
+      $comment = 'Clamav scanner user'
+      $home    = '/'
+      $shell   = '/sbin/nologin'
+      $group   = 'clamscan'
+      $groups  = undef
+
+      #### clamd vars ####
+      $clamd_package = 'clamd'
+      $clamd_version = 'installed'
+      $clamd_config  = '/etc/clamd.d/scan.conf'
+      $clamd_service = 'clamd.scan'
+      $clamd_options = {}
+
+      #### Default values OS specific ####
+      $clamd_default_localsocket       = '/var/run/clamd.scan/clamd.sock'
+      $clamd_default_logfile           = '/var/log/clamd.scan'
+      $clamd_default_pidfile           = '/var/run/clamd.scan/clamd.pid'
+      $freshclam_default_databaseowner = 'clamupdate'
+      $freshclam_default_updatelogfile = '/var/log/freshclam.log'
+
+      #### freshclam vars ####
+      $freshclam_package   = clamav-update
+      $freshclam_version   = 'installed'
+      $freshclam_config    = '/etc/freshclam.conf'
+      $freshclam_options   = {}
+      $freshclam_sysconfig = '/etc/sysconfig/freshclam'
+      $freshclam_delay     = undef
+
+      #### clamav_milter vars ####
+      $clamav_milter_package         = undef
+      $clamav_milter_version         = undef
+      $clamav_milter_config          = undef
+      $clamav_milter_service         = undef
+      $clamav_milter_options         = undef
+      $clamav_milter_default_options = undef
+    }
+    elsif versioncmp($::operatingsystemmajrelease, '7') >= 0 {
       #### user vars ####
       $user              = 'clamscan'
       $comment           = 'Clamav scanner user'
