@@ -3,10 +3,10 @@ require 'spec_helper_acceptance'
 describe 'clamav' do
   context 'install' do
     it 'should work idempotently with no errors' do
-      pp = <<-EOS
+      pp = <<-EMPTYPUPPETCLASS
       class { 'clamav':
       }
-      EOS
+      EMPTYPUPPETCLASS
 
       # Run it twice and test for idempotency
       apply_manifest(pp, :catch_failures => true)
@@ -32,11 +32,11 @@ describe 'clamav' do
 
     # test stuff
     it 'should work idempotently with no errors' do
-      pp = <<-EOS
+      pp = <<-MANAGEDCLAMD
       class { 'clamav':
         manage_clamd => true,
       }
-      EOS
+      MANAGEDCLAMD
 
       # Run it twice and test for idempotency
       apply_manifest(pp, :catch_failures => true)
