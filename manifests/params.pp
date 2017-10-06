@@ -51,7 +51,7 @@ class clamav::params {
       $freshclam_default_updatelogfile = '/var/log/freshclam.log'
 
       #### freshclam vars ####
-      $freshclam_package   = clamav-update
+      $freshclam_package   = 'clamav-update'
       $freshclam_version   = 'installed'
       $freshclam_config    = '/etc/freshclam.conf'
       $freshclam_options   = {}
