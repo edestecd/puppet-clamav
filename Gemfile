@@ -1,6 +1,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :unit_tests do
+  gem 'facterdb', :git => 'https://github.com/camptocamp/facterdb.git', :branch => 'master', :require => false
   gem 'json',                                                      :require => false
   gem 'metadata-json-lint',                                        :require => false
   gem 'puppet-lint-absolute_classname-check',                      :require => false
