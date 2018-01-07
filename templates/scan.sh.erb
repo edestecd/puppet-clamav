@@ -1,0 +1,36 @@
+#!/bin/bash
+
+###############################################################################
+# clamav : FILE MANAGED BY PUPPET
+# ClamAV Scan
+# Scan Name: <%= @title %>
+###############################################################################
+BIN=$(which clamscan)
+INC="<% @include.each do |inc| %> --include=<%= inc %><% end -%>"
+INC_DIR="<% @include_dir.each do |inc| %> --include-dir=<%= inc %><% end -%>"
+EXC="<% @exclude.each do |exc| %> --exclude=<%= exc %><% end -%>"
+EXC_DIR="<% @exclude_dir.each do |exc| %> --exclude-dir=<%= exc %><% end -%>"
+SCAN="<%= @scan.join(' ') %>"
+RECURSIVE="<% if @recursive %>-r<% end -%>"
+QUIET="<% if @quiet %>--quiet<% end -%>"
+LOG="<%= @scanlog %>"
+SIZE="--max-filesize=50"
+
+$BIN $INC $INC_DIR $EXC $SIZE $EXC_DIR $QUIET $RECURSIVE -l $LOG $SCAN
+AVSTATUS=$?
+
+# Detect the result of our scan
+# 0 - No Viruses Detected
+# 1 - Viruses Detected
+# 2 - An Error Occurred
+case $AVSTATUS in
+1)
+  <%= @action_virus %>
+  ;;
+2)
+  <%= @action_error %>
+  ;;
+*)
+  <%= @action_ok %>
+  ;;
+esac
