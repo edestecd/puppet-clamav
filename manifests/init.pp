@@ -23,6 +23,7 @@ class clamav (
   Stdlib::Absolutepath $shell   = $clamav::params::shell,
   $group                        = $clamav::params::group,
   $groups                       = $clamav::params::groups,
+  $root_group                   = $clamav::params::root_group,
 
   String $clamd_package         = $clamav::params::clamd_package,
   String $clamd_version         = $clamav::params::clamd_version,
