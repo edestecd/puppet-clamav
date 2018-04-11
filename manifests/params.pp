@@ -252,7 +252,6 @@ class clamav::params {
   }
 
   $freshclam_default_options = {
-    'AllowSupplementaryGroups' => false,
     'Bytecode'                 => true,
     'Checks'                   => '24',
     'CompressLocalDatabase'    => 'no',
