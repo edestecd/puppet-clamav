@@ -12,8 +12,12 @@ class clamav::clamd {
     before => File['clamd.conf'],
   }
 
+  $file_ensure = $clamav::clamd_version ? {
+    /^(absent|purged)$/ => 'absent',
+    default             => 'file',
+  }
   file { 'clamd.conf':
-    ensure  => file,
+    ensure  => $file_ensure,
     path    => $clamav::clamd_config,
     mode    => '0644',
     owner   => 'root',

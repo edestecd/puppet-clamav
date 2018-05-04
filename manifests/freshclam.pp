@@ -17,8 +17,12 @@ class clamav::freshclam {
     }
   }
 
+  $file_ensure = $clamav::freshclam_version ? {
+    /^(absent|purged)$/ => 'absent',
+    default             => 'file',
+  }
   file { 'freshclam.conf':
-    ensure  => file,
+    ensure  => $file_ensure,
     path    => $clamav::freshclam_config,
     mode    => '0644',
     owner   => 'root',
@@ -28,7 +32,7 @@ class clamav::freshclam {
 
   if $clamav::freshclam_sysconfig {
     file { 'freshclam_sysconfig':
-      ensure  => file,
+      ensure  => $file_ensure,
       path    => $clamav::freshclam_sysconfig,
       mode    => '0644',
       owner   => 'root',

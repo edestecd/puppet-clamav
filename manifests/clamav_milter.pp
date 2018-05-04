@@ -16,8 +16,12 @@ class clamav::clamav_milter {
     before => File['clamav-milter.conf'],
   }
 
+  $file_ensure = $clamav::clamav_milter_version ? {
+    /^(absent|purged)$/ => 'absent',
+    default             => 'file',
+  }
   file { 'clamav-milter.conf':
-    ensure  => file,
+    ensure  => $file_ensure,
     path    => $clamav::clamav_milter_config,
     mode    => '0644',
     owner   => 'root',
