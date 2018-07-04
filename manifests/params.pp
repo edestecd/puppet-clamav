@@ -7,16 +7,18 @@
 class clamav::params {
 
   #### init vars ####
-  $manage_user                  = false
-  $manage_clamd                 = false
-  $manage_clamav_milter         = false
-  $manage_freshclam             = false
-  $clamd_service_ensure         = 'running'
-  $clamd_service_enable         = true
-  $freshclam_service_ensure     = 'running'
-  $freshclam_service_enable     = true
-  $clamav_milter_service_ensure = 'running'
-  $clamav_milter_service_enable = true
+  $manage_user                        = false
+  $manage_clamd                       = false
+  $manage_clamav_milter               = false
+  $manage_freshclam                   = false
+  $clamd_service_ensure               = 'running'
+  $clamd_service_enable               = true
+  $freshclam_service_ensure           = 'running'
+  $freshclam_service_enable           = true
+  $clamav_milter_service_ensure       = 'running'
+  $clamav_milter_service_enable       = true
+  $additional_clamav_packages         = undef
+  $additional_clamav_packages_version = 'installed'
 
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####

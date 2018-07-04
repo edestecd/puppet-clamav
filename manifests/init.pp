@@ -7,48 +7,50 @@
 #
 
 class clamav (
-  $manage_user                  = $clamav::params::manage_user,
-  $manage_repo                  = $clamav::params::manage_repo,
-  $manage_clamd                 = $clamav::params::manage_clamd,
-  $manage_freshclam             = $clamav::params::manage_freshclam,
-  $manage_clamav_milter         = $clamav::params::manage_clamav_milter,
-  $clamav_package               = $clamav::params::clamav_package,
-  $clamav_version               = $clamav::params::clamav_version,
+  $manage_user                        = $clamav::params::manage_user,
+  $manage_repo                        = $clamav::params::manage_repo,
+  $manage_clamd                       = $clamav::params::manage_clamd,
+  $manage_freshclam                   = $clamav::params::manage_freshclam,
+  $manage_clamav_milter               = $clamav::params::manage_clamav_milter,
+  $clamav_package                     = $clamav::params::clamav_package,
+  $additional_clamav_packages         = $clamav::params::additional_clamav_packages,
+  $additional_clamav_packages_version = $clamav::params::additional_clamav_packages_version,
+  $clamav_version                     = $clamav::params::clamav_version,
 
-  $user                         = $clamav::params::user,
-  $comment                      = $clamav::params::comment,
-  $uid                          = $clamav::params::uid,
-  $gid                          = $clamav::params::gid,
-  $home                         = $clamav::params::home,
-  $shell                        = $clamav::params::shell,
-  $group                        = $clamav::params::group,
-  $groups                       = $clamav::params::groups,
+  $user                               = $clamav::params::user,
+  $comment                            = $clamav::params::comment,
+  $uid                                = $clamav::params::uid,
+  $gid                                = $clamav::params::gid,
+  $home                               = $clamav::params::home,
+  $shell                              = $clamav::params::shell,
+  $group                              = $clamav::params::group,
+  $groups                             = $clamav::params::groups,
 
-  $clamd_package                = $clamav::params::clamd_package,
-  $clamd_version                = $clamav::params::clamd_version,
-  $clamd_config                 = $clamav::params::clamd_config,
-  $clamd_service                = $clamav::params::clamd_service,
-  $clamd_service_ensure         = $clamav::params::clamd_service_ensure,
-  $clamd_service_enable         = $clamav::params::clamd_service_enable,
-  $clamd_options                = $clamav::params::clamd_options,
+  $clamd_package                      = $clamav::params::clamd_package,
+  $clamd_version                      = $clamav::params::clamd_version,
+  $clamd_config                       = $clamav::params::clamd_config,
+  $clamd_service                      = $clamav::params::clamd_service,
+  $clamd_service_ensure               = $clamav::params::clamd_service_ensure,
+  $clamd_service_enable               = $clamav::params::clamd_service_enable,
+  $clamd_options                      = $clamav::params::clamd_options,
 
-  $freshclam_package            = $clamav::params::freshclam_package,
-  $freshclam_version            = $clamav::params::freshclam_version,
-  $freshclam_config             = $clamav::params::freshclam_config,
-  $freshclam_service            = $clamav::params::freshclam_service,
-  $freshclam_service_ensure     = $clamav::params::freshclam_service_ensure,
-  $freshclam_service_enable     = $clamav::params::freshclam_service_enable,
-  $freshclam_options            = $clamav::params::freshclam_options,
-  $freshclam_sysconfig          = $clamav::params::freshclam_sysconfig,
-  $freshclam_delay              = $clamav::params::freshclam_delay,
+  $freshclam_package                  = $clamav::params::freshclam_package,
+  $freshclam_version                  = $clamav::params::freshclam_version,
+  $freshclam_config                   = $clamav::params::freshclam_config,
+  $freshclam_service                  = $clamav::params::freshclam_service,
+  $freshclam_service_ensure           = $clamav::params::freshclam_service_ensure,
+  $freshclam_service_enable           = $clamav::params::freshclam_service_enable,
+  $freshclam_options                  = $clamav::params::freshclam_options,
+  $freshclam_sysconfig                = $clamav::params::freshclam_sysconfig,
+  $freshclam_delay                    = $clamav::params::freshclam_delay,
 
-  $clamav_milter_package        = $clamav::params::clamav_milter_package,
-  $clamav_milter_version        = $clamav::params::clamav_milter_version,
-  $clamav_milter_config         = $clamav::params::clamav_milter_config,
-  $clamav_milter_service        = $clamav::params::clamav_milter_service,
-  $clamav_milter_service_ensure = $clamav::params::clamav_milter_service_ensure,
-  $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
-  $clamav_milter_options        = $clamav::params::clamav_milter_options,
+  $clamav_milter_package              = $clamav::params::clamav_milter_package,
+  $clamav_milter_version              = $clamav::params::clamav_milter_version,
+  $clamav_milter_config               = $clamav::params::clamav_milter_config,
+  $clamav_milter_service              = $clamav::params::clamav_milter_service,
+  $clamav_milter_service_ensure       = $clamav::params::clamav_milter_service_ensure,
+  $clamav_milter_service_enable       = $clamav::params::clamav_milter_service_enable,
+  $clamav_milter_options              = $clamav::params::clamav_milter_options,
 ) inherits clamav::params {
 
   # Input validation
@@ -57,6 +59,10 @@ class clamav (
   validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclam, $manage_clamav_milter)
   validate_string($clamav_package)
   validate_string($clamav_version)
+  if $additional_clamav_packages {
+    validate_array($additional_clamav_packages)
+    validate_string($additional_clamav_packages_version)
+  }
 
   # user
   validate_string($comment)
