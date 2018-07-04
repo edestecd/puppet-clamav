@@ -55,7 +55,7 @@ class clamav (
   $valid_service_statuses = '^(stopped|false|running|true)$'
 
   validate_bool($manage_user, $manage_repo, $manage_clamd, $manage_freshclam, $manage_clamav_milter)
-  validate_string($clamav_package)
+  validate_array($clamav_package)
   validate_string($clamav_version)
 
   # user
@@ -64,7 +64,7 @@ class clamav (
   validate_absolute_path($shell)
 
   # clamd
-  validate_string($clamd_package)
+  validate_array($clamd_package)
   validate_string($clamd_version)
   validate_absolute_path($clamd_config)
   validate_string($clamd_service)
@@ -88,7 +88,7 @@ class clamav (
 
   # clamav_milter
   if $manage_clamav_milter {
-    validate_string($clamav_milter_package)
+    validate_array($clamav_milter_package)
     validate_string($clamav_milter_version)
     validate_absolute_path($clamav_milter_config)
     validate_string($clamav_milter_service)
