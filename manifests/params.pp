@@ -21,7 +21,7 @@ class clamav::params {
   if ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '6.0') >= 0) {
     #### init vars ####
     $manage_repo    = true
-    $clamav_package = 'clamav'
+    $clamav_package = ['clamav']
     $clamav_version = 'installed'
     $freshclam_service = undef
 
@@ -37,7 +37,7 @@ class clamav::params {
       $groups            = undef
 
       #### clamd vars ####
-      $clamd_package     = 'clamav-scanner-systemd'
+      $clamd_package     = ['clamav-scanner-systemd']
       $clamd_version     = 'installed'
       $clamd_config      = '/etc/clamd.d/scan.conf'
       $clamd_service     = 'clamd@scan'
@@ -51,7 +51,7 @@ class clamav::params {
       $freshclam_default_updatelogfile = undef # '/var/log/freshclam.log'
 
       #### freshclam vars ####
-      $freshclam_package = 'clamav-update'
+      $freshclam_package = ['clamav-update']
       $freshclam_version = 'installed'
       $freshclam_config  = '/etc/freshclam.conf'
       $freshclam_options = {}
@@ -59,7 +59,7 @@ class clamav::params {
       $freshclam_delay     = undef
 
       #### clamav_milter vars ####
-      $clamav_milter_package     = 'clamav-milter-systemd'
+      $clamav_milter_package     = ['clamav-milter-systemd']
       $clamav_milter_version     = 'installed'
       $clamav_milter_config      = '/etc/mail/clamav-milter.conf'
       $clamav_milter_service     = 'clamav-milter'
@@ -84,7 +84,7 @@ class clamav::params {
       $groups            = undef
 
       #### clamd vars ####
-      $clamd_package     = 'clamd'
+      $clamd_package     = ['clamd']
       $clamd_version     = 'installed'
       $clamd_config      = '/etc/clamd.conf'
       $clamd_service     = 'clamd'
@@ -127,7 +127,7 @@ class clamav::params {
   ) {
     #### init vars ####
     $manage_repo       = false
-    $clamav_package    = 'clamav'
+    $clamav_package    = ['clamav']
     $clamav_version    = 'installed'
 
     #### user vars ####
@@ -141,14 +141,14 @@ class clamav::params {
     $groups            = undef
 
     #### clamd vars ####
-    $clamd_package     = 'clamav-daemon'
+    $clamd_package     = ['clamav-daemon']
     $clamd_version     = 'installed'
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
 
     #### freshclam vars ####
-    $freshclam_package = 'clamav-freshclam'
+    $freshclam_package = ['clamav-freshclam']
     $freshclam_version = 'installed'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
