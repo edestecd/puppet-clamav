@@ -3,7 +3,6 @@
 #
 
 class clamav::freshclam {
-  require ::clamav::dependencies
 
   $config_options = $clamav::_freshclam_options
   $freshclam_delay = $clamav::freshclam_delay
