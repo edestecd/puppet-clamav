@@ -2,12 +2,7 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 
 unless ENV['BEAKER_provision'] == 'no'
-  hosts.each do |_host|
-    install_puppet
-  end
-
-  hosts.each do |_host|
-  end
+  expect([hosts]).to all(install_puppet)
 end
 
 RSpec.configure do |c|
