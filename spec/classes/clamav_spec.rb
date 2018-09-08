@@ -40,14 +40,14 @@ describe 'clamav', type: :class do
       end
 
       context 'clamav::user' do
-        let(:params) { { :manage_user => true } }
+        let(:params) { { manage_user: true } }
 
         context 'with defaults' do
           it { is_expected.to contain_group('clamav') }
           it { is_expected.to contain_user('clamav') }
         end
         context 'disable group and user' do
-          let(:params) { { :manage_user => true, :group => false, :user => false } }
+          let(:params) { { manage_user: true, group: false, user: false } }
 
           it { is_expected.not_to contain_group('clamav') }
           it { is_expected.not_to contain_user('clamav') }
