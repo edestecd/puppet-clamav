@@ -38,7 +38,7 @@
 # [*include_dir*]
 #   Regular expression that, when matched, will include a directory to be
 #   scanned.
-
+#
 # [*minute*]
 #   Minute (in cron format) to run the scan. Defaults to a consistently random
 #   minute based on the fqdn of the host. Has no impact if enable=false.
