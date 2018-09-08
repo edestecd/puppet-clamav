@@ -1,64 +1,75 @@
-require 'rubygems' if RUBY_VERSION < '1.9.0'
-# require 'rubocop/rake_task'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
-require 'metadata-json-lint/rake_task'
+require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
+require 'github_changelog_generator/task' if Bundler.rubygems.find_name('github_changelog_generator').any?
 
-# RuboCop::RakeTask.new
-
-exclude_paths = [
-  'modules/**/*',
-  'pkg/**/*',
-  'spec/**/*',
-  'vendor/**/*'
-]
-
-# Puppet-Lint 1.1.0
-Rake::Task[:lint].clear
-PuppetLint::RakeTask.new :lint do |config|
-  config.ignore_paths = exclude_paths
-  config.disable_checks = %w[class_inherits_from_params_class 80chars]
-  config.fail_on_warnings = true
-end
-# Puppet-Lint 1.1.0 as well ...
-PuppetLint.configuration.relative = true
-PuppetSyntax.exclude_paths = exclude_paths
-
-Rake::Task[:default].prerequisites.clear
-task :default => :all
-
-desc 'Run acceptance tests'
-RSpec::Core::RakeTask.new(:acceptance) do |t|
-  t.pattern = 'spec/acceptance'
+def changelog_user
+  return unless Rake.application.top_level_tasks.include? "changelog"
+  returnVal = nil || JSON.load(File.read('metadata.json'))['author']
+  raise "unable to find the changelog_user in .sync.yml, or the author in metadata.json" if returnVal.nil?
+  puts "GitHubChangelogGenerator user:#{returnVal}"
+  returnVal
 end
 
-desc 'Run RuboCop'
-task :rubocop do
-  sh 'rubocop'
+def changelog_project
+  return unless Rake.application.top_level_tasks.include? "changelog"
+  returnVal = nil || JSON.load(File.read('metadata.json'))['name']
+  raise "unable to find the changelog_project in .sync.yml or the name in metadata.json" if returnVal.nil?
+  puts "GitHubChangelogGenerator project:#{returnVal}"
+  returnVal
 end
 
-desc 'Clean up modules / pkg'
-task :clean do
-  sh 'rm -rf modules pkg spec/fixtures'
+def changelog_future_release
+  return unless Rake.application.top_level_tasks.include? "changelog"
+  returnVal = JSON.load(File.read('metadata.json'))['version']
+  raise "unable to find the future_release (version) in metadata.json" if returnVal.nil?
+  puts "GitHubChangelogGenerator future_release:#{returnVal}"
+  returnVal
 end
 
-task :success do
-  puts "\n\e[32mAll tests passing...\e[0m"
+PuppetLint.configuration.send('disable_relative')
+
+if Bundler.rubygems.find_name('github_changelog_generator').any?
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    raise "Set CHANGELOG_GITHUB_TOKEN environment variable eg 'export CHANGELOG_GITHUB_TOKEN=valid_token_here'" if Rake.application.top_level_tasks.include? "changelog" and ENV['CHANGELOG_GITHUB_TOKEN'].nil?
+    config.user = "#{changelog_user}"
+    config.project = "#{changelog_project}"
+    config.future_release = "#{changelog_future_release}"
+    config.exclude_labels = ['maintenance']
+    config.header = "# Change log\n\nAll notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org)."
+    config.add_pr_wo_labels = true
+    config.issues = false
+    config.merge_prefix = "### UNCATEGORIZED PRS; GO LABEL THEM"
+    config.configure_sections = {
+      "Changed" => {
+        "prefix" => "### Changed",
+        "labels" => ["backwards-incompatible"],
+      },
+      "Added" => {
+        "prefix" => "### Added",
+        "labels" => ["feature", "enhancement"],
+      },
+      "Fixed" => {
+        "prefix" => "### Fixed",
+        "labels" => ["bugfix"],
+      },
+    }
+  end
+else
+  desc 'Generate a Changelog from GitHub'
+  task :changelog do
+    raise <<EOM
+The changelog tasks depends on unreleased features of the github_changelog_generator gem.
+Please manually add it to your .sync.yml for now, and run `pdk update`:
+---
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'github_changelog_generator'
+        git: 'https://github.com/skywinder/github-changelog-generator'
+        ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')"
+EOM
+  end
 end
 
-desc 'Run all'
-task :all => %i[
-  clean
-  test
-  success
-]
-
-desc 'Run rubocop, syntax, lint, and spec tests'
-task :test => %i[
-  rubocop
-  syntax
-  lint
-  metadata_lint
-  spec
-]
