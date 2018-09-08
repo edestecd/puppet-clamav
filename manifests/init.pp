@@ -101,30 +101,20 @@ class clamav (
   if $manage_repo { require '::epel' }
 
   if $manage_user {
-    Anchor['clamav::begin'] ->
-    class { '::clamav::user': } ->
-    Class['clamav::install']
+    Anchor['clamav::begin'] -> class { '::clamav::user': } -> Class['clamav::install']
   }
 
   if $manage_clamd {
-    Class['clamav::install'] ->
-    class { '::clamav::clamd': } ->
-    Anchor['clamav::end']
+    Class['clamav::install'] -> class { '::clamav::clamd': } -> Anchor['clamav::end']
   }
 
   if $manage_freshclam {
-    Class['clamav::install'] ->
-    class { '::clamav::freshclam': } ->
-    Anchor['clamav::end']
+    Class['clamav::install'] -> class { '::clamav::freshclam': } -> Anchor['clamav::end']
   }
 
   if $manage_clamav_milter {
-    Class['clamav::install'] ->
-    class { '::clamav::clamav_milter': } ->
-    Anchor['clamav::end']
+    Class['clamav::install'] -> class { '::clamav::clamav_milter': } -> Anchor['clamav::end']
   }
 
-  anchor { 'clamav::begin': } ->
-  class { '::clamav::install': } ->
-  anchor { 'clamav::end': }
+  anchor { 'clamav::begin': } -> class { '::clamav::install': } -> anchor { 'clamav::end': }
 }
