@@ -44,11 +44,11 @@ describe 'clamav' do
     end
 
     describe package(clamd_name) do
-      it { should be_installed }
+      it { is_expected.to be_installed }
     end
 
     describe service(service_name) do
-      it { should be_running }
+      it { is_expected.to be_running }
     end
   end
 end
