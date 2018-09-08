@@ -22,28 +22,33 @@ describe 'clamav', type: :class do
 
       context 'manage user' do
         let(:params) { { manage_user: true } }
+
         it { is_expected.to contain_class('clamav::user') }
       end
 
       context 'disable epel on RedHat' do
         let(:params) { { manage_repo: false } }
+
         it { is_expected.not_to contain_class('epel') }
       end
 
       context 'manage clamd and freshclam' do
         let(:params) { { manage_clamd: true, manage_freshclam: true } }
+
         it { is_expected.to contain_class('clamav::clamd') }
         it { is_expected.to contain_class('clamav::freshclam') }
       end
 
       context 'clamav::user' do
         let(:params) { { :manage_user => true } }
+
         context 'with defaults' do
           it { is_expected.to contain_group('clamav') }
           it { is_expected.to contain_user('clamav') }
         end
         context 'disable group and user' do
           let(:params) { { :manage_user => true, :group => false, :user => false } }
+
           it { is_expected.not_to contain_group('clamav') }
           it { is_expected.not_to contain_user('clamav') }
         end
@@ -57,6 +62,7 @@ describe 'clamav', type: :class do
 
       context 'clamav::clamd' do
         let(:params) { { manage_clamd: true } }
+
         context 'with defaults' do
           it { is_expected.to contain_package('clamd') }
           it { is_expected.to contain_file('clamd.conf') }
@@ -66,6 +72,7 @@ describe 'clamav', type: :class do
 
       context 'clamav::freshclam' do
         let(:params) { { manage_freshclam: true } }
+
         context 'with defaults' do
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystemmajrelease].to_i == 6
