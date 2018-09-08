@@ -14,7 +14,7 @@ describe 'clamav' do
     end
 
     describe package('clamav') do
-      it { should be_installed }
+      it { is_expected.to be_installed }
     end
   end # install
 
@@ -31,7 +31,7 @@ describe 'clamav' do
     end
 
     # test stuff
-    it 'should work idempotently with no errors' do
+    it 'is_expected.to work idempotently with no errors' do
       pp = <<-EOS
       class { 'clamav':
         manage_clamd => true,
