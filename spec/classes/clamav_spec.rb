@@ -76,14 +76,26 @@ describe 'clamav', type: :class do
         context 'with defaults' do
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystemmajrelease].to_i == 6
-              it { is_expected.not_to contain_package('freshclam') }
-              it { is_expected.not_to contain_file('freshclam_sysconfig') }
+              it 'is valid when there is no freshclam package' do
+                is_expected.not_to contain_package('freshclam')
+              end
+              it 'is valid when there no file freshclam_sysconfig' do
+                is_expected.not_to contain_file('freshclam_sysconfig')
+              end
             elsif facts[:operatingsystemmajrelease].to_i == 7
-              it { is_expected.to contain_package('freshclam') }
-              it { is_expected.to contain_file('freshclam_sysconfig') }
+              it 'is valid when there is freshclam package' do
+                is_expected.to contain_package('freshclam')
+              end
+              it 'is valid when there is freshclam_sysconfig file' do
+                is_expected.to contain_file('freshclam_sysconfig')
+              end
             end
-            it { is_expected.to contain_file('freshclam.conf') }
-            it { is_expected.not_to contain_service('freshclam') }
+            it 'is valid when there is freshclam.conf file' do
+              is_expected.to contain_file('freshclam.conf')
+            end
+            it 'is valid when there is no freshclam service' do
+              is_expected.not_to contain_service('freshclam')
+            end
           elsif facts[:osfamily] == 'Debian'
             it { is_expected.to contain_package('freshclam') }
             it { is_expected.to contain_file('freshclam.conf') }
