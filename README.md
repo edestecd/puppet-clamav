@@ -175,4 +175,4 @@ No plans to support other versions (unless you add it :)..
 
 ## Development
 
-Pull Requests welcome
+Pull Requests  are welcome
