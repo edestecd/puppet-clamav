@@ -15,6 +15,7 @@ class clamav::params {
   $clamd_service_enable         = true
   $freshclam_service_ensure     = 'running'
   $freshclam_service_enable     = true
+  $freshclam_initial_run        = true
   $clamav_milter_service_ensure = 'running'
   $clamav_milter_service_enable = true
 

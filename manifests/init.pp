@@ -41,6 +41,7 @@ class clamav (
   $freshclam_options            = $clamav::params::freshclam_options,
   $freshclam_sysconfig          = $clamav::params::freshclam_sysconfig,
   $freshclam_delay              = $clamav::params::freshclam_delay,
+  $freshclam_initial_run        = $clamav::params::freshclam_initial_run,
 
   $clamav_milter_package        = $clamav::params::clamav_milter_package,
   $clamav_milter_version        = $clamav::params::clamav_milter_version,
@@ -116,6 +117,10 @@ class clamav (
     Class['clamav::install'] ->
     class { '::clamav::freshclam': } ->
     Anchor['clamav::end']
+  }
+
+  if $manage_clamd and $manage_freshclam {
+    Class['clamav::freshclam'] -> Class['clamav::clamd']
   }
 
   if $manage_clamav_milter {

@@ -44,6 +44,15 @@ class clamav::freshclam {
     $service_subscribe = File['freshclam.conf']
   }
 
+  if $clamav::freshclam_initial_run {
+    # Run freshclam once so that the clamav daemon won't fail on startup
+    exec { 'freshclam':
+      path      => '/sbin:/bin:/usr/sbin:/usr/bin',
+      unless    => "test -e ${config_options['DatabaseDirectory']}/main.cvd || test -e ${config_options['DatabaseDirectory']}/main.cld",
+      subscribe => $service_subscribe,
+    }
+  }
+
   # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service
   if $clamav::freshclam_service {
     service { 'freshclam':
@@ -53,6 +62,7 @@ class clamav::freshclam {
       hasrestart => true,
       hasstatus  => true,
       subscribe  => $service_subscribe,
+      require    => Exec['/usr/bin/freshclam'],
     }
   }
 
