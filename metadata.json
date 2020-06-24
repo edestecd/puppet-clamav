@@ -10,8 +10,7 @@
   "tags": ["clam", "clamav", "clamscan", "clamdscan", "clamd", "freshclam", "virus", "antivirus"],
   "description": "Puppet Module to install/configure clamd and freshclam",
   "dependencies": [
-    {"name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0 < 5.0.0"},
-    {"name": "stahnma/epel", "version_requirement": ">= 0.0.6 < 2.0.0"}
+    {"name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0 < 7.0.0"}
   ],
   "operatingsystem_support": [
     {
@@ -28,7 +27,7 @@
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": ["8", "9"]
+      "operatingsystemrelease": ["8", "9", "10"]
     },
     {
       "operatingsystem": "Ubuntu",
@@ -38,7 +37,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
+      "version_requirement": ">= 3.0.0 < 6.0.0"
     }
   ]
 }
