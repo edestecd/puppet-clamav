@@ -49,16 +49,13 @@ class clamav::params {
     $clamd_default_logsyslog          = false
     $clamd_default_temporarydirectory = '/var/tmp'
     $freshclam_default_pidfile        = undef # cron is used
-    $freshclam_default_databaseowner  = 'clamupdate'
+    $freshclam_default_user  = 'clamupdate'
     $freshclam_default_updatelogfile  = '/var/log/freshclam.log'
 
-
     #### freshclam vars ####
-    $freshclam_package = 'clamav-update'
     $freshclam_version = 'installed'
     $freshclam_config  = '/etc/freshclam.conf'
     $freshclam_options = {}
-    $freshclam_sysconfig = '/etc/sysconfig/freshclam'
     $freshclam_delay     = undef
 
     #### clamav_milter vars ####
@@ -74,6 +71,11 @@ class clamav::params {
         'LogSyslog'                => 'yes',
     }
 
+    # CentOS 6 does not have a freshclam package (part of clamav)
+    if versioncmp($::operatingsystemmajrelease, '6') != 0 {
+        $freshclam_package = 'clamav-update'
+        $freshclam_sysconfig = '/etc/sysconfig/freshclam'
+    }
 
     if versioncmp($::operatingsystemmajrelease, '2017') == 0 { # Amazon Linux 1
       $clamd_service = 'clamd.scan'
@@ -135,7 +137,7 @@ class clamav::params {
     $clamd_default_logsyslog          = false
     $clamd_default_pidfile            = '/var/run/clamav/clamd.pid'
     $clamd_default_temporarydirectory = '/tmp'
-    $freshclam_default_databaseowner  = $user
+    $freshclam_default_user  = $user
     $freshclam_default_pidfile        = '/var/run/clamav/freshclam.pid'
     $freshclam_default_updatelogfile  = '/var/log/clamav/freshclam.log'
 
@@ -170,7 +172,7 @@ class clamav::params {
     'LocalSocket'                    => $clamd_default_localsocket,
     'LocalSocketGroup'               => $group,
     'LocalSocketMode'                => '666',
-    'LogClean'                       => true,
+    'LogClean'                       => false,
     'LogFacility'                    => 'LOG_LOCAL6',
     'LogFile'                        => $clamd_default_logfile,
     'LogFileMaxSize'                 => '0',
@@ -178,7 +180,7 @@ class clamav::params {
     'LogRotate'                      => $clamd_default_logrotate,
     'LogSyslog'                      => $clamd_default_logsyslog,
     'LogTime'                        => true,
-    'LogVerbose'                     => true,
+    'LogVerbose'                     => false,
     'MaxConnectionQueueLength'       => '15',
     'MaxDirectoryRecursion'          => '15',
     'MaxEmbeddedPE'                  => '10M',
@@ -221,7 +223,7 @@ class clamav::params {
     'DNSDatabaseInfo'       => 'current.cvd.clamav.net',
     'DatabaseDirectory'     => $clamd_default_databasedirectory,
     'DatabaseMirror'        => ['db.local.clamav.net', 'database.clamav.net'],
-    'DatabaseOwner'         => $freshclam_default_databaseowner,
+    'DatabaseOwner'         => $freshclam_default_user,
     'Debug'                 => false,
     'Foreground'            => false,
     'LogFacility'           => 'LOG_LOCAL6',
