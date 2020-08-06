@@ -9,7 +9,14 @@ class clamav::clamd {
   package { 'clamd':
     ensure => $clamav::clamd_version,
     name   => $clamav::clamd_package,
-    before => File['clamd.conf'],
+    before => [File['clamd.conf'], File[$clamav::clamd_default_logfile]],
+  }
+
+  file { $clamav::clamd_default_logfile:
+    ensure  => file,
+    mode    => '0644',
+    owner   => $clamav::user,
+    group   => $clamav::group,
   }
 
   file { 'clamd.conf':

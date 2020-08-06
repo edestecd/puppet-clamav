@@ -17,6 +17,13 @@ class clamav::freshclam {
     }
   }
 
+  file { $clamav::freshclam_default_updatelogfile:
+    ensure  => file,
+    mode    => '0644',
+    owner   => 'clamupdate',
+    group   => 'clamupdate',
+  }
+
   file { 'freshclam.conf':
     ensure  => file,
     path    => $clamav::freshclam_config,
