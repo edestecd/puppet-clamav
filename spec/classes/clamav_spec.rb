@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'clamav', :type => :class do
+describe 'clamav', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts.merge(:environment => 'test')
+        facts.merge(environment: 'test')
       end
 
       context 'with defaults' do
@@ -21,29 +21,34 @@ describe 'clamav', :type => :class do
       end
 
       context 'manage user' do
-        let(:params) { { :manage_user => true } }
+        let(:params) { { manage_user: true } }
+
         it { is_expected.to contain_class('clamav::user') }
       end
 
       context 'disable epel on RedHat' do
-        let(:params) { { :manage_repo => false } }
+        let(:params) { { manage_repo: false } }
+
         it { is_expected.not_to contain_class('epel') }
       end
 
       context 'manage clamd and freshclam' do
-        let(:params) { { :manage_clamd => true, :manage_freshclam => true } }
+        let(:params) { { manage_clamd: true, manage_freshclam: true } }
+
         it { is_expected.to contain_class('clamav::clamd') }
         it { is_expected.to contain_class('clamav::freshclam') }
       end
 
       context 'clamav::user' do
-        let(:params) { { :manage_user => true } }
+        let(:params) { { manage_user: true } }
+
         context 'with defaults' do
           it { is_expected.to contain_group('clamav') }
           it { is_expected.to contain_user('clamav') }
         end
         context 'disable group and user' do
-          let(:params) { { :manage_user => true, :group => false, :user => false } }
+          let(:params) { { manage_user: true, group: false, user: false } }
+
           it { is_expected.not_to contain_group('clamav') }
           it { is_expected.not_to contain_user('clamav') }
         end
@@ -56,7 +61,8 @@ describe 'clamav', :type => :class do
       end
 
       context 'clamav::clamd' do
-        let(:params) { { :manage_clamd => true } }
+        let(:params) { { manage_clamd: true } }
+
         context 'with defaults' do
           it { is_expected.to contain_package('clamd') }
           it { is_expected.to contain_file('clamd.conf') }
@@ -65,18 +71,31 @@ describe 'clamav', :type => :class do
       end
 
       context 'clamav::freshclam' do
-        let(:params) { { :manage_freshclam => true } }
+        let(:params) { { manage_freshclam: true } }
+
         context 'with defaults' do
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystemmajrelease].to_i == 6
-              it { is_expected.not_to contain_package('freshclam') }
-              it { is_expected.not_to contain_file('freshclam_sysconfig') }
+              it 'is valid when there is no freshclam package' do
+                is_expected.not_to contain_package('freshclam')
+              end
+              it 'is valid when there no file freshclam_sysconfig' do
+                is_expected.not_to contain_file('freshclam_sysconfig')
+              end
             elsif facts[:operatingsystemmajrelease].to_i == 7
-              it { is_expected.to contain_package('freshclam') }
-              it { is_expected.to contain_file('freshclam_sysconfig') }
+              it 'is valid when there is freshclam package' do
+                is_expected.to contain_package('freshclam')
+              end
+              it 'is valid when there is freshclam_sysconfig file' do
+                is_expected.to contain_file('freshclam_sysconfig')
+              end
             end
-            it { is_expected.to contain_file('freshclam.conf') }
-            it { is_expected.not_to contain_service('freshclam') }
+            it 'is valid when there is freshclam.conf file' do
+              is_expected.to contain_file('freshclam.conf')
+            end
+            it 'is valid when there is no freshclam service' do
+              is_expected.not_to contain_service('freshclam')
+            end
           elsif facts[:osfamily] == 'Debian'
             it { is_expected.to contain_package('freshclam') }
             it { is_expected.to contain_file('freshclam.conf') }

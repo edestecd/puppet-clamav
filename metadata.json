@@ -7,32 +7,51 @@
   "source": "https://github.com/edestecd/puppet-clamav.git",
   "project_page": "https://github.com/edestecd/puppet-clamav",
   "issues_url": "https://github.com/edestecd/puppet-clamav/issues",
-  "tags": ["clam", "clamav", "clamscan", "clamdscan", "clamd", "freshclam", "virus", "antivirus"],
-  "description": "Puppet Module to install/configure clamd and freshclam",
   "dependencies": [
-    {"name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0 < 5.0.0"},
-    {"name": "stahnma/epel", "version_requirement": ">= 0.0.6 < 2.0.0"}
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.1.0 < 5.0.0"
+    },
+    {
+      "name": "stahnma/epel",
+      "version_requirement": ">= 0.0.6 < 2.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": ["6", "7"]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": ["6", "7"]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     },
     {
       "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": ["6", "7"]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": ["8", "9"]
+      "operatingsystemrelease": [
+        "8",
+        "9"
+      ]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": ["14.04", "16.04"]
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04"
+      ]
     }
   ],
   "requirements": [
@@ -40,5 +59,19 @@
       "name": "puppet",
       "version_requirement": ">= 3.0.0 < 5.0.0"
     }
-  ]
+  ],
+  "tags": [
+    "clam",
+    "clamav",
+    "clamscan",
+    "clamdscan",
+    "clamd",
+    "freshclam",
+    "virus",
+    "antivirus"
+  ],
+  "description": "Puppet Module to install/configure clamd and freshclam",
+  "pdk-version": "1.7.0",
+  "template-url": "file://C:/Program Files/Puppet Labs/DevelopmentKit/share/cache/pdk-templates.git",
+  "template-ref": "1.7.0-0-g57412ed"
 }
