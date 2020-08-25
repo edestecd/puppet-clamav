@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2020-08-25 (2.0.0)  Chris Edester
+* PDK support at 1.18.0
+* Puppet 5/6ish support
+* Drop Puppet 3 support
+* Update puppetlabs/stdlib dependency
+* Switch to puppet/epel dependency
+
 ## 2016-08-10 (1.0.0)  Chris Edester
 * WARNING: Major revision, will most likely change your configs, especially on RedHat (Please test first)
 * Refactor private class params and specs

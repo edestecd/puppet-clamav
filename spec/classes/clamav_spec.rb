@@ -39,6 +39,14 @@ describe 'clamav', type: :class do
         it { is_expected.to contain_class('clamav::freshclam') }
       end
 
+      context 'manage manage_clamav_milter' do
+        if facts[:osfamily] == 'RedHat' && facts[:operatingsystemrelease] >= '7.0'
+          let(:params) { { manage_clamav_milter: true } }
+
+          it { is_expected.to contain_class('clamav::clamav_milter') }
+        end
+      end
+
       context 'clamav::user' do
         let(:params) { { manage_user: true } }
 
