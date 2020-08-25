@@ -1,22 +1,15 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 def location_for(place_or_version, fake_version = nil)
-  if place_or_version =~ %r{\A(git[:@][^#]*)#(.*)}
-    [fake_version, { git: Regexp.last_match(1), branch: Regexp.last_match(2), require: false }].compact
-  elsif place_or_version =~ %r{\Afile:\/\/(.*)}
-    ['>= 0', { path: File.expand_path(Regexp.last_match(1)), require: false }]
+  git_url_regex = %r{\A(?<url>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
+  file_url_regex = %r{\Afile:\/\/(?<path>.*)}
+
+  if place_or_version && (git_url = place_or_version.match(git_url_regex))
+    [fake_version, { git: git_url[:url], branch: git_url[:branch], require: false }].compact
+  elsif place_or_version && (file_url = place_or_version.match(file_url_regex))
+    ['>= 0', { path: File.expand_path(file_url[:path]), require: false }]
   else
     [place_or_version, { require: false }]
-  end
-end
-
-def gem_type(place_or_version)
-  if place_or_version =~ %r{\Agit[:@]}
-    :git
-  elsif !place_or_version.nil? && place_or_version.start_with?('file:')
-    :file
-  else
-    :gem
   end
 end
 
@@ -24,19 +17,44 @@ ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "fast_gettext", '1.1.0',                         require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
-  gem "fast_gettext",                                  require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
-  gem "json_pure", '<= 2.0.1',                         require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
-  gem "json", '= 1.8.1',                               require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
-  gem "json", '<= 2.0.4',                              require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.4.4')
-  gem "puppet-module-posix-default-r#{minor_version}", require: false, platforms: [:ruby]
-  gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]
-  gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "fast_gettext", '1.1.0',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
+  gem "fast_gettext",                                            require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
+  gem "json_pure", '<= 2.0.1',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
+  gem "json", '= 1.8.1',                                         require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
+  gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "json", '= 2.1.0',                                         require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "rb-readline", '= 0.5.5',                                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-default-r#{minor_version}", '~> 0.4', require: false, platforms: [:ruby]
+  gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.4',     require: false, platforms: [:ruby]
+  gem "puppet-module-win-default-r#{minor_version}", '~> 0.4',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-win-dev-r#{minor_version}", '~> 0.4',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "travis",                                                  require: false
+end
+group :puppet_lint do
+  gem "puppet-lint-absolute_classname-check",                      require: false
+  gem "puppet-lint-absolute_template_path",                        require: false
+  gem "puppet-lint-alias-check",                                   require: false
+  gem "puppet-lint-classes_and_types_beginning_with_digits-check", require: false
+  gem "puppet-lint-duplicate_class_parameters-check",              require: false
+  gem "puppet-lint-empty_string-check",                            require: false
+  gem "puppet-lint-extended",                                      require: false
+  gem "puppet-lint-file_ensure-check",                             require: false
+  gem "puppet-lint-file_source_rights-check",                      require: false
+  gem "puppet-lint-leading_zero-check",                            require: false
+  gem "puppet-lint-numericvariable",                               require: false
+  gem "puppet-lint-resource_reference_syntax",                     require: false
+  gem "puppet-lint-security-plugins",                              require: false
+  gem "puppet-lint-spaceship_operator_without_tag-check",          require: false
+  gem "puppet-lint-strict_indent-check",                           require: false
+  gem "puppet-lint-trailing_comma-check",                          require: false
+  gem "puppet-lint-trailing_newline-check",                        require: false
+  gem "puppet-lint-undef_in_function-check",                       require: false
+  gem "puppet-lint-unquoted_string-check",                         require: false
+  gem "puppet-lint-variable_contains_upcase",                      require: false
+  gem "puppet-lint-version_comparison-check",                      require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
-puppet_type = gem_type(puppet_version)
 facter_version = ENV['FACTER_GEM_VERSION']
 hiera_version = ENV['HIERA_GEM_VERSION']
 

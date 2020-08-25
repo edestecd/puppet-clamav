@@ -98,33 +98,33 @@ class clamav (
     $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
   }
 
-  if $manage_repo { require '::epel' }
+  if $manage_repo { require 'epel' }
 
   if $manage_user {
     Anchor['clamav::begin']
-    -> class { '::clamav::user': }
+    -> class { 'clamav::user': }
     -> Class['clamav::install']
   }
 
   if $manage_clamd {
     Class['clamav::install']
-    -> class { '::clamav::clamd': }
+    -> class { 'clamav::clamd': }
     -> Anchor['clamav::end']
   }
 
   if $manage_freshclam {
     Class['clamav::install']
-    -> class { '::clamav::freshclam': }
+    -> class { 'clamav::freshclam': }
     -> Anchor['clamav::end']
   }
 
   if $manage_clamav_milter {
     Class['clamav::install']
-    -> class { '::clamav::clamav_milter': }
+    -> class { 'clamav::clamav_milter': }
     -> Anchor['clamav::end']
   }
 
   anchor { 'clamav::begin': }
-  -> class { '::clamav::install': }
+  -> class { 'clamav::install': }
   -> anchor { 'clamav::end': }
 }

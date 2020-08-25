@@ -57,7 +57,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
+      "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ],
   "tags": [
@@ -71,7 +71,7 @@
     "antivirus"
   ],
   "description": "Puppet Module to install/configure clamd and freshclam",
-  "pdk-version": "1.7.0",
-  "template-url": "file://C:/Program Files/Puppet Labs/DevelopmentKit/share/cache/pdk-templates.git",
-  "template-ref": "1.7.0-0-g57412ed"
+  "pdk-version": "1.18.0",
+  "template-url": "pdk-default#1.18.0",
+  "template-ref": "tags/1.18.0-0-g095317c"
 }

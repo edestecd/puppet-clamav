@@ -1,0 +1,40 @@
+---
+.gitlab-ci.yml:
+  delete: true
+appveyor.yml:
+  delete: true
+
+.travis.yml:
+  user: edestecd
+  secure: "JWjiBcix532wh5nWMxIXj9aIVzJyMZLuL5kN5bRfwY4iJkWQ4VdTKbu9jHN7QRT7/BSmVzypeGQkLuPDgPWhFJp01577u0/4ruVJTlHHuNrfgFKFiBcI0L4ezHurX9kHRmr3pNOQioVT+bg+R8yYsZU92R8Pfyt1y1XB2XANhSe2m+mS44e4oM6QtRgElemKsIPlVDHh1jn4f2DYIuxacY/xiGfTJ7klRXOKh1d6jSlIRMEYynARTD9RggW2m79zPSzoId841tBIziZsx3nxXtmjmQ55CZb95US8Mw2UDCVywu6FS6lqkyForFqAYZ6nvwSteMHN8wwv8FAMPDUppuTvQzdTMSvohlRhzMn4bHFTpCKssikDemz/8AYK7kbIfRChgf30dZIlePH6MKXRgqj6JkkeB1//pDFqYge8u16w4e8l/OKJwBC2CvAralpqsrGx748+bkmPHIj2OYQb9rVV51aFVWDQ/eKsAd1L71FrjBG2XNduNxXcltMeNviUO7df2cB5BSsxu02KBhkR0tmVjqNIO1w9NRiDX3YbyavPBSEnn/Lx1j3ujVsG2uVzbMfvkMyi8kaP65gn+F5Ys8bvJKUad3GgswpezalNMMH7/WzLsEszhOI7zsCioyZxjd4LB+H9N0ji1naVFN0ut0XtOa5RYKkzcDBtFiVesxI="
+
+Gemfile:
+  required:
+    ':development':
+      - gem: travis
+    ':puppet_lint':
+      - gem: puppet-lint-absolute_classname-check
+      - gem: puppet-lint-absolute_template_path
+      - gem: puppet-lint-alias-check
+      - gem: puppet-lint-classes_and_types_beginning_with_digits-check
+      - gem: puppet-lint-duplicate_class_parameters-check
+      - gem: puppet-lint-empty_string-check
+      - gem: puppet-lint-extended
+      - gem: puppet-lint-file_ensure-check
+      - gem: puppet-lint-file_source_rights-check
+      - gem: puppet-lint-leading_zero-check
+      - gem: puppet-lint-numericvariable
+      - gem: puppet-lint-resource_reference_syntax
+      - gem: puppet-lint-security-plugins
+      - gem: puppet-lint-spaceship_operator_without_tag-check
+      - gem: puppet-lint-strict_indent-check
+      - gem: puppet-lint-trailing_comma-check
+      - gem: puppet-lint-trailing_newline-check
+      - gem: puppet-lint-undef_in_function-check
+      - gem: puppet-lint-unquoted_string-check
+      - gem: puppet-lint-variable_contains_upcase
+      - gem: puppet-lint-version_comparison-check
+
+Rakefile:
+  default_disabled_lint_checks:
+    - security_package_pinned_version
