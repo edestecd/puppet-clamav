@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## Next (2.0.1)  Chris Edester
+* PDK 1.18.1
+
 ## 2020-08-25 (2.0.0)  Chris Edester
 * PDK support at 1.18.0
 * Puppet 5/6ish support

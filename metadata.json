@@ -1,6 +1,6 @@
 {
   "name": "edestecd-clamav",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Chris Edester",
   "summary": "Puppet Module for managing ClamAV",
   "license": "GPL-3.0+",
@@ -71,7 +71,7 @@
     "antivirus"
   ],
   "description": "Puppet Module to install/configure clamd and freshclam",
-  "pdk-version": "1.18.0",
-  "template-url": "pdk-default#1.18.0",
-  "template-ref": "tags/1.18.0-0-g095317c"
+  "pdk-version": "1.18.1",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#1.18.1",
+  "template-ref": "tags/1.18.1-0-g3d2e75c"
 }
