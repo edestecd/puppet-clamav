@@ -26,6 +26,17 @@ class clamav::freshclam {
     content => template("${module_name}/clamav.conf.erb"),
   }
 
+  # NOTE: RedHat installations of clamav < 0.102 come with this flag which has been
+  # deprecated fro some time. When uprading to 0.102 or newer the setting perists,
+  # generating noise with cron jobs
+  file_line { 'Remove AllowSupplementaryGroups':
+    ensure            => absent,
+    path              => '/etc/freshclam.conf',
+    match             => '^AllowSupplementaryGroups ',
+    match_for_absence => true,
+    require           => File['freshclam.conf'],
+  }
+
   if $clamav::freshclam_sysconfig {
     file { 'freshclam_sysconfig':
       ensure  => file,
