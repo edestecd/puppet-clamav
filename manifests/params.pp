@@ -58,6 +58,11 @@ class clamav::params {
       $freshclam_sysconfig = '/etc/sysconfig/freshclam'
       $freshclam_delay     = undef
 
+      # ### RHEL8/Centos8 actually do have a service
+      if versioncmp($::operatingsystemmajrelease, '8') >= 0 {
+        $freshclam_service = 'clamav-freshclam'
+      }
+
       # ### clamav_milter vars ####
       $clamav_milter_package     = 'clamav-milter-systemd'
       $clamav_milter_version     = 'installed'

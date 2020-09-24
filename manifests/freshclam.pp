@@ -44,7 +44,7 @@ class clamav::freshclam {
     $service_subscribe = File['freshclam.conf']
   }
 
-  # NOTE: RedHat comes with /etc/cron.daily/freshclam instead of a service
+  # NOTE: RedHat <8 comes with /etc/cron.daily/freshclam instead of a service
   if $clamav::freshclam_service {
     service { 'freshclam':
       ensure     => $clamav::freshclam_service_ensure,
