@@ -57,6 +57,8 @@ class clamav::params {
       $freshclam_sysconfig = '/etc/sysconfig/freshclam'
       $freshclam_delay     = undef
 
+      notify { 'freshclam service: ${freshclam_service} (should be undef)': }
+      
       # ### RHEL8/Centos8 actually do have a service
       if versioncmp($::operatingsystemmajrelease, '8') >= 0 {
         $freshclam_service = 'clamav-freshclam'
@@ -156,7 +158,7 @@ class clamav::params {
     $freshclam_package = 'clamav-freshclam'
     $freshclam_version = 'installed'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
-    $freshclam_service = 'clamav-freshclam'
+    $freshclam_service = 'clamav-freshclam'2
     $freshclam_options = {}
     $freshclam_sysconfig = undef
     $freshclam_delay     = undef
