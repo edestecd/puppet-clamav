@@ -76,6 +76,9 @@ class clamav::params {
         'ClamdSocket'              => 'tcp:127.0.0.1',
         'LogSyslog'                => 'yes',
       }
+    } else {
+      $freshclam_service = undef
+    }
 
     } else {
       # ### user vars ####
