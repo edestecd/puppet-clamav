@@ -75,8 +75,7 @@ class clamav::params {
         'MilterSocket'             => 'inet:8890@localhost',
         'ClamdSocket'              => 'tcp:127.0.0.1',
         'LogSyslog'                => 'yes',
-      }
-    } else {
+      } else {
       $freshclam_service = undef
     }
 
