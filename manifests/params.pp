@@ -109,6 +109,7 @@ class clamav::params {
       $freshclam_options = {}
       $freshclam_sysconfig = undef
       $freshclam_delay     = undef
+      $freshclam_service   = undef
 
       # ### clamav_milter vars ####
       $clamav_milter_package     = undef
