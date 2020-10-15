@@ -3,6 +3,7 @@
 #
 
 class clamav::install {
+  require ::clamav::dependencies
 
   package { 'clamav':
     ensure => $clamav::clamav_version,
