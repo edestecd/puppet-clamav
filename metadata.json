@@ -52,6 +52,9 @@
         "14.04",
         "16.04"
       ]
+    },
+    {
+      "operatingsystem": "FreeBSD"
     }
   ],
   "requirements": [

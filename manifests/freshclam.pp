@@ -7,7 +7,7 @@ class clamav::freshclam {
   $config_options = $clamav::_freshclam_options
   $freshclam_delay = $clamav::freshclam_delay
 
-  # NOTE: In RedHat this is part of the base clamav_package
+  # NOTE: In RedHat and FreeBSD this is part of the base clamav_package
   # NOTE: In Debian this is a dependency of the base clamav_package
   if $clamav::freshclam_package {
     package { 'freshclam':
@@ -22,7 +22,7 @@ class clamav::freshclam {
     path    => $clamav::freshclam_config,
     mode    => '0644',
     owner   => 'root',
-    group   => 'root',
+    group   => $clamav::root_group,
     content => template("${module_name}/clamav.conf.erb"),
   }
 
@@ -32,7 +32,7 @@ class clamav::freshclam {
       path    => $clamav::freshclam_sysconfig,
       mode    => '0644',
       owner   => 'root',
-      group   => 'root',
+      group   => $clamav::root_group,
       content => template("${module_name}/sysconfig/freshclam.erb"),
     }
 
