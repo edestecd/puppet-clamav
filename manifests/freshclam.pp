@@ -7,11 +7,14 @@
 #   group that owns the freshclam config file
 # @param mode
 #   mode of the freshclam config file
+# @param sort_options
+#   for true, the options are sorted,
 #
 class clamav::freshclam(
-  String $config_owner = 'root',
-  String $config_group = 'root',
-  String $config_mode  = '0644',
+  String  $config_owner = 'root',
+  String  $config_group = 'root',
+  String  $config_mode  = '0644',
+  Boolean $sort_options = true,
 ){
 
   $config_options = $clamav::_freshclam_options
