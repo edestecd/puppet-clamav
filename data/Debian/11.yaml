@@ -1,0 +1,122 @@
+---
+# settings for Debian bullseye (11)
+#
+
+clamav::clamd::sort_options: false
+
+clamav::clamd_default_options:
+  LocalSocket: '/var/run/clamav/clamd.ctl'
+  FixStaleSocket: true
+  LocalSocketGroup: 'clamav'
+  LocalSocketMode: 666
+  User: 'clamav'
+  ScanMail: true
+  ScanArchive: true
+  ArchiveBlockEncrypted: false
+  MaxDirectoryRecursion: 15
+  FollowDirectorySymlinks: false
+  FollowFileSymlinks: false
+  ReadTimeout: 180
+  MaxThreads: 12
+  MaxConnectionQueueLength: 15
+  LogSyslog: false
+  LogRotate: true
+  LogFacility: 'LOG_LOCAL6'
+  LogClean: false
+  LogVerbose: false
+  PreludeEnable: 'no'
+  PreludeAnalyzerName: 'ClamAV'
+  DatabaseDirectory: '/var/lib/clamav'
+  OfficialDatabaseOnly: false
+  SelfCheck: 3600
+  Foreground: false
+  Debug: false
+  ScanPE: true
+  MaxEmbeddedPE: '10M'
+  ScanOLE2: true
+  ScanPDF: true
+  ScanHTML: true
+  MaxHTMLNormalize: '10M'
+  MaxHTMLNoTags: '2M'
+  MaxScriptNormalize: '5M'
+  MaxZipTypeRcg: '1M'
+  ScanSWF: true
+  ExitOnOOM: false
+  LeaveTemporaryFiles: false
+  AlgorithmicDetection: true
+  ScanELF: true
+  IdleTimeout: 30
+  CrossFilesystems: true
+  PhishingSignatures: true
+  PhishingScanURLs: true
+  PhishingAlwaysBlockSSLMismatch: false
+  PhishingAlwaysBlockCloak: false
+  PartitionIntersection: false
+  DetectPUA: false
+  ScanPartialMessages: false
+  HeuristicScanPrecedence: false
+  StructuredDataDetection: false
+  CommandReadTimeout: 30
+  SendBufTimeout: 200
+  MaxQueue: 100
+  ExtendedDetectionInfo: true
+  OLE2BlockMacros: false
+  AllowAllMatchScan: true
+  ForceToDisk: false
+  DisableCertCheck: false
+  DisableCache: false
+  MaxScanTime: 120000
+  MaxScanSize: '100M'
+  MaxFileSize: '25M'
+  MaxRecursion: 16
+  MaxFiles: 10000
+  MaxPartitions: 50
+  MaxIconsPE: 100
+  PCREMatchLimit: 10000
+  PCRERecMatchLimit: 5000
+  PCREMaxFileSize: '25M'
+  ScanXMLDOCS: true
+  ScanHWP3: true
+  MaxRecHWP3: 16
+  StreamMaxLength: '25M'
+  LogFile: '/var/log/clamav/clamav.log'
+  LogTime: true
+  LogFileUnlock: false
+  LogFileMaxSize: 0
+  Bytecode: true
+  BytecodeSecurity: 'TrustSigned'
+  BytecodeTimeout: 60000
+  OnAccessMaxFileSize: '5M'
+
+clamav::freshclam::config_owner: 'clamav'
+clamav::freshclam::config_group: 'adm'
+clamav::freshclam::config_mode: '0444'
+
+clamav::freshclam::sort_options: false
+
+clamav::freshclam_default_options:
+  DatabaseOwner: 'clamav'
+  UpdateLogFile: '/var/log/clamav/freshclam.log'
+  LogVerbose: false
+  LogSyslog: false
+  LogFacility: 'LOG_LOCAL6'
+  LogFileMaxSize: 0
+  LogRotate: true
+  LogTime: true
+  Foreground: false
+  Debug: false
+  MaxAttempts: 5
+  DatabaseDirectory: '/var/lib/clamav'
+  DNSDatabaseInfo: 'current.cvd.clamav.net'
+  ConnectTimeout: 30
+  ReceiveTimeout: 0
+  TestDatabases: 'yes'
+  ScriptedUpdates: 'yes'
+  CompressLocalDatabase: 'no'
+  Bytecode: true
+  NotifyClamd: '/etc/clamav/clamd.conf'
+  # Check for new database 24 times a day
+  Checks: 24
+  DatabaseMirror: 
+    - 'db.local.clamav.net'
+    - 'database.clamav.net'
