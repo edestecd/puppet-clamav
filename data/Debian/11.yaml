@@ -120,3 +120,38 @@ clamav::freshclam_default_options:
   DatabaseMirror: 
     - 'db.local.clamav.net'
     - 'database.clamav.net'
+
+clamav::clamav_milter_package: 'clamav-milter'
+clamav::clamav_milter_version: 'installed'
+clamav::clamav_milter_service: 'clamav-milter'
+clamav::clamav_milter_config: '/etc/clamav/clamav-milter.conf'
+
+clamav::clamav_milter::sort_options: false
+
+clamav::milter_default_options:
+  MilterSocket: '/var/run/clamav/clamav-milter.ctl'
+  FixStaleSocket: true
+  User: 'clamav'
+  ReadTimeout: 120
+  Foreground: false
+  PidFile: '/var/run/clamav/clamav-milter.pid'
+  ClamdSocket: 'unix:/var/run/clamav/clamd.ctl'
+  OnClean: 'Accept'
+  OnInfected: 'Quarantine'
+  OnFail: 'Defer'
+  AddHeader: 'Replace'
+  LogSyslog: false
+  LogFacility: 'LOG_LOCAL6'
+  LogVerbose: false
+  LogInfected: 'Off'
+  LogClean: 'Off'
+  LogRotate: true
+  MaxFileSize: '25M'
+  SupportMultipleRecipients: false
+  TemporaryDirectory: '/tmp'
+  LogFile: '/var/log/clamav/clamav-milter.log'
+  LogTime: true
+  LogFileUnlock: false
+  LogFileMaxSize: '1M'
+  MilterSocketGroup: 'clamav'
+  MilterSocketMode: 666
