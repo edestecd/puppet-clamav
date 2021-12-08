@@ -42,13 +42,13 @@ class clamav (
   Optional[Stdlib::Absolutepath] $freshclam_sysconfig = $clamav::params::freshclam_sysconfig,
   Optional[String] $freshclam_delay = $clamav::params::freshclam_delay,
 
-  $clamav_milter_package        = $clamav::params::clamav_milter_package,
-  $clamav_milter_version        = $clamav::params::clamav_milter_version,
-  $clamav_milter_config         = $clamav::params::clamav_milter_config,
-  $clamav_milter_service        = $clamav::params::clamav_milter_service,
-  $clamav_milter_service_ensure = $clamav::params::clamav_milter_service_ensure,
-  $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
-  $clamav_milter_options        = $clamav::params::clamav_milter_options,
+  Optional[String]               $clamav_milter_package        = $clamav::params::clamav_milter_package,
+  Optional[String]               $clamav_milter_version        = $clamav::params::clamav_milter_version,
+  Optional[Stdlib::Absolutepath] $clamav_milter_config         = $clamav::params::clamav_milter_config,
+  Optional[String]               $clamav_milter_service        = $clamav::params::clamav_milter_service,
+  String                         $clamav_milter_service_ensure = $clamav::params::clamav_milter_service_ensure,
+  Boolean                        $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
+  Hash                           $clamav_milter_options        = $clamav::params::clamav_milter_options,
 ) inherits clamav::params {
 
   # clamd
@@ -58,15 +58,7 @@ class clamav (
   $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
 
   # clamav_milter
-  if $manage_clamav_milter {
-    assert_type(String, $clamav_milter_package)
-    assert_type(String, $clamav_milter_version)
-    assert_type(Stdlib::Absolutepath, $clamav_milter_config)
-    assert_type(String, $clamav_milter_service)
-    assert_type(Boolean, $clamav_milter_service_enable)
-    assert_type(Hash, $clamav_milter_options)
-    $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
-  }
+  $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
 
   if $manage_repo { require 'epel' }
 
