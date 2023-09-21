@@ -1,9 +1,5 @@
-# freshclam.pp
-# Set up freshclam config and service.
-#
-
+# @summay Set up freshclam config and service.
 class clamav::freshclam {
-
   $config_options = $clamav::_freshclam_options
   $freshclam_delay = $clamav::freshclam_delay
 

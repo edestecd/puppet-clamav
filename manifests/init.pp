@@ -1,11 +1,4 @@
-# init.pp
-# Main class of clamav
-# Declare main config here
-#
-# http://www.clamav.net
-# http://www.clamxav.com
-#
-
+# @summary Manage clamav
 class clamav (
   Boolean $manage_user          = $clamav::params::manage_user,
   Boolean $manage_repo          = $clamav::params::manage_repo,
@@ -50,7 +43,6 @@ class clamav (
   $clamav_milter_service_enable = $clamav::params::clamav_milter_service_enable,
   $clamav_milter_options        = $clamav::params::clamav_milter_options,
 ) inherits clamav::params {
-
   # clamd
   $_clamd_options = merge($clamav::params::clamd_default_options, $clamd_options)
 

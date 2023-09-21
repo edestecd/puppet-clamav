@@ -1,13 +1,5 @@
-# clamav_milter.pp
-# Set up clamav_milter config and service.
-#
-
+# @summary Set up clamav_milter config and service.
 class clamav::clamav_milter {
-
-  unless ($::osfamily == 'RedHat') and (versioncmp($::operatingsystemrelease, '7.0') >= 0) {
-    fail("OS family ${::osfamily}-${::operatingsystemrelease} is not supported. Only RedHat >= 7 is suppported.")
-  }
-
   $config_options = $clamav::_clamav_milter_options
 
   package { 'clamav_milter':
