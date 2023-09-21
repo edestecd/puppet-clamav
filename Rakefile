@@ -41,7 +41,6 @@ def changelog_future_release
 end
 
 PuppetLint.configuration.send('disable_relative')
-PuppetLint.configuration.send('disable_security_package_pinned_version')
 
 
 if Gem.loaded_specs.key? 'github_changelog_generator'
