@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-10-24 (2.0.2)  Frank Luo
+* update epel depenency
+
 ## Next (2.0.1)  Chris Edester
 * PDK 1.18.1
 
