@@ -1,6 +1,6 @@
 {
   "name": "edestecd-clamav",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Chris Edester",
   "summary": "Puppet Module for managing ClamAV",
   "license": "GPL-3.0+",
@@ -14,7 +14,7 @@
     },
     {
       "name": "puppet/epel",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": ">= 4.0.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
