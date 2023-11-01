@@ -1,9 +1,5 @@
-# user.pp
-# Manage clam user/group.
-#
-
+# @summary Manage clam user/group.
 class clamav::user {
-
   if $clamav::group {
     group { 'clamav':
       ensure => present,

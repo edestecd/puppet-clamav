@@ -1,9 +1,5 @@
-# clamd.pp
-# Set up clamd config and service.
-#
-
+# @summary Set up clamd config and service.
 class clamav::clamd {
-
   $config_options = $clamav::_clamd_options
 
   package { 'clamd':
