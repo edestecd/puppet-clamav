@@ -116,7 +116,7 @@ class clamav::params {
       $clamav_milter_version     = undef
       $clamav_milter_config      = undef
       $clamav_milter_service     = undef
-      $clamav_milter_options     = undef
+      $clamav_milter_options     = {}
       $clamav_milter_default_options = undef
     }
 
@@ -167,7 +167,7 @@ class clamav::params {
     $clamav_milter_version     = undef
     $clamav_milter_config      = undef
     $clamav_milter_service     = undef
-    $clamav_milter_options     = undef
+    $clamav_milter_options     = {}
     $clamav_milter_default_options = undef
 
     # ### Default values OS specific ####
