@@ -1,8 +1,21 @@
 # freshclam.pp
 # Set up freshclam config and service.
 #
-
-class clamav::freshclam {
+# @param config_owner
+#   owner of the freshclam config file
+# @param config_group
+#   group that owns the freshclam config file
+# @param mode
+#   mode of the freshclam config file
+# @param sort_options
+#   for true, the options are sorted,
+#
+class clamav::freshclam(
+  String  $config_owner = 'root',
+  String  $config_group = 'root',
+  String  $config_mode  = '0644',
+  Boolean $sort_options = true,
+){
 
   $config_options = $clamav::_freshclam_options
   $freshclam_delay = $clamav::freshclam_delay
@@ -20,9 +33,9 @@ class clamav::freshclam {
   file { 'freshclam.conf':
     ensure  => file,
     path    => $clamav::freshclam_config,
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
+    mode    => $config_mode,
+    owner   => $config_owner,
+    group   => $config_group,
     content => template("${module_name}/clamav.conf.erb"),
   }
 
