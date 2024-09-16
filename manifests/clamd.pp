@@ -1,5 +1,4 @@
-# clamd.pp
-# Set up clamd config and service.
+# @summary Set up clamd config and service.
 #
 # @param sort_options
 #   for true, the options are sorted,

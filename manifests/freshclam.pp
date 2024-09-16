@@ -1,5 +1,4 @@
-# freshclam.pp
-# Set up freshclam config and service.
+# @summary Set up freshclam config and service.
 #
 # @param config_owner
 #   owner of the freshclam config file

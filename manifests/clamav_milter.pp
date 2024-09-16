@@ -1,5 +1,4 @@
-# clamav_milter.pp
-# Set up clamav_milter config and service.
+# @summary Set up clamav_milter config and service.
 #
 # @param sort_options
 #   for true, the options are sorted,
