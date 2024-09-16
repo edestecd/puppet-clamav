@@ -1,5 +1,12 @@
 # @summary Set up clamav_milter config and service.
-class clamav::clamav_milter {
+#
+# @param sort_options
+#   for true, the options are sorted,
+#
+class clamav::clamav_milter(
+  Boolean $sort_options = true,
+) {
+
   $config_options = $clamav::_clamav_milter_options
 
   package { 'clamav_milter':

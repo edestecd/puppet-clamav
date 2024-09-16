@@ -16,7 +16,7 @@ class clamav::params {
     # ### init vars ####
     $manage_repo    = true
     $clamav_package = 'clamav'
-    $clamav_version = 'installed'
+    $clamav_version = 'latest'
 
     if versioncmp($facts['os']['release']['major'], '7') >= 0 {
       # ### user vars ####
@@ -31,7 +31,7 @@ class clamav::params {
 
       # ### clamd vars ####
       $clamd_package     = 'clamav-scanner-systemd'
-      $clamd_version     = 'installed'
+      $clamd_version     = 'latest'
       $clamd_config      = '/etc/clamd.d/scan.conf'
       $clamd_service     = 'clamd@scan'
       $clamd_options     = {}
@@ -45,7 +45,7 @@ class clamav::params {
 
       # ### freshclam vars ####
       $freshclam_package = 'clamav-update'
-      $freshclam_version = 'installed'
+      $freshclam_version = 'latest'
       $freshclam_config  = '/etc/freshclam.conf'
       $freshclam_options = {}
       $freshclam_sysconfig = '/etc/sysconfig/freshclam'
@@ -60,7 +60,7 @@ class clamav::params {
 
       # ### clamav_milter vars ####
       $clamav_milter_package     = 'clamav-milter-systemd'
-      $clamav_milter_version     = 'installed'
+      $clamav_milter_version     = 'latest'
       $clamav_milter_config      = '/etc/mail/clamav-milter.conf'
       $clamav_milter_service     = 'clamav-milter'
       $clamav_milter_options     = {}
@@ -83,7 +83,7 @@ class clamav::params {
 
       # ### clamd vars ####
       $clamd_package     = 'clamd'
-      $clamd_version     = 'installed'
+      $clamd_version     = 'latest'
       $clamd_config      = '/etc/clamd.conf'
       $clamd_service     = 'clamd'
       $clamd_options     = {}
@@ -109,7 +109,7 @@ class clamav::params {
       $clamav_milter_version     = undef
       $clamav_milter_config      = undef
       $clamav_milter_service     = undef
-      $clamav_milter_options     = undef
+      $clamav_milter_options     = {}
       $clamav_milter_default_options = undef
     }
 
@@ -126,7 +126,7 @@ class clamav::params {
     # ### init vars ####
     $manage_repo       = false
     $clamav_package    = 'clamav'
-    $clamav_version    = 'installed'
+    $clamav_version    = 'latest'
 
     # ### user vars ####
     $user              = 'clamav'
@@ -140,14 +140,14 @@ class clamav::params {
 
     # ### clamd vars ####
     $clamd_package     = 'clamav-daemon'
-    $clamd_version     = 'installed'
+    $clamd_version     = 'latest'
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
 
     # ### freshclam vars ####
     $freshclam_package = 'clamav-freshclam'
-    $freshclam_version = 'installed'
+    $freshclam_version = 'latest'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
     $freshclam_options = {}
@@ -159,7 +159,7 @@ class clamav::params {
     $clamav_milter_version     = undef
     $clamav_milter_config      = undef
     $clamav_milter_service     = undef
-    $clamav_milter_options     = undef
+    $clamav_milter_options     = {}
     $clamav_milter_default_options = undef
 
     # ### Default values OS specific ####
