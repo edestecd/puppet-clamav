@@ -44,17 +44,18 @@ class clamav::params {
       $freshclam_default_updatelogfile = undef # '/var/log/freshclam.log'
 
       # ### freshclam vars ####
-      $freshclam_package = 'clamav-update'
-      $freshclam_version = 'latest'
-      $freshclam_config  = '/etc/freshclam.conf'
-      $freshclam_options = {}
+      $freshclam_version   = 'latest'
+      $freshclam_config    = '/etc/freshclam.conf'
+      $freshclam_options   = {}
       $freshclam_sysconfig = '/etc/sysconfig/freshclam'
       $freshclam_delay     = undef
 
       # ### RHEL8/Centos8 actually do have a service
       if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+        $freshclam_package = 'clamav-freshclam'
         $freshclam_service = 'clamav-freshclam'
       } else {
+        $freshclam_package = 'clamav-update'
         $freshclam_service = undef
       }
 
