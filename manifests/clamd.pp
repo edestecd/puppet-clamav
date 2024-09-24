@@ -1,8 +1,11 @@
-# clamd.pp
-# Set up clamd config and service.
+# @summary Set up clamd config and service.
 #
-
-class clamav::clamd {
+# @param sort_options
+#   for true, the options are sorted,
+#
+class clamav::clamd(
+  Boolean $sort_options = true,
+) {
 
   $config_options = $clamav::_clamd_options
 

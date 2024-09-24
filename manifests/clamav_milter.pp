@@ -1,13 +1,11 @@
-# clamav_milter.pp
-# Set up clamav_milter config and service.
+# @summary Set up clamav_milter config and service.
 #
-
-class clamav::clamav_milter {
-
-  unless ($facts['os']['family'] == 'RedHat') {
-    fail("OS family ${facts['os']['family']} is not supported. Only RedHat is suppported.")
-  }
-
+# @param sort_options
+#   for true, the options are sorted,
+#
+class clamav::clamav_milter(
+  Boolean $sort_options = true,
+) {
   $config_options = $clamav::_clamav_milter_options
 
   package { 'clamav_milter':

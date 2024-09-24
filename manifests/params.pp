@@ -1,11 +1,5 @@
-# params.pp
-# Set up ClamAV parameters defaults etc.
-#
-# @Todo: add osx support with ClamXav
-#
-
+# @summary Set up ClamAV parameters defaults etc.
 class clamav::params {
-
   # ### init vars ####
   $manage_user                  = false
   $manage_clamd                 = false
@@ -19,10 +13,11 @@ class clamav::params {
   $clamav_milter_service_enable = true
 
   if $facts['os']['family'] == 'RedHat' {
+
     # ### init vars ####
     $manage_repo    = true
     $clamav_package = 'clamav'
-    $clamav_version = 'installed'
+    $clamav_version = 'latest'
 
     # ### user vars ####
     $user              = 'clamscan'
@@ -87,7 +82,7 @@ class clamav::params {
     # ### init vars ####
     $manage_repo       = false
     $clamav_package    = 'clamav'
-    $clamav_version    = 'installed'
+    $clamav_version    = 'latest'
 
     # ### user vars ####
     $user              = 'clamav'
@@ -101,14 +96,14 @@ class clamav::params {
 
     # ### clamd vars ####
     $clamd_package     = 'clamav-daemon'
-    $clamd_version     = 'installed'
+    $clamd_version     = 'latest'
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
     $clamd_options     = {}
 
     # ### freshclam vars ####
     $freshclam_package = 'clamav-freshclam'
-    $freshclam_version = 'installed'
+    $freshclam_version = 'latest'
     $freshclam_config  = '/etc/clamav/freshclam.conf'
     $freshclam_service = 'clamav-freshclam'
     $freshclam_options = {}
@@ -120,7 +115,7 @@ class clamav::params {
     $clamav_milter_version     = undef
     $clamav_milter_config      = undef
     $clamav_milter_service     = undef
-    $clamav_milter_options     = undef
+    $clamav_milter_options     = {}
     $clamav_milter_default_options = undef
 
     # ### Default values OS specific ####
@@ -134,15 +129,12 @@ class clamav::params {
     $freshclam_default_databaseowner  = $user
     $freshclam_default_pidfile        = '/var/run/clamav/freshclam.pid'
     $freshclam_default_updatelogfile  = '/var/log/clamav/freshclam.log'
-
   } else {
     fail("The ${module_name} module is not supported on a ${facts['os']['family']}.")
   }
 
   $clamd_default_options = {
-    'AlgorithmicDetection'           => true,
     'AllowAllMatchScan'              => true,
-    'ArchiveBlockEncrypted'          => false,
     'Bytecode'                       => true,
     'BytecodeSecurity'               => 'TrustSigned',
     'BytecodeTimeout'                => '60000',
@@ -150,7 +142,6 @@ class clamav::params {
     'CrossFilesystems'               => true,
     'DatabaseDirectory'              => $clamd_default_databasedirectory,
     'Debug'                          => false,
-    'DetectBrokenExecutables'        => false,
     'DetectPUA'                      => false,
     'DisableCertCheck'               => false,
     'ExitOnOOM'                      => false,
@@ -184,10 +175,7 @@ class clamav::params {
     'MaxScriptNormalize'             => '5M',
     'MaxThreads'                     => '12',
     'MaxZipTypeRcg'                  => '1M',
-    'OLE2BlockMacros'                => false,
     'OfficialDatabaseOnly'           => false,
-    'PhishingAlwaysBlockCloak'       => false,
-    'PhishingAlwaysBlockSSLMismatch' => false,
     'PhishingScanURLs'               => true,
     'PhishingSignatures'             => true,
     'PidFile'                        => $clamd_default_pidfile,
