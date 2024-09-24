@@ -178,9 +178,7 @@ class clamav::params {
   }
 
   $clamd_default_options = {
-    'AlgorithmicDetection'           => true,
     'AllowAllMatchScan'              => true,
-    'ArchiveBlockEncrypted'          => false,
     'Bytecode'                       => true,
     'BytecodeSecurity'               => 'TrustSigned',
     'BytecodeTimeout'                => '60000',
@@ -188,7 +186,6 @@ class clamav::params {
     'CrossFilesystems'               => true,
     'DatabaseDirectory'              => $clamd_default_databasedirectory,
     'Debug'                          => false,
-    'DetectBrokenExecutables'        => false,
     'DetectPUA'                      => false,
     'DisableCertCheck'               => false,
     'ExitOnOOM'                      => false,
@@ -222,10 +219,7 @@ class clamav::params {
     'MaxScriptNormalize'             => '5M',
     'MaxThreads'                     => '12',
     'MaxZipTypeRcg'                  => '1M',
-    'OLE2BlockMacros'                => false,
     'OfficialDatabaseOnly'           => false,
-    'PhishingAlwaysBlockCloak'       => false,
-    'PhishingAlwaysBlockSSLMismatch' => false,
     'PhishingScanURLs'               => true,
     'PhishingSignatures'             => true,
     'PidFile'                        => $clamd_default_pidfile,
