@@ -48,24 +48,24 @@ class clamav (
   Optional[Hash]                 $milter_default_options       = undef,
 ) inherits clamav::params {
   # clamd
-  if $clamd_default_options {
-    $_clamd_options = merge($clamd_default_options, $clamd_options)
+  $_clamd_options = if $clamd_default_options {
+    $clamd_default_options + $clamd_options
   } else {
-    $_clamd_options = merge($clamav::params::clamd_default_options, $clamd_options)
+    $clamav::params::clamd_default_options + $clamd_options
   }
 
   # freshclam
-  if $freshclam_default_options {
-    $_freshclam_options = merge($freshclam_default_options, $freshclam_options)
+  $_freshclam_options = if $freshclam_default_options {
+    $freshclam_default_options + $freshclam_options
   } else {
-    $_freshclam_options = merge($clamav::params::freshclam_default_options, $freshclam_options)
+    $clamav::params::freshclam_default_options + $freshclam_options
   }
 
   # clamav_milter
-  if $milter_default_options {
-    $_clamav_milter_options = merge($milter_default_options, $clamav_milter_options)
+  $_clamav_milter_options = if $milter_default_options {
+    $milter_default_options + $clamav_milter_options
   } else {
-    $_clamav_milter_options = merge($clamav::params::clamav_milter_default_options, $clamav_milter_options)
+    $clamav::params::clamav_milter_default_options + $clamav_milter_options
   }
 
   if $manage_repo { require 'epel' }
