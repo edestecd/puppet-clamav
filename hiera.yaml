@@ -6,7 +6,14 @@ defaults:  # Used for any hierarchy level that omits these keys.
   data_hash: yaml_data  # Use the built-in YAML backend.
 
 hierarchy:
-  - name: "osname/major release for clamav"
-    path: "%{facts.os.name}/%{facts.os.release.major}.yaml"
-  - name: 'common for clamav module'
-    path: 'common.yaml'
+  - name: Distribution full release
+    path: "%{facts.os.name}/%{facts.os.release.full}.yaml"
+
+  - name: OS family major release
+    path: "%{facts.os.family}/%{facts.os.release.major}.yaml"
+
+  - name: OS family
+    path: "%{facts.os.family}.yaml"
+
+  - name: Common
+    path: common.yaml

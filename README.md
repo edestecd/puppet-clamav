@@ -26,10 +26,10 @@ Puppet Module to install/configure clamd and freshclam on Debian and RedHat
 
 ## Module Description
 
-The clamav module provides some classes to install and configure most of the components of clamav.  
-You may also choose to manage only the parts that you need.  
-This module aims to be minimalistic.  
-No options produces stock config files as provided by your package installer.
+The clamav module provides classes to install and configure the main ClamAV
+components. You may manage only the components you need. The module supplies
+baseline configuration defaults and combines them with platform data and
+caller overrides.
 
 This module has the following components that can be managed (or not):
 * Base clamav package - command line and libs
@@ -50,7 +50,10 @@ This module has the following components that can be managed (or not):
 
 ### Setup Requirements
 
-only need to install the module
+Install the module and its dependencies. On Red Hat-family systems,
+`manage_repo` defaults to `true` and declares the module's `puppet/epel`
+dependency. Set `manage_repo => false` when repository management is provided
+elsewhere.
 
 ### Beginning with clamav
 
@@ -109,6 +112,70 @@ class { 'clamav':
 }
 ```
 
+### Understand clamd option precedence
+
+When `clamd_default_options` is not supplied, the generated configuration uses
+these layers, with later values taking precedence:
+
+1. Module baseline options.
+2. OS-family platform options.
+3. Caller-supplied `clamd_options`.
+
+For compatibility with earlier releases, explicitly supplying
+`clamd_default_options` replaces both the module baseline and platform
+defaults. `clamd_options` is then applied over that replacement hash. A
+replacement hash must therefore contain every default required by the target
+system.
+
+An option whose value is `undef` or an empty string is omitted. Arrays render
+the directive once for each non-empty element. Boolean values retain the
+module's established `true` and `false` rendering.
+
+### Enable clamd socket activation explicitly
+
+Direct service management remains the default. Debian-family systems provide
+`clamav-daemon.socket` as the default socket unit, but it is used only when
+socket activation is explicitly enabled:
+
+```puppet
+class { 'clamav':
+  manage_clamd     => true,
+  clamd_use_socket => true,
+}
+```
+
+The module keeps the direct clamd service stopped and disabled while the
+socket unit is active. A custom socket unit can be supplied with
+`clamd_socket`. Enabling socket activation on a platform without a socket-unit
+default requires an explicit `clamd_socket` value.
+
+The compatibility configuration renders `LocalSocketMode 666`, allowing any
+local account that can reach the socket path to connect. Sites that do not
+require world-accessible scanning should restrict the socket to its configured
+group:
+
+```puppet
+class { 'clamav':
+  manage_clamd  => true,
+  clamd_options => {
+    'LocalSocketMode' => '660',
+  },
+}
+```
+
+Ensure every local client that needs the socket belongs to the configured
+`LocalSocketGroup` before applying a restrictive mode. The module retains
+`666` as its compatibility default; changing that default requires a
+separately documented migration.
+
+### Understand freshclam service policy
+
+Debian-family systems manage the `clamav-freshclam` service directly.
+Red Hat-family EL7 packages use their cron-based update behavior, so the
+module does not declare a freshclam service there. EL8 manages the
+`clamav-freshclam` service and its `/etc/sysconfig/freshclam` environment
+file.
+
 ### Add clamav-milter support and customize its config (RHEL7 and derivatives only)
 #### Please note that as of RHEL 7.2 only the TCP socket has been tested successfully
 
@@ -164,15 +231,38 @@ clamav::freshclam_options:
 * clamav::user
 * clamav::clamd
 * clamav::freshclam
+* clamav::clamav_milter
 
 ## Limitations
 
-This module has been built on and tested against Puppet 3.8 and higher.  
-While I am sure other versions work, I have not tested them.
+The supported Puppet and operating-system ranges are declared in
+`metadata.json`. Catalog compilation in CI does not replace runtime acceptance
+testing of package availability, generated configuration, database updates,
+or service startup.
 
-This module supports modern RedHat and Debian based systems.  
-No plans to support other versions (unless you add it :)..
+ClamAV 1.5+, Ubuntu 26.04, Debian 13, EL10, and OpenVox 8 have not been
+runtime-validated by this work and are not additional support claims.
 
 ## Development
 
-Pull Requests welcome
+Use the repository's Bundler environment:
+
+```shell
+bundle exec rake validate
+bundle exec rake spec
+```
+
+GitHub Actions runs four Puppet 8/Ruby 3.3 jobs:
+
+* Metadata, Puppet syntax, Hiera, and Ruby style validation.
+* A focused compatibility suite for configuration precedence and
+  platform-sensitive behavior.
+* The complete unit suite across the operating systems declared in metadata.
+* Catalog integration with the pinned `puppet/epel` 5.0.0 fixture for EL7.9
+  and EL9.
+
+The EPEL coverage verifies catalog relationships, repository resources, and
+signing-key resources. It is not a package-installation acceptance test.
+
+Pull requests should describe the affected operating systems, Puppet and
+ClamAV versions, compatibility impact, and tests run.

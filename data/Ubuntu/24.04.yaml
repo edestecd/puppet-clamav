@@ -1,0 +1,12 @@
+---
+# Production-compatible scanner policy for Ubuntu 24.04.
+clamav::clamd_platform_options:
+  CommandReadTimeout: 30
+  MaxScanTime: 120000
+  MaxRecursion: 16
+  PCREMatchLimit: 10000
+  PCRERecMatchLimit: 5000
+  PCREMaxFileSize: '25M'
+
+clamav::freshclam_platform_options:
+  ReceiveTimeout: 0

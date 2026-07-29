@@ -7,6 +7,7 @@ class clamav::params {
   $manage_freshclam             = false
   $clamd_service_ensure         = 'running'
   $clamd_service_enable         = true
+  $clamd_use_socket             = false
   $freshclam_service_ensure     = 'running'
   $freshclam_service_enable     = true
   $clamav_milter_service_ensure = 'running'
@@ -17,6 +18,7 @@ class clamav::params {
     $manage_repo    = true
     $clamav_package = 'clamav'
     $clamav_version = 'latest'
+    $clamd_socket   = undef
 
     if versioncmp($facts['os']['release']['major'], '7') >= 0 {
       # ### user vars ####
@@ -143,6 +145,7 @@ class clamav::params {
     $clamd_version     = 'latest'
     $clamd_config      = '/etc/clamav/clamd.conf'
     $clamd_service     = 'clamav-daemon'
+    $clamd_socket      = 'clamav-daemon.socket'
     $clamd_options     = {}
 
     # ### freshclam vars ####
@@ -174,17 +177,23 @@ class clamav::params {
     $freshclam_default_pidfile        = '/var/run/clamav/freshclam.pid'
     $freshclam_default_updatelogfile  = '/var/log/clamav/freshclam.log'
   } else {
-    fail("The ${module_name} module is not supported on a ${facts['os']['family']} based system with version ${facts['os']['release']['full']}.")
+    fail(
+      "The ${module_name} module is not supported on a ${facts['os']['family']} based system " +
+      "with version ${facts['os']['release']['full']}.",
+    )
   }
 
-  $clamd_default_options = {
+  # Generic clamd defaults are kept separate from platform-specific paths,
+  # users, and logging behavior. The merged compatibility variable remains
+  # available below.
+  $clamd_baseline_options = {
     'AllowAllMatchScan'              => true,
     'Bytecode'                       => true,
     'BytecodeSecurity'               => 'TrustSigned',
     'BytecodeTimeout'                => '60000',
     'CommandReadTimeout'             => '5',
     'CrossFilesystems'               => true,
-    'DatabaseDirectory'              => $clamd_default_databasedirectory,
+    'DatabaseDirectory'              => '/var/lib/clamav',
     'Debug'                          => false,
     'DetectPUA'                      => false,
     'DisableCertCheck'               => false,
@@ -198,16 +207,11 @@ class clamav::params {
     'HeuristicScanPrecedence'        => false,
     'IdleTimeout'                    => '30',
     'LeaveTemporaryFiles'            => false,
-    'LocalSocket'                    => $clamd_default_localsocket,
-    'LocalSocketGroup'               => $group,
     'LocalSocketMode'                => '666',
     'LogClean'                       => false,
     'LogFacility'                    => 'LOG_LOCAL6',
-    'LogFile'                        => $clamd_default_logfile,
     'LogFileMaxSize'                 => '0',
     'LogFileUnlock'                  => false,
-    'LogRotate'                      => $clamd_default_logrotate,
-    'LogSyslog'                      => $clamd_default_logsyslog,
     'LogTime'                        => true,
     'LogVerbose'                     => false,
     'MaxConnectionQueueLength'       => '15',
@@ -222,7 +226,6 @@ class clamav::params {
     'OfficialDatabaseOnly'           => false,
     'PhishingScanURLs'               => true,
     'PhishingSignatures'             => true,
-    'PidFile'                        => $clamd_default_pidfile,
     'ReadTimeout'                    => '180',
     'ScanArchive'                    => true,
     'ScanELF'                        => true,
@@ -237,32 +240,67 @@ class clamav::params {
     'SendBufTimeout'                 => '200',
     'StreamMaxLength'                => '25M',
     'StructuredDataDetection'        => false,
-    'TemporaryDirectory'             => $clamd_default_temporarydirectory,
-    'User'                           => $user,
   }
 
-  $freshclam_default_options = {
+  $freshclam_baseline_options = {
     'Bytecode'                 => true,
     'Checks'                   => '24',
     'CompressLocalDatabase'    => 'no',
     'ConnectTimeout'           => '30',
     'DNSDatabaseInfo'          => 'current.cvd.clamav.net',
-    'DatabaseDirectory'        => $clamd_default_databasedirectory,
+    'DatabaseDirectory'        => '/var/lib/clamav',
     'DatabaseMirror'           => ['db.local.clamav.net', 'database.clamav.net'],
-    'DatabaseOwner'            => $freshclam_default_databaseowner,
     'Debug'                    => false,
     'Foreground'               => false,
     'LogFacility'              => 'LOG_LOCAL6',
     'LogFileMaxSize'           => '0',
-    'LogRotate'                => $clamd_default_logrotate,
-    'LogSyslog'                => $clamd_default_logsyslog,
     'LogTime'                  => true,
     'LogVerbose'               => false,
     'MaxAttempts'              => '5',
-    'PidFile'                  => $freshclam_default_pidfile,
     'ReceiveTimeout'           => '30',
     'ScriptedUpdates'          => 'yes',
     'TestDatabases'            => 'yes',
-    'UpdateLogFile'            => $freshclam_default_updatelogfile,
   }
+
+  # Preserve the computed params defaults as a fallback for consumers whose
+  # platform is supported by the legacy params logic but has no module data.
+  $clamd_platform_fallback = {
+    'LocalSocket'        => $clamd_default_localsocket,
+    'LocalSocketGroup'   => $group,
+    'LogFile'            => $clamd_default_logfile,
+    'LogRotate'          => $clamd_default_logrotate,
+    'LogSyslog'          => $clamd_default_logsyslog,
+    'PidFile'            => $clamd_default_pidfile,
+    'TemporaryDirectory' => $clamd_default_temporarydirectory,
+    'User'               => $user,
+  }
+
+  $freshclam_platform_fallback = {
+    'DatabaseOwner' => $freshclam_default_databaseowner,
+    'LogRotate'     => $clamd_default_logrotate,
+    'LogSyslog'     => $clamd_default_logsyslog,
+    'PidFile'       => $freshclam_default_pidfile,
+    'UpdateLogFile' => $freshclam_default_updatelogfile,
+  }
+
+  # Canonical platform keys are layered above two historical lookup keys. The
+  # public class option hashes retain their existing replacement semantics.
+  $legacy_clamd_platform_options = lookup('clamav::clamd_defaults_options', Hash, 'deep', {})
+  $legacy_os_clamd_options = lookup('clamav::os_clamd_defaults', Hash, 'deep', {})
+  $module_clamd_platform_options = lookup('clamav::clamd_platform_options', Hash, 'deep', {})
+  $module_freshclam_platform_options = lookup('clamav::freshclam_platform_options', Hash, 'deep', {})
+
+  $clamd_platform_options = merge(
+    $clamd_platform_fallback,
+    $legacy_clamd_platform_options,
+    $legacy_os_clamd_options,
+    $module_clamd_platform_options,
+  )
+  $freshclam_platform_options = merge(
+    $freshclam_platform_fallback,
+    $module_freshclam_platform_options,
+  )
+
+  $clamd_default_options = merge($clamd_baseline_options, $clamd_platform_options)
+  $freshclam_default_options = merge($freshclam_baseline_options, $freshclam_platform_options)
 }

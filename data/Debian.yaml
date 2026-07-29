@@ -1,0 +1,17 @@
+---
+clamav::clamd_platform_options:
+  LocalSocket: /var/run/clamav/clamd.ctl
+  LocalSocketGroup: clamav
+  LogFile: /var/log/clamav/clamav.log
+  LogRotate: true
+  LogSyslog: false
+  PidFile: /var/run/clamav/clamd.pid
+  TemporaryDirectory: /tmp
+  User: clamav
+
+clamav::freshclam_platform_options:
+  DatabaseOwner: clamav
+  LogRotate: true
+  LogSyslog: false
+  PidFile: /var/run/clamav/freshclam.pid
+  UpdateLogFile: /var/log/clamav/freshclam.log

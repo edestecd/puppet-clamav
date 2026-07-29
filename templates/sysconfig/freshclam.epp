@@ -1,0 +1,5 @@
+<%- | Optional[Variant[Integer, String]] $freshclam_delay | -%>
+### File managed with puppet ###
+## Module:           'clamav'
+
+FRESHCLAM_DELAY=<%= $freshclam_delay %>

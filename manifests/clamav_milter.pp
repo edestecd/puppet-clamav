@@ -3,12 +3,9 @@
 # @param sort_options
 #   for true, the options are sorted,
 #
-class clamav::clamav_milter(
+class clamav::clamav_milter (
   Boolean $sort_options = true,
 ) {
-
-  $config_options = $clamav::_clamav_milter_options
-
   package { 'clamav_milter':
     ensure => $clamav::clamav_milter_version,
     name   => $clamav::clamav_milter_package,
@@ -21,7 +18,10 @@ class clamav::clamav_milter(
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamav.conf.erb"),
+    content => epp('clamav/clamav-milter.conf.epp', {
+        'options'      => $clamav::_clamav_milter_options,
+        'sort_options' => $sort_options,
+    }),
   }
 
   service { 'clamav_milter':

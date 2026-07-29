@@ -3,8 +3,15 @@
 ---
 fixtures:
   forge_modules:
-    stdlib: "puppetlabs/stdlib"
-    epel: "puppet/epel"
+    # Keep the test fixture inside metadata.json's declared < 10.0.0 range.
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref: "9.7.0"
+    # Pin the newest puppet/epel release that retains EL7 support while
+    # remaining compatible with the module's Puppet 7 and Puppet 8 test matrix.
+    epel:
+      repo: "puppet/epel"
+      ref: "5.0.0"
     # Extracted from core in puppet 6
     yumrepo_core: "puppetlabs/yumrepo_core"
   symlinks:

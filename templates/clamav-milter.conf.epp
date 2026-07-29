@@ -1,0 +1,20 @@
+<%- | Hash[String, Clamav::Config_value] $options, Boolean $sort_options | -%>
+### File managed with puppet ###
+## Module:           'clamav'
+
+<% $option_keys = $sort_options ? {
+     true    => keys($options).sort,
+     default => keys($options),
+   } -%>
+<% $option_keys.each |String $key| { -%>
+<%   $value = $options[$key] -%>
+<%   $values = $value ? {
+       Array   => $value,
+       default => [$value],
+     } -%>
+<%   $values.each |$item| { -%>
+<%     if $item != undef and $item != '' { -%>
+<%= $key %> <%= $item %>
+<%     } -%>
+<%   } -%>
+<% } -%>

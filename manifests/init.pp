@@ -23,6 +23,8 @@ class clamav (
   String $clamd_service         = $clamav::params::clamd_service,
   $clamd_service_ensure         = $clamav::params::clamd_service_ensure,
   Boolean $clamd_service_enable = $clamav::params::clamd_service_enable,
+  Optional[String[1]] $clamd_socket = $clamav::params::clamd_socket,
+  Boolean $clamd_use_socket     = $clamav::params::clamd_use_socket,
   Hash $clamd_options           = $clamav::params::clamd_options,
 
   $freshclam_package            = $clamav::params::freshclam_package,
@@ -47,6 +49,10 @@ class clamav (
   Optional[Hash]                 $freshclam_default_options    = undef,
   Optional[Hash]                 $milter_default_options       = undef,
 ) inherits clamav::params {
+  if $clamd_use_socket and $clamd_socket == undef {
+    fail('clamav::clamd_use_socket requires clamav::clamd_socket')
+  }
+
   # clamd
   if $clamd_default_options {
     $_clamd_options = merge($clamd_default_options, $clamd_options)

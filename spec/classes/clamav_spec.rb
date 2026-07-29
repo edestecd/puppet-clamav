@@ -3,9 +3,8 @@ require 'spec_helper'
 describe 'clamav', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
-        facts.merge(environment: 'test')
-      end
+      let(:facts) { facts }
+      let(:pre_condition) { 'class epel {}' if facts[:osfamily] == 'RedHat' }
 
       context 'with defaults' do
         it { is_expected.to compile.with_all_deps }
@@ -39,11 +38,14 @@ describe 'clamav', type: :class do
         it { is_expected.to contain_class('clamav::freshclam') }
       end
 
-      context 'manage manage_clamav_milter' do
+      context 'manage clamav_milter' do
         if facts[:osfamily] == 'RedHat' && facts[:operatingsystemrelease] >= '7.0'
           let(:params) { { manage_clamav_milter: true } }
 
           it { is_expected.to contain_class('clamav::clamav_milter') }
+          it { is_expected.to contain_package('clamav_milter').with_name('clamav-milter-systemd') }
+          it { is_expected.to contain_file('clamav-milter.conf').with_path('/etc/mail/clamav-milter.conf') }
+          it { is_expected.to contain_service('clamav_milter').with_name('clamav-milter') }
         end
       end
 
@@ -51,9 +53,33 @@ describe 'clamav', type: :class do
         let(:params) { { manage_user: true } }
 
         context 'with defaults' do
-          it { is_expected.to contain_group('clamav') }
-          it { is_expected.to contain_user('clamav') }
+          if facts[:osfamily] == 'RedHat'
+            it { is_expected.to contain_group('clamav').with(name: 'clamscan', gid: 496) }
+
+            it do
+              is_expected.to contain_user('clamav').with(
+                name: 'clamscan',
+                uid: 496,
+                gid: 496,
+                home: '/',
+                shell: '/sbin/nologin',
+              )
+            end
+          else
+            it { is_expected.to contain_group('clamav').with(name: 'clamav', gid: 496) }
+
+            it do
+              is_expected.to contain_user('clamav').with(
+                name: 'clamav',
+                uid: 496,
+                gid: 496,
+                home: '/var/lib/clamav',
+                shell: '/bin/false',
+              )
+            end
+          end
         end
+
         context 'disable group and user' do
           let(:params) { { manage_user: true, group: false, user: false } }
 
@@ -64,7 +90,7 @@ describe 'clamav', type: :class do
 
       context 'clamav::install' do
         context 'with defaults' do
-          it { is_expected.to contain_package('clamav') }
+          it { is_expected.to contain_package('clamav').with(name: 'clamav', ensure: 'latest') }
         end
       end
 
@@ -72,9 +98,51 @@ describe 'clamav', type: :class do
         let(:params) { { manage_clamd: true } }
 
         context 'with defaults' do
-          it { is_expected.to contain_package('clamd') }
-          it { is_expected.to contain_file('clamd.conf') }
-          it { is_expected.to contain_service('clamd') }
+          if facts[:osfamily] == 'RedHat'
+            it do
+              is_expected.to contain_package('clamd')
+                .with(name: 'clamav-scanner-systemd', ensure: 'latest')
+                .that_comes_before('File[clamd.conf]')
+            end
+
+            it do
+              is_expected.to contain_file('clamd.conf').with(
+                path: '/etc/clamd.d/scan.conf',
+                owner: 'root',
+                group: 'root',
+                mode: '0644',
+              )
+            end
+
+            it do
+              is_expected.to contain_service('clamd')
+                .with(name: 'clamd@scan', ensure: 'running', enable: true)
+                .that_subscribes_to('Package[clamd]')
+                .that_subscribes_to('File[clamd.conf]')
+            end
+          else
+            it do
+              is_expected.to contain_package('clamd')
+                .with(name: 'clamav-daemon', ensure: 'latest')
+                .that_comes_before('File[clamd.conf]')
+            end
+
+            it do
+              is_expected.to contain_file('clamd.conf').with(
+                path: '/etc/clamav/clamd.conf',
+                owner: 'root',
+                group: 'root',
+                mode: '0644',
+              )
+            end
+
+            it do
+              is_expected.to contain_service('clamd')
+                .with(name: 'clamav-daemon', ensure: 'running', enable: true)
+                .that_subscribes_to('Package[clamd]')
+                .that_subscribes_to('File[clamd.conf]')
+            end
+          end
         end
       end
 
@@ -83,31 +151,79 @@ describe 'clamav', type: :class do
 
         context 'with defaults' do
           if facts[:osfamily] == 'RedHat'
-            if facts[:operatingsystemmajrelease].to_i == 6
-              it 'is valid when there is no freshclam package' do
-                is_expected.not_to contain_package('freshclam')
-              end
-              it 'is valid when there no file freshclam_sysconfig' do
-                is_expected.not_to contain_file('freshclam_sysconfig')
-              end
-            elsif facts[:operatingsystemmajrelease].to_i == 7
-              it 'is valid when there is freshclam package' do
-                is_expected.to contain_package('freshclam')
-              end
-              it 'is valid when there is freshclam_sysconfig file' do
-                is_expected.to contain_file('freshclam_sysconfig')
-              end
+            it do
+              is_expected.to contain_package('freshclam')
+                .with(name: 'clamav-update', ensure: 'latest')
+                .that_comes_before('File[freshclam.conf]')
             end
-            it 'is valid when there is freshclam.conf file' do
-              is_expected.to contain_file('freshclam.conf')
+
+            it do
+              is_expected.to contain_file('freshclam_sysconfig').with(
+                path: '/etc/sysconfig/freshclam',
+                owner: 'root',
+                group: 'root',
+                mode: '0644',
+              )
             end
-            it 'is valid when there is no freshclam service' do
-              is_expected.not_to contain_service('freshclam')
+
+            it do
+              is_expected.to contain_file('freshclam.conf').with(
+                path: '/etc/freshclam.conf',
+                owner: 'root',
+                group: 'root',
+                mode: '0644',
+              )
             end
-          elsif facts[:osfamily] == 'Debian'
-            it { is_expected.to contain_package('freshclam') }
-            it { is_expected.to contain_file('freshclam.conf') }
-            it { is_expected.to contain_service('freshclam') }
+
+            if facts[:operatingsystemmajrelease].to_i >= 8
+              it do
+                is_expected.to contain_service('freshclam')
+                  .with(name: 'clamav-freshclam', ensure: 'running', enable: true)
+                  .that_subscribes_to('File[freshclam.conf]')
+                  .that_subscribes_to('File[freshclam_sysconfig]')
+              end
+
+              it { is_expected.to contain_package('freshclam').that_notifies('Service[freshclam]') }
+            else
+              it { is_expected.not_to contain_service('freshclam') }
+            end
+          else
+            it do
+              is_expected.to contain_package('freshclam')
+                .with(name: 'clamav-freshclam', ensure: 'latest')
+                .that_comes_before('File[freshclam.conf]')
+                .that_notifies('Service[freshclam]')
+            end
+
+            it do
+              config_permissions = if facts[:operatingsystem] == 'Debian' &&
+                                      facts[:operatingsystemmajrelease] == '11'
+                                     {
+                                       owner: 'clamav',
+                                       group: 'adm',
+                                       mode: '0444',
+                                     }
+                                   else
+                                     {
+                                       owner: 'root',
+                                       group: 'root',
+                                       mode: '0644',
+                                     }
+                                   end
+
+              is_expected.to contain_file('freshclam.conf').with(
+                {
+                  path: '/etc/clamav/freshclam.conf',
+                }.merge(config_permissions),
+              )
+            end
+
+            it do
+              is_expected.to contain_service('freshclam')
+                .with(name: 'clamav-freshclam', ensure: 'running', enable: true)
+                .that_subscribes_to('File[freshclam.conf]')
+            end
+
             it { is_expected.not_to contain_file('freshclam_sysconfig') }
           end
         end

@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUNDLE_WITHOUT: system_tests
+  PUPPET_GEM_VERSION: "~> 8.0"
+
+jobs:
+  validate:
+    name: Validate (Puppet 8 / Ruby 3.3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Validate metadata and syntax
+        run: bundle exec rake validate
+
+      - name: Check Ruby style
+        run: bundle exec rake rubocop
+
+  compatibility:
+    name: Focused compatibility (Puppet 8 / Ruby 3.3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Prepare fixtures
+        run: bundle exec rake spec_prep
+
+      - name: Verify fact database
+        run: bundle exec ruby -rjson -rfacterdb -e 'puts "json=#{JSON::VERSION} facterdb=#{Gem.loaded_specs.fetch("facterdb").version}"; JSON.parse(FacterDB.database)'
+
+      - name: Run focused compatibility tests
+        run: >-
+          bundle exec rspec
+          spec/classes/clamav_compatibility_characterization_spec.rb
+          spec/classes/clamav_epp_rendering_spec.rb
+          spec/classes/clamav_freshclam_runtime_spec.rb
+          spec/classes/clamav_option_layers_spec.rb
+          spec/classes/clamav_socket_activation_spec.rb
+          --format progress
+
+  unit:
+    name: Complete unit suite (Puppet 8 / Ruby 3.3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Prepare fixtures
+        run: bundle exec rake spec_prep
+
+      - name: Run complete unit suite
+        run: bundle exec rake spec
+
+  legacy_epel:
+    name: Legacy EL7.9 and EL9 EPEL integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Prepare pinned puppet/epel 5.0.0 fixture
+        run: bundle exec rake spec_prep
+
+      - name: Verify fact database
+        run: bundle exec ruby -rjson -rfacterdb -e 'puts "json=#{JSON::VERSION} facterdb=#{Gem.loaded_specs.fetch("facterdb").version}"; JSON.parse(FacterDB.database)'
+
+      - name: Run real EPEL integration tests
+        run: >-
+          bundle exec rspec
+          spec/classes/clamav_epel_integration_spec.rb
+          --format progress
