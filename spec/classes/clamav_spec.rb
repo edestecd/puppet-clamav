@@ -4,7 +4,7 @@ describe 'clamav', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts.merge(environment: 'test')
+        facts
       end
 
       context 'with defaults' do
@@ -55,7 +55,13 @@ describe 'clamav', type: :class do
           it { is_expected.to contain_user('clamav') }
         end
         context 'disable group and user' do
-          let(:params) { { manage_user: true, group: false, user: false } }
+          let(:params) do
+            {
+              manage_user: true,
+              group: '',
+              user: '',
+            }
+          end
 
           it { is_expected.not_to contain_group('clamav') }
           it { is_expected.not_to contain_user('clamav') }

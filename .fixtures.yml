@@ -3,9 +3,14 @@
 ---
 fixtures:
   forge_modules:
-    stdlib: "puppetlabs/stdlib"
-    epel: "puppet/epel"
-    # Extracted from core in puppet 6
-    yumrepo_core: "puppetlabs/yumrepo_core"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
+      ref: "3.0.0"
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref: "9.7.0"
+    epel:
+      repo: "puppet/epel"
+      ref: "5.0.0"
   symlinks:
     clamav: "#{source_dir}"

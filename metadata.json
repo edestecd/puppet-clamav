@@ -9,6 +9,10 @@
   "issues_url": "https://github.com/edestecd/puppet-clamav/issues",
   "dependencies": [
     {
+      "name": "puppetlabs/yumrepo_core",
+      "version_requirement": ">= 2.0.0 <= 3.0.0"
+    },
+    {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.0 < 10.0.0"
     },
@@ -61,7 +65,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 9.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     }
   ],
   "tags": [

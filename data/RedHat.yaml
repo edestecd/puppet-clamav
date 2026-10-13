@@ -1,0 +1,52 @@
+---
+clamav::manage_repo: true
+
+clamav::clamav_package: clamav
+
+clamav::user: clamscan
+clamav::comment: Clamav scanner user
+clamav::uid: 496
+clamav::gid: 496
+clamav::home: /
+clamav::shell: /sbin/nologin
+clamav::group: clamscan
+clamav::groups: ~
+
+clamav::clamd_package: clamav-scanner-systemd
+clamav::clamd_config: /etc/clamd.d/scan.conf
+clamav::clamd_service: clamd@scan
+
+clamav::freshclam_package: clamav-update
+clamav::freshclam_config: /etc/freshclam.conf
+clamav::freshclam_sysconfig: /etc/sysconfig/freshclam
+clamav::freshclam_service: ~
+
+clamav::clamav_milter_package: clamav-milter-systemd
+clamav::clamav_milter_config: /etc/mail/clamav-milter.conf
+clamav::clamav_milter_service: clamav-milter
+
+clamav::clamd_default_options:
+  DatabaseDirectory: /var/lib/clamav
+  LocalSocket: /var/run/clamd.scan/clamd.sock
+  LocalSocketGroup: clamscan
+  LocalSocketMode: '666'
+  LogFile: ~
+  LogRotate: ~
+  LogSyslog: true
+  PidFile: /var/run/clamd.scan/clamd.pid
+  TemporaryDirectory: /var/tmp
+  User: clamscan
+
+clamav::freshclam_default_options:
+  DatabaseDirectory: /var/lib/clamav
+  DatabaseOwner: clamupdate
+  PidFile: ~
+  UpdateLogFile: ~
+  LogRotate: ~
+  LogSyslog: true
+
+clamav::milter_default_options:
+  User: clamilt
+  MilterSocket: inet:8890@localhost
+  ClamdSocket: tcp:127.0.0.1
+  LogSyslog: true
