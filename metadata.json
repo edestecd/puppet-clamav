@@ -44,7 +44,7 @@
       "operatingsystemrelease": [
         "8",
         "9",
-	"11"
+        "11"
       ]
     },
     {
@@ -74,7 +74,7 @@
     "virus",
     "antivirus"
   ],
-  "pdk-version": "3.0.0",
-  "template-url": "pdk-default#3.0.0",
-  "template-ref": "tags/3.0.0-0-g056e50d"
+  "pdk-version": "3.5.1 (g7d6a7d3)",
+  "template-url": "pdk-default#3.5.1",
+  "template-ref": "tags/3.5.1-0-g9d5b193"
 }
