@@ -3,10 +3,9 @@
 # @param sort_options
 #   for true, the options are sorted,
 #
-class clamav::clamd(
+class clamav::clamd (
   Boolean $sort_options = true,
 ) {
-
   $config_options = $clamav::_clamd_options
 
   package { 'clamd':
