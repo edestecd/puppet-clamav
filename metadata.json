@@ -3,22 +3,18 @@
   "version": "3.0.0",
   "author": "Chris Edester",
   "summary": "Puppet Module for managing ClamAV",
-  "license": "GPL-3.0+",
+  "license": "GPL-3.0",
   "source": "https://github.com/edestecd/puppet-clamav.git",
   "project_page": "https://github.com/edestecd/puppet-clamav",
   "issues_url": "https://github.com/edestecd/puppet-clamav/issues",
   "dependencies": [
-    {
-      "name": "puppetlabs/yumrepo_core",
-      "version_requirement": ">= 2.0.0 <= 3.0.0"
-    },
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.0 < 10.0.0"
     },
     {
       "name": "puppet/epel",
-      "version_requirement": ">= 4.0.0 < 6.0.0"
+      "version_requirement": ">= 5.0.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -34,6 +30,13 @@
       "operatingsystemrelease": [
         "7",
         "8"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8",
+        "9"
       ]
     },
     {
