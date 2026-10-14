@@ -119,7 +119,7 @@ describe 'clamav', type: :class do
         end
       end
 
-            context 'freshclam with all optional resources configured' do
+      context 'freshclam with all optional resources configured' do
         let(:params) do
           {
             manage_freshclam: true,
@@ -154,10 +154,10 @@ describe 'clamav', type: :class do
 
         it 'renders FreshClam configuration options' do
           is_expected.to contain_file('freshclam.conf').with_content(
-            %r{DatabaseDirectory /var/lib/clamav}
+            %r{DatabaseDirectory /var/lib/clamav},
           )
           is_expected.to contain_file('freshclam.conf').with_content(
-            %r{Checks 24}
+            %r{Checks 24},
           )
         end
 
@@ -183,7 +183,7 @@ describe 'clamav', type: :class do
 
         it 'orders the package before the configuration file' do
           is_expected.to contain_package('freshclam').that_comes_before(
-            'File[freshclam.conf]'
+            'File[freshclam.conf]',
           )
         end
       end
