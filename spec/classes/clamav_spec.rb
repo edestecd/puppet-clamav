@@ -118,6 +118,75 @@ describe 'clamav', type: :class do
           end
         end
       end
+
+            context 'freshclam with all optional resources configured' do
+        let(:params) do
+          {
+            manage_freshclam: true,
+            freshclam_package: 'clamav-freshclam',
+            freshclam_version: 'latest',
+            freshclam_config: '/etc/clamav/freshclam.conf',
+            freshclam_service: 'freshclam',
+            freshclam_service_ensure: 'running',
+            freshclam_service_enable: true,
+            freshclam_sysconfig: '/etc/sysconfig/freshclam',
+            freshclam_delay: '60',
+            freshclam_options: {
+              DatabaseDirectory: '/var/lib/clamav',
+              Checks: '24',
+            },
+          }
+        end
+
+        it 'declares the FreshClam package' do
+          is_expected.to contain_package('freshclam').with(
+            ensure: 'latest',
+            name: 'clamav-freshclam',
+          )
+        end
+
+        it 'declares the FreshClam configuration file' do
+          is_expected.to contain_file('freshclam.conf').with(
+            ensure: 'file',
+            path: '/etc/clamav/freshclam.conf',
+          )
+        end
+
+        it 'renders FreshClam configuration options' do
+          is_expected.to contain_file('freshclam.conf').with_content(
+            %r{DatabaseDirectory /var/lib/clamav}
+          )
+          is_expected.to contain_file('freshclam.conf').with_content(
+            %r{Checks 24}
+          )
+        end
+
+        it 'declares the FreshClam sysconfig file' do
+          is_expected.to contain_file('freshclam_sysconfig').with(
+            ensure: 'file',
+            path: '/etc/sysconfig/freshclam',
+            owner: 'root',
+            group: 'root',
+            mode: '0644',
+          )
+        end
+
+        it 'declares the FreshClam service' do
+          is_expected.to contain_service('freshclam').with(
+            ensure: 'running',
+            name: 'freshclam',
+            enable: true,
+            hasrestart: true,
+            hasstatus: true,
+          )
+        end
+
+        it 'orders the package before the configuration file' do
+          is_expected.to contain_package('freshclam').that_comes_before(
+            'File[freshclam.conf]'
+          )
+        end
+      end
     end
   end
 end
