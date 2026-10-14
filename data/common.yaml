@@ -126,10 +126,10 @@ clamav::freshclam_default_options:
   LogTime: true
   LogVerbose: false
   MaxAttempts: '5'
-  PidFile: /var/run/clamav/freshclam.pid
+  PidFile: ~
   ReceiveTimeout: '30'
   ScriptedUpdates: 'yes'
   TestDatabases: 'yes'
-  UpdateLogFile: /var/log/clamav/freshclam.log
+  UpdateLogFile: ~
 
 clamav::milter_default_options: {}
