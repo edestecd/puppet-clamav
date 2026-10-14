@@ -1,2 +1,2 @@
 ### File managed with puppet ###
-## Module:           '<%= $module_name %>'
+## Module: '<%= $module_name %>'

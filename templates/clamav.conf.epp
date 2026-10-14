@@ -1,13 +1,22 @@
-<%- | Hash $config_options, Boolean $sort_options = true | -%>
+<%- | Hash $config_options,
+      Boolean $sort_options = true,
+      String $module_name | -%>
 <%= epp('clamav/_header.epp', { 'module_name' => $module_name }) -%>
+<%- $entries = $config_options.map |$k, $v| { [$k, $v] } -%>
 <%- $co = $sort_options ? {
-  true    => $config_options.sort,
-  default => $config_options,
+  true    => $entries.sort,
+  default => $entries,
 } -%>
-<% $co.each |$k, $v| { -%>
-<% Array($v).each |$av| { -%>
+<% $co.each |$entry| { -%>
+<% $k = $entry[0] -%>
+<% $v = $entry[1] -%>
+<% if $v =~ Array { -%>
+<% $v.each |$av| { -%>
 <% if $av != undef and $av != '' { -%>
 <%= "${k} ${av}" %>
 <% } -%>
+<% } -%>
+<% } elsif $v != undef and $v != '' { -%>
+<%= "${k} ${v}" %>
 <% } -%>
 <% } -%>

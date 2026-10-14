@@ -34,7 +34,11 @@ class clamav::freshclam (
     mode    => $config_mode,
     owner   => $config_owner,
     group   => $config_group,
-    content => template("${module_name}/clamav.conf.erb"),
+    content => epp("${module_name}/clamav.conf.epp", {
+        'config_options' => $config_options,
+        'sort_options'   => $sort_options,
+        'module_name'    => $module_name,
+    }),
   }
 
   if $clamav::freshclam_sysconfig {
