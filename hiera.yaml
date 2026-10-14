@@ -9,11 +9,15 @@ hierarchy:
   - name: OS and release
     path: "%{facts.os.name}/%{facts.os.release.major}.yaml"
 
+  - name: OS family and release
+    path: "%{facts.os.family}/%{facts.os.release.major}.yaml"
+
   - name: OS-specific defaults
     path: "%{facts.os.name}.yaml"
 
-  - name: OS-family and release defaults
-    path: "%{facts.os.family}/%{facts.os.release.major}.yaml"
+  - name: OS-family defaults
+    path: "%{facts.os.family}.yaml"
 
   - name: Common defaults
     path: common.yaml
+

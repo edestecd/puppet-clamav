@@ -69,10 +69,10 @@ clamav::clamd_default_options:
   LocalSocketMode: '666'
   LogClean: false
   LogFacility: LOG_LOCAL6
-  LogFile: /var/log/clamav/clamav.log
+  LogFile: ~
   LogFileMaxSize: '0'
   LogFileUnlock: false
-  LogRotate: true
+  LogRotate: false
   LogSyslog: false
   LogTime: true
   LogVerbose: false

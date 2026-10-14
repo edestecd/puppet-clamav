@@ -38,9 +38,9 @@
 # @param clamav_milter_service_ensure Desired milter service state.
 # @param clamav_milter_service_enable Whether to enable the milter at boot.
 # @param clamav_milter_options Custom milter configuration options.
-# @param clamd_default_options Optional base configuration for clamd.
-# @param freshclam_default_options Optional base configuration for freshclam.
-# @param milter_default_options Optional base configuration for clamav-milter.
+# @param clamd_default_options_override Optional base configuration for clamd.
+# @param freshclam_default_options_override Optional base configuration for freshclam.
+# @param milter_default_options_override Optional base configuration for clamav-milter.
 class clamav (
   Boolean $manage_user,
   Boolean $manage_repo,
@@ -80,20 +80,29 @@ class clamav (
   String $clamav_milter_service_ensure,
   Boolean $clamav_milter_service_enable,
   Hash $clamav_milter_options,
-  Optional[Hash] $clamd_default_options = undef,
-  Optional[Hash] $freshclam_default_options = undef,
-  Optional[Hash] $milter_default_options = undef,
+  Optional[Hash] $clamd_default_options_override = undef,
+  Optional[Hash] $freshclam_default_options_override = undef,
+  Optional[Hash] $milter_default_options_override = undef,
 ) {
   # clamd
-  $clamd_base_options = lookup('clamav::clamd_default_options', Hash, 'deep', {}, )
+  $clamd_base_options = $clamd_default_options_override ? {
+    undef   => lookup('clamav::clamd_default_options', Hash, 'deep', {}),
+    default => $clamd_default_options_override,
+  }
   $_clamd_options = merge($clamd_base_options, $clamd_options)
 
   # freshclam
-  $freshclam_base_options = lookup('clamav::freshclam_default_options', Hash, 'deep', {}, )
+  $freshclam_base_options = $freshclam_default_options_override ? {
+    undef   => lookup('clamav::freshclam_default_options', Hash,'deep', {}),
+    default => $freshclam_default_options_override,
+  }
   $_freshclam_options = merge($freshclam_base_options, $freshclam_options)
 
   # clamav-milter
-  $milter_base_options = lookup('clamav::milter_default_options', Hash, 'deep', {}, )
+  $milter_base_options = $milter_default_options_override ? {
+    undef   => lookup('clamav::milter_default_options', Hash, 'deep', {}),
+    default => $milter_default_options_override,
+  }
   $_clamav_milter_options = merge($milter_base_options, $clamav_milter_options)
 
   if $manage_repo { require 'epel' }
