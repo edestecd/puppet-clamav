@@ -1,1 +1,135 @@
---- {}
+---
+clamav::manage_user: false
+clamav::manage_repo: false
+clamav::manage_clamd: false
+clamav::manage_freshclam: false
+clamav::manage_clamav_milter: false
+
+clamav::clamav_package: clamav
+clamav::clamav_version: latest
+
+clamav::user: clamav
+clamav::comment: ~
+clamav::uid: 496
+clamav::gid: 496
+clamav::home: /var/lib/clamav
+clamav::shell: /bin/false
+clamav::group: clamav
+clamav::groups: ~
+
+clamav::clamd_package: clamav-daemon
+clamav::clamd_version: latest
+clamav::clamd_config: /etc/clamav/clamd.conf
+clamav::clamd_service: clamav-daemon
+clamav::clamd_service_ensure: running
+clamav::clamd_service_enable: true
+clamav::clamd_options: {}
+
+clamav::freshclam_package: clamav-freshclam
+clamav::freshclam_version: latest
+clamav::freshclam_config: /etc/clamav/freshclam.conf
+clamav::freshclam_service: clamav-freshclam
+clamav::freshclam_service_ensure: running
+clamav::freshclam_service_enable: true
+clamav::freshclam_options: {}
+clamav::freshclam_sysconfig: ~
+clamav::freshclam_delay: ~
+
+clamav::clamav_milter_package: ~
+clamav::clamav_milter_version: ~
+clamav::clamav_milter_config: ~
+clamav::clamav_milter_service: ~
+clamav::clamav_milter_service_ensure: running
+clamav::clamav_milter_service_enable: true
+clamav::clamav_milter_options: {}
+
+clamav::clamd_default_options:
+  AllowAllMatchScan: true
+  Bytecode: true
+  BytecodeSecurity: TrustSigned
+  BytecodeTimeout: '60000'
+  CommandReadTimeout: '5'
+  CrossFilesystems: true
+  DatabaseDirectory: /var/lib/clamav
+  Debug: false
+  DetectPUA: false
+  DisableCertCheck: false
+  ExitOnOOM: false
+  ExtendedDetectionInfo: true
+  FixStaleSocket: true
+  FollowDirectorySymlinks: false
+  FollowFileSymlinks: false
+  ForceToDisk: false
+  Foreground: false
+  HeuristicScanPrecedence: false
+  IdleTimeout: '30'
+  LeaveTemporaryFiles: false
+  LocalSocket: /var/run/clamav/clamd.ctl
+  LocalSocketGroup: clamav
+  LocalSocketMode: '666'
+  LogClean: false
+  LogFacility: LOG_LOCAL6
+  LogFile: ~
+  LogFileMaxSize: '0'
+  LogFileUnlock: false
+  LogRotate: false
+  LogSyslog: false
+  LogTime: true
+  LogVerbose: false
+  MaxConnectionQueueLength: '15'
+  MaxDirectoryRecursion: '15'
+  MaxEmbeddedPE: 10M
+  MaxHTMLNoTags: 2M
+  MaxHTMLNormalize: 10M
+  MaxQueue: '100'
+  MaxScriptNormalize: 5M
+  MaxThreads: '12'
+  MaxZipTypeRcg: 1M
+  OfficialDatabaseOnly: false
+  PhishingScanURLs: true
+  PhishingSignatures: true
+  PidFile: /var/run/clamav/clamd.pid
+  ReadTimeout: '180'
+  ScanArchive: true
+  ScanELF: true
+  ScanHTML: true
+  ScanMail: true
+  ScanOLE2: true
+  ScanOnAccess: false
+  ScanPE: true
+  ScanPartialMessages: false
+  ScanSWF: true
+  SelfCheck: '3600'
+  SendBufTimeout: '200'
+  StreamMaxLength: 25M
+  StructuredDataDetection: false
+  TemporaryDirectory: /tmp
+  User: clamav
+
+clamav::freshclam_default_options:
+  Bytecode: true
+  Checks: '24'
+  CompressLocalDatabase: 'no'
+  ConnectTimeout: '30'
+  DNSDatabaseInfo: current.cvd.clamav.net
+  DatabaseDirectory: /var/lib/clamav
+  DatabaseMirror:
+    - db.local.clamav.net
+    - database.clamav.net
+  DatabaseOwner: clamav
+  Debug: false
+  Foreground: false
+  LogFacility: LOG_LOCAL6
+  LogFileMaxSize: '0'
+  LogRotate: true
+  LogSyslog: false
+  LogTime: true
+  LogVerbose: false
+  MaxAttempts: '5'
+  PidFile: ~
+  ReceiveTimeout: '30'
+  ScriptedUpdates: 'yes'
+  TestDatabases: 'yes'
+  UpdateLogFile: ~
+
+clamav::milter_default_options: {}
