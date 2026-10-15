@@ -121,7 +121,6 @@ clamav::freshclam_default_options:
   Foreground: false
   LogFacility: LOG_LOCAL6
   LogFileMaxSize: '0'
-  LogRotate: true
   LogSyslog: false
   LogTime: true
   LogVerbose: false
