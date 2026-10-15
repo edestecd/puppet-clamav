@@ -1,12 +1,11 @@
 # @summary Set up clamd config and service.
 #
 # @param sort_options
-#   for true, the options are sorted,
+#   For true, the options are sorted.
 #
-class clamav::clamd(
+class clamav::clamd (
   Boolean $sort_options = true,
 ) {
-
   $config_options = $clamav::_clamd_options
 
   package { 'clamd':
@@ -21,7 +20,11 @@ class clamav::clamd(
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamav.conf.erb"),
+    content => epp("${module_name}/clamav.conf.epp", {
+        'config_options' => $config_options,
+        'sort_options'   => $sort_options,
+        'module_name'    => $module_name,
+    }),
   }
 
   service { 'clamd':

@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-10-14 (3.1.0)
+* Modernize
+
 ## 2023-10-24 (2.0.2)  Frank Luo
 * update epel depenency
 

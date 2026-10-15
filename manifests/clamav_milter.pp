@@ -3,10 +3,9 @@
 # @param sort_options
 #   for true, the options are sorted,
 #
-class clamav::clamav_milter(
+class clamav::clamav_milter (
   Boolean $sort_options = true,
 ) {
-
   $config_options = $clamav::_clamav_milter_options
 
   package { 'clamav_milter':

@@ -4,18 +4,17 @@
 #   owner of the freshclam config file
 # @param config_group
 #   group that owns the freshclam config file
-# @param mode
+# @param config_mode
 #   mode of the freshclam config file
 # @param sort_options
 #   for true, the options are sorted,
 #
-class clamav::freshclam(
+class clamav::freshclam (
   String  $config_owner = 'root',
   String  $config_group = 'root',
   String  $config_mode  = '0644',
   Boolean $sort_options = true,
-){
-
+) {
   $config_options = $clamav::_freshclam_options
   $freshclam_delay = $clamav::freshclam_delay
 
@@ -35,7 +34,11 @@ class clamav::freshclam(
     mode    => $config_mode,
     owner   => $config_owner,
     group   => $config_group,
-    content => template("${module_name}/clamav.conf.erb"),
+    content => epp("${module_name}/clamav.conf.epp", {
+        'config_options' => $config_options,
+        'sort_options'   => $sort_options,
+        'module_name'    => $module_name,
+    }),
   }
 
   if $clamav::freshclam_sysconfig {
@@ -45,7 +48,10 @@ class clamav::freshclam(
       mode    => '0644',
       owner   => 'root',
       group   => 'root',
-      content => template("${module_name}/sysconfig/freshclam.erb"),
+      content => epp("${module_name}/sysconfig/freshclam.epp", {
+          'module_name'     => $module_name,
+          'freshclam_delay' => $freshclam_delay,
+      }),
     }
 
     $service_subscribe = [

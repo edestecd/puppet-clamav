@@ -1,0 +1,3 @@
+<%= epp('clamav/_header.epp', { 'module_name' => $module_name }) -%>
+
+FRESHCLAM_DELAY=<%= $freshclamdelay %>

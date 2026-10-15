@@ -1,0 +1,46 @@
+---
+clamav::manage_repo: false
+
+clamav::clamav_package: clamav
+
+clamav::user: clamav
+clamav::comment: ~
+clamav::uid: 496
+clamav::gid: 496
+clamav::home: /var/lib/clamav
+clamav::shell: /bin/false
+clamav::group: clamav
+clamav::groups: ~
+
+clamav::clamd_package: clamav-daemon
+clamav::clamd_config: /etc/clamav/clamd.conf
+clamav::clamd_service: clamav-daemon
+
+clamav::freshclam_package: clamav-freshclam
+clamav::freshclam_config: /etc/clamav/freshclam.conf
+clamav::freshclam_sysconfig: ~
+clamav::freshclam_service: clamav-freshclam
+
+clamav::clamav_milter_package: ~
+clamav::clamav_milter_version: ~
+clamav::clamav_milter_config: ~
+clamav::clamav_milter_service: ~
+
+clamav::clamd_default_options:
+  DatabaseDirectory: /var/lib/clamav
+  LocalSocket: /var/run/clamav/clamd.ctl
+  LocalSocketGroup: clamav
+  LogFile: /var/log/clamav/clamav.log
+  LogRotate: true
+  LogSyslog: false
+  PidFile: /var/run/clamav/clamd.pid
+  TemporaryDirectory: /tmp
+  User: clamav
+
+clamav::freshclam_default_options:
+  DatabaseDirectory: /var/lib/clamav
+  DatabaseOwner: clamav
+  PidFile: /var/run/clamav/freshclam.pid
+  UpdateLogFile: /var/log/clamav/freshclam.log
+
+clamav::milter_default_options: {}
