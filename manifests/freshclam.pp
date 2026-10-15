@@ -48,7 +48,10 @@ class clamav::freshclam (
       mode    => '0644',
       owner   => 'root',
       group   => 'root',
-      content => template("${module_name}/sysconfig/freshclam.erb"),
+      content => epp("${module_name}/sysconfig/freshclam.epp", {
+          'module_name'     => $module_name,
+          'freshclam_delay' => $freshclam_delay,
+      }),
     }
 
     $service_subscribe = [
