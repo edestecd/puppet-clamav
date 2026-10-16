@@ -20,12 +20,12 @@ describe 'clamav' do
 
   context 'clamd' do
     # set params
-    if fact('osfamily') == 'RedHat'
+    if fact('os.family') == 'RedHat'
       service_name = 'clamd'
       clamd_name = 'clamd'
     end
 
-    if fact('osfamily') == 'Debian'
+    if fact('os.family') == 'Debian'
       service_name = 'clamav-daemon'
       clamd_name = 'clamav-daemon'
     end

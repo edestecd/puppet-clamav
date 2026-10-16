@@ -19,7 +19,7 @@ RSpec.configure do |c|
       copy_module_to(host, source: proj_root, module_name: 'clamav')
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), acceptable_exit_codes: [0, 1]
 
-      if fact('osfamily') == 'RedHat'
+      if fact('os.family') == 'RedHat'
         on host, puppet('module', 'install', 'puppet-epel'), acceptable_exit_codes: [0, 1]
       end
     end
