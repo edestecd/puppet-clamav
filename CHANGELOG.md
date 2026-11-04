@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## Next (3.2.0)
+* Add EL9 and EL10 support (RedHat, CentOS Stream, Rocky, AlmaLinux, Oracle Linux)
+* Drop EL7 support (end-of-life; puppet/epel 6.x no longer supports it)
+* Allow puppet/epel 6.x (required for EL10)
+* Fix clamav-milter config: use the epp template (the erb template no longer existed)
+* Fix FRESHCLAM_DELAY not being rendered into /etc/sysconfig/freshclam
+* Modernize spec to structured facts; OS-specific assertions were silently skipped before
+
 ## 2026-10-14 (3.1.0)
 * Modernize
 

@@ -1,6 +1,6 @@
 {
   "name": "edestecd-clamav",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "author": "Chris Edester",
   "summary": "Puppet Module for managing ClamAV",
   "license": "GPL-3.0",
@@ -14,36 +14,48 @@
     },
     {
       "name": "puppet/epel",
-      "version_requirement": ">= 5.0.0 < 6.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
-        "8"
+        "8",
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7",
-        "8"
+        "8",
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "Rocky",
       "operatingsystemrelease": [
         "8",
-        "9"
+        "9",
+        "10"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8",
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "7",
-        "8"
+        "8",
+        "9",
+        "10"
       ]
     },
     {

@@ -8,6 +8,9 @@ fixtures:
       ref: "9.7.0"
     epel:
       repo: "puppet/epel"
-      ref: "5.0.0"
+      ref: "6.0.0"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
+      ref: "2.1.0"
   symlinks:
     clamav: "#{source_dir}"

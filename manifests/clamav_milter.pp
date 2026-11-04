@@ -20,7 +20,11 @@ class clamav::clamav_milter (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template("${module_name}/clamav.conf.erb"),
+    content => epp("${module_name}/clamav.conf.epp", {
+        'config_options' => $config_options,
+        'sort_options'   => $sort_options,
+        'module_name'    => $module_name,
+    }),
   }
 
   service { 'clamav_milter':

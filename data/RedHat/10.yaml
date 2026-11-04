@@ -1,0 +1,6 @@
+---
+# EPEL 9+ ships clamd as the 'clamd' package and the milter as 'clamav-milter';
+# freshclam runs as a systemd service instead of a daily cron job.
+clamav::clamd_package: clamd
+clamav::clamav_milter_package: clamav-milter
+clamav::freshclam_service: clamav-freshclam
