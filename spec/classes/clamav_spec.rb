@@ -7,43 +7,64 @@ describe 'clamav', type: :class do
         facts
       end
 
+      os_family = facts[:os]['family']
+      os_major = facts[:os]['release']['major'].to_i
+
       context 'with defaults' do
         it { is_expected.to compile.with_all_deps }
-        if facts[:osfamily] == 'RedHat'
+        if os_family == 'RedHat'
           it { is_expected.to contain_class('epel') }
-        elsif facts[:osfamily] == 'Debian'
+        elsif os_family == 'Debian'
           it { is_expected.not_to contain_class('epel') }
         end
         it { is_expected.not_to contain_class('clamav::user') }
         it { is_expected.to contain_class('clamav::install') }
         it { is_expected.not_to contain_class('clamav::clamd') }
         it { is_expected.not_to contain_class('clamav::freshclam') }
+        it { is_expected.not_to contain_class('clamav::clamav_milter') }
       end
 
       context 'manage user' do
         let(:params) { { manage_user: true } }
 
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('clamav::user') }
       end
 
       context 'disable epel on RedHat' do
         let(:params) { { manage_repo: false } }
 
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_class('epel') }
       end
 
       context 'manage clamd and freshclam' do
         let(:params) { { manage_clamd: true, manage_freshclam: true } }
 
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('clamav::clamd') }
         it { is_expected.to contain_class('clamav::freshclam') }
       end
 
-      context 'manage manage_clamav_milter' do
-        if facts[:osfamily] == 'RedHat' && facts[:operatingsystemrelease] >= '7.0'
+      if os_family == 'RedHat'
+        context 'manage clamav_milter' do
           let(:params) { { manage_clamav_milter: true } }
 
+          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('clamav::clamav_milter') }
+          it { is_expected.to contain_file('clamav-milter.conf').with_path('/etc/mail/clamav-milter.conf') }
+          it { is_expected.to contain_service('clamav_milter').with_name('clamav-milter') }
+          it {
+            is_expected.to contain_file('clamav-milter.conf').with_content(
+              %r{^MilterSocket inet:8890@localhost$},
+            )
+          }
+
+          if os_major >= 9
+            it { is_expected.to contain_package('clamav_milter').with_name('clamav-milter') }
+          else
+            it { is_expected.to contain_package('clamav_milter').with_name('clamav-milter-systemd') }
+          end
         end
       end
 
@@ -53,6 +74,13 @@ describe 'clamav', type: :class do
         context 'with defaults' do
           it { is_expected.to contain_group('clamav') }
           it { is_expected.to contain_user('clamav') }
+          if os_family == 'RedHat'
+            it { is_expected.to contain_group('clamav').with_name('clamscan') }
+            it { is_expected.to contain_user('clamav').with_name('clamscan') }
+          else
+            it { is_expected.to contain_group('clamav').with_name('clamav') }
+            it { is_expected.to contain_user('clamav').with_name('clamav') }
+          end
         end
         context 'disable group and user' do
           let(:params) do
@@ -78,9 +106,28 @@ describe 'clamav', type: :class do
         let(:params) { { manage_clamd: true } }
 
         context 'with defaults' do
+          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_package('clamd') }
           it { is_expected.to contain_file('clamd.conf') }
           it { is_expected.to contain_service('clamd') }
+
+          if os_family == 'RedHat'
+            it { is_expected.to contain_file('clamd.conf').with_path('/etc/clamd.d/scan.conf') }
+            it { is_expected.to contain_service('clamd').with_name('clamd@scan') }
+            it { is_expected.to contain_file('clamd.conf').with_content(%r{^LocalSocket /var/run/clamd.scan/clamd.sock$}) }
+            it { is_expected.to contain_file('clamd.conf').with_content(%r{^User clamscan$}) }
+
+            if os_major >= 9
+              it { is_expected.to contain_package('clamd').with_name('clamd') }
+            else
+              it { is_expected.to contain_package('clamd').with_name('clamav-scanner-systemd') }
+            end
+          elsif os_family == 'Debian'
+            it { is_expected.to contain_package('clamd').with_name('clamav-daemon') }
+            it { is_expected.to contain_file('clamd.conf').with_path('/etc/clamav/clamd.conf') }
+            it { is_expected.to contain_service('clamd').with_name('clamav-daemon') }
+            it { is_expected.to contain_file('clamd.conf').with_content(%r{^LocalSocket /var/run/clamav/clamd.ctl$}) }
+          end
         end
       end
 
@@ -88,32 +135,18 @@ describe 'clamav', type: :class do
         let(:params) { { manage_freshclam: true } }
 
         context 'with defaults' do
-          if facts[:osfamily] == 'RedHat'
-            if facts[:operatingsystemmajrelease].to_i == 6
-              it 'is valid when there is no freshclam package' do
-                is_expected.not_to contain_package('freshclam')
-              end
-              it 'is valid when there no file freshclam_sysconfig' do
-                is_expected.not_to contain_file('freshclam_sysconfig')
-              end
-            elsif facts[:operatingsystemmajrelease].to_i == 7
-              it 'is valid when there is freshclam package' do
-                is_expected.to contain_package('freshclam')
-              end
-              it 'is valid when there is freshclam_sysconfig file' do
-                is_expected.to contain_file('freshclam_sysconfig')
-              end
-            end
-            it 'is valid when there is freshclam.conf file' do
-              is_expected.to contain_file('freshclam.conf')
-            end
-            it 'is valid when there is no freshclam service' do
-              is_expected.not_to contain_service('freshclam')
-            end
-          elsif facts[:osfamily] == 'Debian'
-            it { is_expected.to contain_package('freshclam') }
-            it { is_expected.to contain_file('freshclam.conf') }
-            it { is_expected.to contain_service('freshclam') }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_file('freshclam.conf') }
+          it { is_expected.to contain_service('freshclam').with_name('clamav-freshclam') }
+
+          if os_family == 'RedHat'
+            it { is_expected.to contain_package('freshclam').with_name('clamav-update') }
+            it { is_expected.to contain_file('freshclam.conf').with_path('/etc/freshclam.conf') }
+            it { is_expected.to contain_file('freshclam_sysconfig').with_path('/etc/sysconfig/freshclam') }
+            it { is_expected.to contain_file('freshclam.conf').with_content(%r{^DatabaseOwner clamupdate$}) }
+          elsif os_family == 'Debian'
+            it { is_expected.to contain_package('freshclam').with_name('clamav-freshclam') }
+            it { is_expected.to contain_file('freshclam.conf').with_path('/etc/clamav/freshclam.conf') }
             it { is_expected.not_to contain_file('freshclam_sysconfig') }
           end
         end
@@ -137,6 +170,8 @@ describe 'clamav', type: :class do
             },
           }
         end
+
+        it { is_expected.to compile.with_all_deps }
 
         it 'declares the FreshClam package' do
           is_expected.to contain_package('freshclam').with(
@@ -168,6 +203,12 @@ describe 'clamav', type: :class do
             owner: 'root',
             group: 'root',
             mode: '0644',
+          )
+        end
+
+        it 'renders the FreshClam delay in the sysconfig file' do
+          is_expected.to contain_file('freshclam_sysconfig').with_content(
+            %r{^FRESHCLAM_DELAY=60$},
           )
         end
 

@@ -36,7 +36,7 @@ This module has the following components that can be managed (or not):
 * clamav user
 * clam daemon
 * freshclam daemon/cron (dependent on OS)
-* clamav-milter (RHEL7 and derivatives only for now)
+* clamav-milter (RHEL/EL and derivatives only for now)
 
 ## Setup
 
@@ -44,7 +44,7 @@ This module has the following components that can be managed (or not):
 
 * clamav/clamd/freshclam package install
 * clamav/clamd/freshclam config files
-* clamd/freshclam services or daily cron on redhat
+* clamd/freshclam services
 * clamav-milter package install, config files, service (optional)
 * clam user/group (optional)
 
@@ -109,8 +109,8 @@ class { 'clamav':
 }
 ```
 
-### Add clamav-milter support and customize its config (RHEL7 and derivatives only)
-#### Please note that as of RHEL 7.2 only the TCP socket has been tested successfully
+### Add clamav-milter support and customize its config (RHEL/EL and derivatives only)
+#### Please note that only the TCP socket has been tested successfully
 
 ```puppet
 class { 'clamav':
@@ -167,11 +167,16 @@ clamav::freshclam_options:
 
 ## Limitations
 
-This module has been built on and tested against Puppet 3.8 and higher.  
-While I am sure other versions work, I have not tested them.
+This module is tested against Puppet 7 and 8.
 
-This module supports modern RedHat and Debian based systems.  
+This module supports modern RedHat (EL8, EL9, EL10 and derivatives such as
+Rocky, AlmaLinux, CentOS Stream and Oracle Linux) and Debian based systems.  
+EL7 is end-of-life and no longer supported as of version 3.2.0.  
 No plans to support other versions (unless you add it :)..
+
+On EL10 with `manage_repo => true` you need `puppet/epel` >= 6.0.0, which
+is the first release that ships the EL10 GPG key. Note that `puppet/epel`
+6.x no longer supports EL7, so stay on 5.x if you still have EL7 nodes.
 
 ## Development
 
